@@ -1,0 +1,58 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/course/course",
+    "pages/activity/activity",
+    "pages/profile/profile",
+    "pages/booking-confirm/booking-confirm",
+    "pages/booking-history/booking-history",
+    "pages/private-booking/private-booking",
+    "pages/private-booking-confirm/private-booking-confirm",
+    "pages/venue-intro/venue-intro",
+    "pages/teacher-list/teacher-list",
+    "pages/teacher-intro/teacher-intro",
+    "pages/course-theme/course-theme",
+    "pages/yoga-theory/yoga-theory",
+    "pages/admin-login/admin-login",
+    "pages/admin/admin",
+    "pages/admin-course/admin-course",
+    "pages/admin-users/admin-users",
+    "pages/admin-stats/admin-stats",
+    "pages/teacher-dashboard/teacher-dashboard",
+    "pages/teacher-schedule/teacher-schedule",
+    "pages/teacher-requests/teacher-requests",
+    "pages/teacher-classes/teacher-classes",
+    "pages/private-history/private-history"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#ffffff",
+    "selectedColor": "#4caf50",
+    "backgroundColor": "#202632",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "知"
+      },
+      {
+        "pagePath": "pages/course/course",
+        "text": "练"
+      },
+      {
+        "pagePath": "pages/activity/activity",
+        "text": "聚"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我"
+      }
+    ]
+  }
+} 

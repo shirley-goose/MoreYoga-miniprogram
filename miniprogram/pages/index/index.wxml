@@ -1,0 +1,50 @@
+<!-- 背景图 -->
+<image class="global-bg" src="https://636c-cloud1-9g5oms9v90aabf59-1374796372.tcb.qcloud.la/images/background.png?sign=41c2ff33f04897719c468de882000075&t=1755872493" mode="aspectFill"/>
+
+<!-- 自定义导航栏 -->
+<view class="nav-bar">
+  <view class="nav-left"></view>
+  <view class="nav-title">墨瑜伽</view>
+  <view class="nav-right">
+    <view class="admin-entry" bindtap="navigateToLogin">
+    </view>
+  </view>
+</view>
+
+<!-- logo在左上角20%处 -->
+<view class="logo-wrap">
+  <image class="logo" src="https://636c-cloud1-9g5oms9v90aabf59-1374796372.tcb.qcloud.la/images/logo.png?sign=cc58bfea3f3ef085ddc60d8571834c0d&t=1755872554" mode="widthFix"/>
+</view>
+
+<!-- 中文slogan图片居中 -->
+<view class="chinese-slogan-wrap">
+  <image class="chinese-slogan-img" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/images/slogan.png" mode="widthFix"/>
+</view>
+
+<!-- 介绍模块区（无底色，横版排布） -->
+<view class="intro-section">
+  <view class="intro-grid">
+    <view class="intro-item" 
+          wx:for="{{introList}}" 
+          wx:key="title"
+          bindtap="onIntroTap"
+          data-index="{{index}}">
+      <image class="intro-icon" src="{{item.icon}}" mode="aspectFit"/>
+      <view class="intro-title">{{item.title}}</view>
+    </view>
+  </view>
+</view>
+
+<!-- 自定义TabBar -->
+<view class="tabbar">
+  <block wx:for="{{tabList}}" wx:key="text">
+    <view class="tabbar-item {{currentTab === index ? 'active' : ''}}" 
+          bindtap="onTabChange" 
+          data-index="{{index}}">
+      <image class="tabbar-icon" 
+             src="{{currentTab === index ? item.iconActive : item.icon}}" 
+             mode="aspectFit"/>
+      <view class="tabbar-text">{{item.text}}</view>
+    </view>
+  </block>
+</view> 

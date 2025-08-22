@@ -1,0 +1,93 @@
+<!-- 背景图 -->
+<image class="global-bg" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/background.png" mode="aspectFill"/>
+
+<!-- 自定义导航栏 -->
+<view class="nav-bar">
+  <view class="nav-left">
+    <view class="nav-back" bindtap="navigateBack">
+      <text class="back-icon">‹</text>
+    </view>
+  </view>
+  <view class="nav-title">墨瑜伽</view>
+  <view class="nav-right"></view>
+</view>
+
+<!-- 页面内容 -->
+<view class="container">
+  <!-- 页面标题 -->
+  <view class="page-title">预约确认</view>
+
+  <!-- 课程信息卡片 -->
+  <view class="course-card">
+    <!-- 老师头像和信息 -->
+    <view class="teacher-info">
+      <image class="teacher-avatar" src="{{courseData.teacherAvatar}}" mode="aspectFill"/>
+      <view class="teacher-name">{{courseData.teacherName}}老师</view>
+    </view>
+
+    <!-- 课程详情 -->
+    <view class="course-details">
+      <view class="course-title">{{courseData.courseName}}</view>
+      <view class="course-info-right">
+        <view class="course-date">{{courseData.dateText}}</view>
+        <view class="course-time">{{courseData.weekDay}} {{courseData.startTime}}-{{courseData.endTime}}</view>
+      </view>
+    </view>
+
+    <!-- 分割线 -->
+    <view class="divider"></view>
+
+    <!-- 费用信息 -->
+    <view class="cost-info">
+      <view class="cost-row">
+        <text class="cost-label">总价</text>
+        <text class="cost-value">团课次卡{{courseData.creditsRequired}}次</text>
+      </view>
+      <view class="total-cost">合计待支付：{{courseData.creditsRequired}}次</view>
+    </view>
+  </view>
+
+  <!-- 课程介绍和须知 -->
+  <view class="info-section">
+    <!-- 预约进度 -->
+    <view class="booking-progress">
+      <text class="info-label">预约进度：</text>
+      <text wx:if="{{courseData.waitlistCount > 0}}" class="progress-text">前面还有{{courseData.waitlistCount}}人等位</text>
+      <text wx:elif="{{courseData.remainingSlots > 0}}" class="progress-text">还有{{courseData.remainingSlots}}个名额</text>
+      <text wx:else class="progress-text">课程已满</text>
+    </view>
+
+    <!-- 课程介绍 -->
+    <view class="course-intro">
+      <text class="info-label">课程介绍：</text>
+      <text class="info-content">{{courseData.description || '本节课将进行简单的流动，难度不大，欢迎朋友们前来练习～'}}</text>
+    </view>
+
+    <!-- 预约须知 -->
+    <view class="booking-notice">
+      <text class="info-label">预约须知：</text>
+      <view class="notice-list">
+        <view class="notice-item">
+          <text class="notice-number">1. </text>
+          <text class="notice-text">每节课程满{{courseData.minCapacity}}人可开，上限{{courseData.maxCapacity}}人。课程预约满人时可加入等待队列候补；</text>
+        </view>
+        <view class="notice-item">
+          <text class="notice-number">2. </text>
+          <text class="notice-text">本堂课还有其他人等位时，可提前60分钟取消将位置让给等位者；</text>
+        </view>
+        <view class="notice-item">
+          <text class="notice-number">3. </text>
+          <text class="notice-text">课程开始后不支持取消；</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 底部确认按钮 -->
+<view class="bottom-action">
+  <view class="confirm-btn" bindtap="confirmBooking">
+    <text class="confirm-btn-text" wx:if="{{!isBooking}}">确认预约</text>
+    <text class="confirm-btn-text" wx:else>预约中...</text>
+  </view>
+</view>

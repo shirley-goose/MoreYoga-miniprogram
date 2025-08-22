@@ -1,0 +1,190 @@
+/* 师资简介列表页面样式 */
+
+/* 页面整体样式 */
+.page-container {
+  background: transparent; /* 让背景图片显示 */
+  padding-bottom: 160rpx; /* 适配自定义TabBar */
+  padding-top: 185rpx; /* 适配固定导航栏 - 与其他页面保持一致 */
+  min-height: 100vh;
+  position: relative;
+}
+
+.container {
+  min-height: 100vh;
+  position: relative;
+  padding: 0 50rpx 0 30rpx; /* 右侧多20rpx边距 */
+}
+
+/* 导航栏样式 - 与app.wxss保持一致 */
+.nav-bar {
+  height: 100rpx;
+  padding-top: 60rpx;
+  padding-bottom: 25rpx;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  background: #202632;
+  color: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.nav-left {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding-left: 30rpx;
+}
+
+.nav-title {
+  flex: 1;
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: 600;
+  align-self: flex-end;
+}
+
+.nav-right {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 30rpx;
+}
+
+/* 返回键样式 */
+.back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(217, 217, 217, 0);
+  border-radius: 50rpx;
+  width: 108rpx;
+  height: 58rpx;
+  transition: all 0.3s ease;
+}
+
+.back-btn:active {
+  background: rgba(217, 217, 217, 0.2);
+  transform: scale(0.95);
+}
+
+.back-icon {
+  font-size: 36rpx;
+  color: #fff;
+  font-weight: 300;
+}
+
+/* 页面标题 */
+.page-title {
+  font-size: 72rpx;
+  font-weight: 500;
+  color: #000;
+  margin: 40rpx 0 40rpx; /* 向右移动20rpx，增加上边距 */
+  letter-spacing: 0.1em;
+}
+
+/* 老师列表样式 */
+.teachers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+  margin-left: 40rpx; /* 向右移动20rpx */
+}
+
+.teacher-card {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 0;
+  transition: all 0.3s ease;
+}
+
+.teacher-card:active {
+  transform: scale(0.98);
+  opacity: 0.8;
+}
+
+/* 老师头像区域 */
+.teacher-avatar {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 20rpx;
+  overflow: hidden;
+  margin-right: 40rpx;
+  box-shadow: 0 8rpx 25rpx rgba(0, 0, 0, 0.15);
+}
+
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 20rpx;
+}
+
+.avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  background: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20rpx;
+}
+
+.placeholder-text {
+  font-size: 24rpx;
+  color: #999;
+  text-align: center;
+}
+
+/* 老师信息区域 */
+.teacher-info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.teacher-name {
+  font-size: 64rpx;
+  font-weight: 400;
+  color: #000;
+  letter-spacing: 10%;
+  line-height: 1.2;
+  margin-left: 20rpx;
+}
+
+/* 鸟图标区域 */
+.teacher-bird {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120rpx;
+  height: 120rpx;
+}
+
+.bird-icon {
+  width: 80rpx;
+  height: 80rpx;
+  opacity: 0.6;
+}
+
+/* 响应式适配 */
+@media screen and (max-width: 375px) {
+  .page-title {
+    font-size: 48rpx;
+  }
+  
+  .teacher-name {
+    font-size: 48rpx;
+  }
+  
+  .teacher-avatar {
+    width: 160rpx;
+    height: 160rpx;
+  }
+  
+
+}

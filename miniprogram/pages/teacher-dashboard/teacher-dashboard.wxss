@@ -1,0 +1,270 @@
+/* 老师工作台页面样式 */
+
+/* 页面整体布局 */
+.container {
+  padding-top: 225rpx; /* 导航栏高度 + 间距 */
+  padding-bottom: 40rpx;
+  padding-left: 30rpx;
+  padding-right: 30rpx;
+  min-height: 100vh;
+}
+
+/* 导航栏样式 */
+.nav-bar {
+  height: 100rpx;
+  padding-top: 60rpx;
+  padding-bottom: 25rpx;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  background: #202632;
+  color: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.nav-left, .nav-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 0 30rpx;
+}
+
+.nav-right {
+  justify-content: flex-end;
+}
+
+.nav-center {
+  flex: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.nav-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  margin-right: 20rpx;
+}
+
+.logout-btn {
+  width: 50rpx;
+  height: 50rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.logout-btn:active {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(0.95);
+}
+
+.logout-icon {
+  font-size: 20rpx;
+  color: #fff;
+}
+
+/* 老师信息 */
+.teacher-info {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20rpx;
+  padding: 40rpx;
+  margin-bottom: 40rpx;
+  box-shadow: 0 8rpx 25rpx rgba(0, 0, 0, 0.1);
+}
+
+.teacher-welcome {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 15rpx;
+}
+
+.teacher-specialties {
+  font-size: 28rpx;
+  color: #666;
+}
+
+/* 功能菜单 */
+.function-menu {
+  margin-bottom: 40rpx;
+}
+
+.menu-title, .overview-title, .action-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 30rpx;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20rpx;
+}
+
+.menu-item {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20rpx;
+  padding: 30rpx;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 8rpx 25rpx rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.menu-item:active {
+  transform: scale(0.98);
+  box-shadow: 0 4rpx 15rpx rgba(0, 0, 0, 0.15);
+}
+
+.menu-icon {
+  font-size: 48rpx;
+  margin-bottom: 15rpx;
+}
+
+.menu-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.menu-desc {
+  font-size: 24rpx;
+  color: #666;
+  line-height: 1.4;
+}
+
+.badge {
+  position: absolute;
+  top: 20rpx;
+  right: 20rpx;
+  background: #ff4757;
+  color: white;
+  font-size: 20rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 20rpx;
+  min-width: 40rpx;
+  text-align: center;
+}
+
+/* 今日概览 */
+.today-overview {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 40rpx;
+  box-shadow: 0 8rpx 25rpx rgba(0, 0, 0, 0.1);
+}
+
+.stats-row {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20rpx;
+}
+
+.stat-item {
+  text-align: center;
+  flex: 1;
+}
+
+.stat-number {
+  font-size: 48rpx;
+  font-weight: 600;
+  color: #4CAF50;
+  margin-bottom: 10rpx;
+}
+
+.stat-label {
+  font-size: 24rpx;
+  color: #666;
+}
+
+/* 快捷操作 */
+.quick-actions {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20rpx;
+  padding: 30rpx;
+  box-shadow: 0 8rpx 25rpx rgba(0, 0, 0, 0.1);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 20rpx;
+  margin-top: 20rpx;
+}
+
+.action-btn {
+  flex: 1;
+  padding: 30rpx 20rpx;
+  border: none;
+  border-radius: 15rpx;
+  font-size: 28rpx;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.action-btn:active {
+  transform: scale(0.95);
+}
+
+.primary-btn {
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  color: white;
+  box-shadow: 0 6rpx 20rpx rgba(76, 175, 80, 0.3);
+}
+
+.secondary-btn {
+  background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+  color: white;
+  box-shadow: 0 6rpx 20rpx rgba(33, 150, 243, 0.3);
+}
+
+.btn-text {
+  font-size: 28rpx;
+  font-weight: 500;
+}
+
+/* 全局背景 */
+.global-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+/* 响应式适配 */
+@media screen and (max-width: 375px) {
+  .menu-grid {
+    grid-template-columns: 1fr;
+    gap: 15rpx;
+  }
+  
+  .teacher-welcome {
+    font-size: 32rpx;
+  }
+  
+  .menu-icon {
+    font-size: 40rpx;
+  }
+  
+  .stat-number {
+    font-size: 40rpx;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+  }
+}

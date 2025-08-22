@@ -1,0 +1,190 @@
+<!-- 背景图 -->
+<image class="global-bg" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/background.png" mode="aspectFill"/>
+
+<!-- 自定义导航栏 -->
+<view class="nav-bar">
+  <view class="nav-left"></view>
+  <view class="nav-title">墨瑜伽</view>
+  <view class="nav-right"></view>
+</view>
+
+<!-- 页面内容 -->
+<view class="container">
+  <!-- 课程类型切换 -->
+  <view class="type-switch">
+    <view class="type-item {{currentType === 'private' ? 'active' : ''}}" bindtap="onTypeChange" data-type="private">私教</view>
+    <view class="type-divider">｜</view>
+    <view class="type-item {{currentType === 'group' ? 'active' : ''}}" bindtap="onTypeChange" data-type="group">团课</view>
+    <view class="type-divider">｜</view>
+    <view class="type-item {{currentType === 'camp' ? 'active' : ''}}" bindtap="onTypeChange" data-type="camp">训练营</view>
+  </view>
+
+  <!-- 团课界面 -->
+  <view wx:if="{{currentType === 'group'}}" class="group-course-content">
+    <!-- 周日历 -->
+    <view class="week-calendar">
+      <view class="calendar-item {{selectedDate === item.date ? 'selected' : ''}}" 
+            wx:for="{{weekDays}}" 
+            wx:key="date" 
+            bindtap="onDateSelect" 
+            data-date="{{item.date}}">
+        <view class="week-name">{{item.weekName}}</view>
+        <view class="date-number">{{item.dateText}}</view>
+      </view>
+    </view>
+
+    <!-- 当日课程列表 -->
+    <view class="daily-courses">
+      <view wx:if="{{dailyCourses.length === 0}}" class="no-courses">
+        <text>今日暂无团课安排</text>
+      </view>
+      
+      <view wx:else class="course-list">
+        <view class="course-card" 
+              wx:for="{{dailyCourses}}" 
+              wx:key="id">
+          <!-- 课程卡片 -->
+          <view class="course-content">
+            <!-- 老师头像 -->
+            <view class="teacher-section">
+              <image class="teacher-avatar" src="{{item.teacherAvatar}}" mode="aspectFill"/>
+              <view class="teacher-name">{{item.teacherName}}</view>
+            </view>
+            
+            <!-- 课程信息 -->
+            <view class="course-info">
+              <view class="course-title">{{item.courseName}}</view>
+              <view class="course-desc">{{item.description}}</view>
+              <view class="course-capacity">余 {{item.remainingSlots}} 席</view>
+            </view>
+            
+            <!-- 时间和预约 -->
+            <view class="time-booking">
+              <view class="course-time">{{item.startTime}}</view>
+              <view class="end-time">{{item.endTime}}结束</view>
+              <view class="booking-btn {{item.status}}" bindtap="onBookingAction" data-course="{{item}}" data-schedule-id="{{item.id}}" data-action="book">
+                <text wx:if="{{item.status === 'available'}}">预约</text>
+                <text wx:elif="{{item.status === 'full'}}">加入等位</text>
+                <text wx:elif="{{item.status === 'booked'}}">已预约</text>
+                <text wx:elif="{{item.status === 'ended'}}">已结束</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 私教界面 -->
+  <view wx:if="{{currentType === 'private'}}" class="private-course-content">
+    
+    <!-- 私教预约步骤1：选择日期 -->
+    <view wx:if="{{!selectedPrivateTeacher}}" class="private-step-1">
+      
+      <!-- 周日历 -->
+      <view class="week-calendar">
+        <view class="calendar-item {{selectedPrivateDate === item.date ? 'selected' : ''}}" 
+              wx:for="{{privateWeekDays}}" 
+              wx:key="date" 
+              bindtap="onPrivateDateSelect" 
+              data-date="{{item.date}}">
+          <view class="week-name">{{item.weekName}}</view>
+          <view class="date-number">{{item.dateText}}</view>
+        </view>
+      </view>
+
+      <!-- 当日可用老师 -->
+      <view class="daily-private-teachers">
+        <view class="section-title">{{selectedPrivateDateDisplay}} 可约老师</view>
+        
+        <view wx:if="{{availablePrivateTeachers.length > 0}}" class="teacher-grid">
+          <view class="teacher-card" 
+                wx:for="{{availablePrivateTeachers}}" 
+                wx:key="id" 
+                bindtap="onPrivateTeacherSelect" 
+                data-teacher="{{item}}"
+                data-date="{{selectedPrivateDate}}">
+            <view class="teacher-avatar-container">
+              <image 
+                wx:if="{{item.avatar && item.avatar !== 'cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/logo.png'}}" 
+                class="teacher-avatar-large" 
+                src="{{item.avatar}}" 
+                mode="aspectFill"
+              />
+              <view wx:else class="avatar-placeholder-large">
+                <text class="placeholder-text">照片待补充</text>
+              </view>
+            </view>
+            <view class="teacher-name">{{item.name}}</view>
+            <view class="teacher-intro">{{item.slotCount}}个时段可约</view>
+            <view class="book-private-btn">
+              <text class="btn-text">选择时间</text>
+            </view>
+          </view>
+        </view>
+
+        <view wx:else class="no-teachers">
+          <text class="no-teachers-text">今日暂无老师可约</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 私教预约步骤2：选择时间段 -->
+    <view wx:if="{{selectedPrivateTeacher}}" class="private-step-2">
+      <view class="step-header">
+        <view class="back-to-teachers" bindtap="backToPrivateTeachers">
+          <text class="back-icon">←</text>
+          <text class="back-text">重新选择</text>
+        </view>
+        <view class="step-title">{{selectedPrivateTeacher.name}} - {{selectedPrivateDateDisplay}}</view>
+      </view>
+
+      <!-- 可选时间段 -->
+      <view class="time-slots-section">
+        <view class="section-title-row">
+          <view class="section-title">选择时间段</view>
+          <view class="time-instruction">选择开始时间即可，私教默认课时为1h</view>
+        </view>
+        <view class="time-slots-container">
+          <view 
+            wx:for="{{selectedPrivateTeacher.availableSlots}}" 
+            wx:key="time"
+            class="time-slot {{selectedPrivateTimeSlot === item.time ? 'selected' : ''}} {{item.status}}"
+            bindtap="onPrivateTimeSlotSelect"
+            data-slot="{{item}}"
+          >
+            <text class="slot-text">{{item.time}}</text>
+            <text wx:if="{{item.statusText}}" class="slot-status">{{item.statusText}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 确认预约按钮 -->
+      <view class="confirm-private-booking" wx:if="{{selectedPrivateTimeSlot}}" bindtap="confirmPrivateBooking">
+        <text class="confirm-btn-text">确认预约申请</text>
+      </view>
+    </view>
+
+  </view>
+
+  <!-- 训练营界面 -->
+  <view wx:if="{{currentType === 'camp'}}" class="camp-content">
+    <view class="camp-title">训练营课程</view>
+    <view class="camp-list">
+      <view class="camp-card" 
+            wx:for="{{campList}}" 
+            wx:key="id" 
+            bindtap="onCampSelect" 
+            data-camp="{{item}}">
+        <image class="camp-image" src="{{item.image}}" mode="aspectFill"/>
+        <view class="camp-info">
+          <view class="camp-name">{{item.name}}</view>
+          <view class="camp-description">{{item.description}}</view>
+          <view class="camp-duration">课程周期：{{item.duration}}</view>
+          <view class="camp-price">￥{{item.price}}</view>
+        </view>
+        <view class="camp-action-btn">立即报名</view>
+      </view>
+    </view>
+  </view>
+</view>

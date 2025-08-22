@@ -1,0 +1,36 @@
+<!-- 场馆介绍页面 -->
+<view class="container">
+  <image class="global-bg" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/background.png" mode="aspectFill"/>
+  
+  <!-- 自定义导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-left">
+      <view class="nav-back" bindtap="navigateBack">
+        <text class="back-icon">‹</text>
+      </view>
+    </view>
+    <view class="nav-title">墨瑜伽</view>
+    <view class="nav-right"></view>
+  </view>
+
+  <!-- 内容区域 -->
+  <view class="content-section">
+    <view class="page-title">场馆介绍</view>
+    
+    <view class="content-item">
+      <view class="item-title">场馆图片</view>
+      <view class="placeholder-content">
+        <!-- 场馆图片占位区域 -->
+        <view class="image-placeholder"></view>
+      </view>
+    </view>
+
+    <view class="content-item">
+      <view class="item-title">联系我们</view>
+      <view class="placeholder-content">
+        <!-- 联系信息占位区域 -->
+        <text class="placeholder-text">联系方式待添加...</text>
+      </view>
+    </view>
+  </view>
+</view>

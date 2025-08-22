@@ -1,0 +1,96 @@
+<!-- 私教预约确认页面 -->
+<!-- 背景图 -->
+<image class="global-bg" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/background.png" mode="aspectFill"/>
+
+<!-- 自定义导航栏 -->
+<view class="nav-bar">
+  <view class="nav-left">
+    <!-- 返回键 -->
+    <view class="back-btn" bindtap="goBack">
+      <view class="back-icon">←</view>
+    </view>
+  </view>
+  <view class="nav-title">墨瑜伽</view>
+  <view class="nav-right"></view>
+</view>
+
+<view class="page-container">
+  <view class="container">
+    
+    <!-- 页面标题 -->
+    <view class="page-title">私教预约</view>
+
+    <!-- 老师信息 -->
+    <view class="teacher-section">
+      <view class="teacher-photo">
+        <image 
+          wx:if="{{teacherInfo.avatar}}" 
+          class="teacher-image" 
+          src="{{teacherInfo.avatar}}" 
+          mode="aspectFill"
+        />
+        <view wx:else class="photo-placeholder">
+          <text class="placeholder-text">照片待补充</text>
+        </view>
+      </view>
+      <view class="teacher-name">{{teacherInfo.name}}</view>
+    </view>
+
+    <!-- 预约表单 -->
+    <view class="booking-form">
+      <!-- 上课日期 -->
+      <view class="form-row">
+        <view class="form-label">上课日期</view>
+        <view class="date-display">
+          {{selectedDateDisplay}}
+        </view>
+      </view>
+
+      <!-- 分隔线 -->
+      <view class="divider"></view>
+
+      <!-- 上课时间 -->
+      <view class="form-row">
+        <view class="form-label">上课时间</view>
+        <view class="time-display">
+          {{timeRange}}
+        </view>
+      </view>
+
+      <!-- 分隔线 -->
+      <view class="divider"></view>
+
+      <!-- 内容需求 -->
+      <view class="form-row">
+        <view class="form-label">内容需求</view>
+        <textarea 
+          class="content-input" 
+          placeholder="可输入你感兴趣的内容、想对老师说的话、具体练习需求......"
+          placeholderClass="input-placeholder"
+          value="{{bookingForm.content}}"
+          bindinput="onContentInput"
+          maxlength="200"
+        ></textarea>
+      </view>
+
+      <!-- 分隔线 -->
+      <view class="divider"></view>
+    </view>
+
+    <!-- 预约须知 -->
+    <view class="notes-section">
+      <view class="notes-title">预约须知：</view>
+      <view class="notes-content">
+        <text class="notes-item">老师空闲时间可约。</text>
+        <text class="notes-item">预约成功后自动扣除相应费用。</text>
+        <text class="notes-item">取消需提前三天。</text>
+      </view>
+    </view>
+
+    <!-- 确认按钮 -->
+    <view class="confirm-btn" bindtap="onConfirmBooking">
+      <text class="confirm-btn-text">确认预约</text>
+    </view>
+
+  </view>
+</view>

@@ -1,0 +1,29 @@
+<!-- 瑜伽理论页面 -->
+<view class="container">
+  <image class="global-bg" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/background.png" mode="aspectFill"/>
+  
+  <!-- 自定义导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-left">
+      <view class="nav-back" bindtap="navigateBack">
+        <text class="back-icon">‹</text>
+      </view>
+    </view>
+    <view class="nav-title">墨瑜伽</view>
+    <view class="nav-right"></view>
+  </view>
+
+  <!-- 内容区域 -->
+  <view class="content-section">
+    <view class="page-title">瑜伽理论</view>
+    
+    <!-- 理论类别列表 -->
+    <view class="theory-list">
+      <view class="theory-item" wx:for="{{theoryList}}" wx:key="name">
+        <view class="theory-card">
+          <text class="theory-name">{{item.name}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

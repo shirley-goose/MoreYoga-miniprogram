@@ -1,0 +1,72 @@
+page {
+  background: #f0f4f7;
+}
+.page-title {
+  font-size: 48rpx;
+  font-weight: 600;
+  padding: 40rpx 32rpx;
+}
+.activity-list {
+  padding: 0 32rpx 160rpx 32rpx; /* 增加底部间距适配自定义TabBar */
+  display: flex;
+  flex-direction: column;
+  gap: 32rpx;
+}
+.activity-card {
+  position: relative;
+  width: 100%;
+  height: 280rpx;
+  border-radius: 24rpx;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.1);
+}
+.activity-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+.activity-title {
+  position: relative;
+  z-index: 2;
+  font-size: 64rpx;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 2rpx 4rpx rgba(0,0,0,0.5);
+}
+.tabbar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  height: 100rpx;
+  background: #202632;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 100;
+}
+.tabbar-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 22rpx;
+  padding: 8rpx 0;
+}
+.tabbar-item.active {
+  color: #4caf50;
+}
+.tabbar-icon {
+  width: 44rpx;
+  height: 44rpx;
+  margin-bottom: 4rpx;
+}
+.tabbar-text {
+  font-size: 22rpx;
+} 

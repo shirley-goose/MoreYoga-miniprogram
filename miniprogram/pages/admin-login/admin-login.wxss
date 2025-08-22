@@ -1,0 +1,240 @@
+/* 页面容器 */
+.container {
+  padding: 40rpx;
+  padding-top: 200rpx; /* 导航栏高度185rpx + 额外间距 */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Logo区域 */
+.logo-section {
+  text-align: center;
+  margin-bottom: 60rpx;
+}
+
+.logo {
+  width: 100rpx;
+  height: 100rpx;
+  margin-bottom: 20rpx;
+}
+
+.app-name {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #2c2c2c;
+  margin-bottom: 8rpx;
+}
+
+.app-desc {
+  font-size: 22rpx;
+  color: #666;
+  font-weight: 400;
+}
+
+/* 登录类型切换 */
+.login-type-switch {
+  display: flex;
+  background: #f8f9fa;
+  border-radius: 16rpx;
+  padding: 6rpx;
+  margin-bottom: 40rpx;
+  border: 1px solid #e9ecef;
+}
+
+.type-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 18rpx 15rpx;
+  border-radius: 12rpx;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.type-item.active {
+  background: #6c757d;
+  color: white;
+  box-shadow: 0 2rpx 8rpx rgba(108, 117, 125, 0.25);
+}
+
+.type-icon {
+  font-size: 28rpx;
+  margin-bottom: 6rpx;
+}
+
+.type-text {
+  font-size: 22rpx;
+  font-weight: 500;
+  color: #868e96;
+}
+
+.type-item.active .type-text {
+  color: white;
+}
+
+/* 登录表单 */
+.login-form {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20rpx;
+  padding: 40rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
+  border: 1px solid #e9ecef;
+}
+
+.form-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #6c757d;
+  text-align: center;
+  margin-bottom: 40rpx;
+}
+
+/* 输入组 */
+.input-group {
+  margin-bottom: 30rpx;
+  position: relative;
+}
+
+.input-label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.label-icon {
+  font-size: 24rpx;
+  margin-right: 8rpx;
+  color: #868e96;
+}
+
+.label-text {
+  font-size: 24rpx;
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.form-input {
+  width: calc(100% - 5rpx); /* 减去左右padding */
+  height: 88rpx;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 12rpx;
+  padding: 0 20rpx;
+  font-size: 26rpx;
+  color: #6c757d;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.form-input:focus {
+  border-color: #868e96;
+  background: #fff;
+}
+
+.form-input::placeholder {
+  color: #adb5bd;
+}
+
+.password-input {
+  padding-right: 60rpx; /* 为切换按钮留出空间 */
+}
+
+.password-toggle {
+  position: absolute;
+  right: 15rpx;
+  top: 50rpx;
+  width: 40rpx;
+  height: 40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.toggle-icon {
+  font-size: 24rpx;
+  color: #868e96;
+}
+
+/* 记住密码 */
+.remember-section {
+  margin-bottom: 30rpx;
+}
+
+.remember-option {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.checkbox {
+  font-size: 24rpx;
+  margin-right: 8rpx;
+  color: #868e96;
+}
+
+.checkbox-text {
+  font-size: 24rpx;
+  color: #868e96;
+}
+
+/* 登录按钮 */
+.login-btn {
+  width: 100%;
+  height: 88rpx;
+  background: #e9ecef;
+  color: #adb5bd;
+  border: none;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  margin-bottom: 30rpx;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-btn.active {
+  background: #6c757d;
+  color: white;
+  box-shadow: 0 4rpx 12rpx rgba(108, 117, 125, 0.25);
+}
+
+.login-btn.active:active {
+  transform: translateY(2rpx);
+  box-shadow: 0 2rpx 6rpx rgba(108, 117, 125, 0.25);
+}
+
+/* 提示信息 */
+.tips-section {
+  margin-bottom: 30rpx;
+}
+
+.tips-title {
+  font-size: 24rpx;
+  color: #868e96;
+  margin-bottom: 15rpx;
+  font-weight: 500;
+}
+
+.tips-item {
+  font-size: 22rpx;
+  color: #868e96;
+  line-height: 1.6;
+  margin-bottom: 8rpx;
+}
+
+/* 联系信息 */
+.contact-section {
+  text-align: center;
+  margin-top: 20rpx;
+}
+
+.contact-text {
+  font-size: 22rpx;
+  color: #868e96;
+}

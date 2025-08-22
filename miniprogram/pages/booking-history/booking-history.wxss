@@ -1,0 +1,147 @@
+.container {
+  padding: 40rpx 20rpx;
+  padding-top: 225rpx; /* 导航栏高度185rpx + 额外间距40rpx */
+  min-height: 100vh;
+}
+
+/* 页面标题 */
+.page-title {
+  font-size: 40rpx;
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 40rpx;
+  text-align: center;
+}
+
+/* 历史记录列表 */
+.history-list {
+  margin-bottom: 40rpx;
+}
+
+.history-card {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.1);
+}
+
+.course-image {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 15rpx;
+  margin-right: 30rpx;
+  flex-shrink: 0;
+}
+
+.course-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.course-name {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.teacher-name {
+  font-size: 26rpx;
+  color: #666;
+  margin-bottom: 8rpx;
+}
+
+.course-time {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.course-status {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+.status-tag {
+  padding: 8rpx 16rpx;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+  font-weight: 500;
+  margin-bottom: 8rpx;
+}
+
+.status-tag.completed {
+  background: rgba(76, 175, 80, 0.1);
+  color: #4CAF50;
+}
+
+.status-tag.cancelled {
+  background: rgba(244, 67, 54, 0.1);
+  color: #F44336;
+}
+
+.status-tag.missed {
+  background: rgba(255, 152, 0, 0.1);
+  color: #FF9800;
+}
+
+.credits-info {
+  font-size: 20rpx;
+  color: #999;
+}
+
+/* 空状态 */
+.empty-state {
+  text-align: center;
+  padding: 120rpx 40rpx;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20rpx;
+  box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.1);
+}
+
+.empty-text {
+  display: block;
+  font-size: 32rpx;
+  color: #999;
+  margin-bottom: 15rpx;
+}
+
+.empty-hint {
+  display: block;
+  font-size: 26rpx;
+  color: #bbb;
+}
+
+/* 加载更多 */
+.load-more {
+  text-align: center;
+  padding: 40rpx 0;
+}
+
+.load-more-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border: none;
+  border-radius: 50rpx;
+  padding: 20rpx 60rpx;
+  font-size: 28rpx;
+  font-weight: 500;
+}
+
+.load-more-btn[disabled] {
+  background: #f0f0f0;
+  color: #ccc;
+}
+
+.no-more {
+  text-align: center;
+  padding: 40rpx 0;
+  color: #999;
+  font-size: 24rpx;
+}

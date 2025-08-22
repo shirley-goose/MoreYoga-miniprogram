@@ -1,0 +1,234 @@
+<!-- 我（个人中心）页面 -->
+<!-- 背景图 -->
+<image class="global-bg" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/background.png" mode="aspectFill"/>
+
+<!-- 自定义导航栏 -->
+<view class="nav-bar">
+  <view class="nav-left"></view>
+  <view class="nav-title">墨瑜伽</view>
+  <view class="nav-right"></view>
+</view>
+
+
+
+<view class="page-container">
+  <view class="container">
+
+  <!-- 第一部分：个人信息 -->
+  <view class="profile-info-section">
+    <view class="profile-card">
+      
+      <!-- 未登录状态 - 简化版本 -->
+      <block wx:if="{{!hasUserInfo}}">
+        <view class="profile-info">
+          <!-- 头像 - 点击选择头像 -->
+          <button class="avatar-btn placeholder-avatar" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+            <image wx:if="{{avatarUrl && avatarUrl !== defaultAvatarUrl}}" class="avatar" src="{{avatarUrl}}" mode="aspectFill"/>
+            <view wx:else class="avatar placeholder-avatar"></view>
+          </button>
+          <view class="user-info">
+            <!-- 显示手机号或登录按钮 -->
+            <text wx:if="{{phoneNumber}}" class="phone-display">{{phoneNumber}}</text>
+            <button wx:else class="login-btn" open-type="getPhoneNumber" bind:getphonenumber="onGetPhoneNumber">
+              <text class="login-text">点击登录</text>
+            </button>
+          </view>
+        </view>
+      </block>
+
+      <!-- 已登录状态 -->
+      <block wx:elif="{{hasUserInfo}}">
+        <view class="profile-info">
+          <!-- 头像 -->
+          <image class="avatar" src="{{userInfo.avatarUrl}}" mode="aspectFill"/>
+          <view class="user-info">
+            <!-- 显示手机号而不是昵称 -->
+            <text class="phone-display">{{userInfo.phoneNumber || '未绑定手机号'}}</text>
+          </view>
+        </view>
+        <!-- 课时显示在卡片内部 -->
+        <view class="credits-display">
+          <view class="credit-item">
+            <text class="credit-number">{{classCredits.term}}</text>
+            <text class="credit-label">私 教</text>
+          </view>
+          <view class="credit-item">
+            <text class="credit-number">{{classCredits.group}}</text>
+            <text class="credit-label">团 课</text>
+          </view>
+        </view>
+      </block>
+
+    </view>
+  </view>
+
+
+
+  <!-- 第二部分：已约课程 -->
+  <view class="booked-courses-section">
+    <view class="section-header">
+      <view class="section-title">已约团课</view>
+      <view class="section-actions">
+        <text wx:if="{{hasUserInfo}}" class="section-notice">距团课开始时间1h内不可取消</text>
+      </view>
+    </view>
+    <view class="courses-list">
+      <block wx:if="{{hasUserInfo}}">
+        <block wx:for="{{schedule}}" wx:key="id">
+          <view class="course-card">
+            <image class="course-image" src="{{item.courseImage || '../../images/default_course.png'}}" mode="aspectFill"/>
+            <view class="course-info">
+              <view class="course-name">{{item.courseName || '瑜伽课程'}}</view>
+              <view class="teacher-name">{{item.teacherName || '老师'}}</view>
+              <view class="course-time">{{item.date}} {{item.time}}</view>
+            </view>
+            <view class="course-status">
+              <view class="status-btn ended-btn" wx:if="{{item.isEnded}}">
+                已结束
+              </view>
+              <view class="status-btn cancel-btn" wx:elif="{{item.canCancel}}" bindtap="cancelCourse" data-id="{{item.id}}">
+                取消预约
+              </view>
+              <view class="status-btn disabled-btn" wx:else>
+                已确认
+              </view>
+            </view>
+          </view>
+        </block>
+        <view wx:if="{{schedule.length === 0}}" class="empty-state">
+          <text class="empty-text">暂无已约课程</text>
+          <text class="empty-hint">快去预约您喜欢的课程吧！</text>
+        </view>
+      </block>
+      <block wx:else>
+        <view class="empty-state">
+          <text class="empty-text">暂无日程，请登录后查看</text>
+        </view>
+      </block>
+    </view>
+    <!-- 查看往期记录按钮 - 右对齐 -->
+    <view wx:if="{{hasUserInfo}}" class="view-history-container">
+      <text class="view-history" bindtap="viewBookingHistory">查看往期记录 ></text>
+    </view>
+  </view>
+
+  <!-- 第三部分：已约私教 -->
+  <view class="booked-private-section">
+    <view class="section-header">
+      <view class="section-title">已约私教</view>
+      <view class="section-actions">
+        <text wx:if="{{hasUserInfo}}" class="section-notice">距私教开始时间3h内不可取消</text>
+      </view>
+    </view>
+    <view class="courses-list">
+      <block wx:if="{{hasUserInfo}}">
+        <block wx:for="{{privateBookings}}" wx:key="_id">
+          <view class="course-card private-card">
+            <image class="course-image" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/logo.png" mode="aspectFill"/>
+            <view class="course-info">
+              <view class="course-name">私教课程</view>
+              <view class="teacher-name">{{item.teacherName}}</view>
+              <view class="course-time">{{item.date}} {{item.timeRange}}</view>
+              <view wx:if="{{item.content}}" class="course-content">需求：{{item.content}}</view>
+            </view>
+            
+            <!-- 状态标签 - 右上角 -->
+            <view class="course-status-top">
+              <view class="status-btn ended-btn" wx:if="{{item.isEnded}}">
+                已结束
+              </view>
+              <view class="status-btn confirmed-btn" wx:elif="{{item.displayStatus === 'confirmed'}}">
+                已确认
+              </view>
+              <view class="status-btn pending-btn" wx:elif="{{item.displayStatus === 'pending'}}">
+                待确认
+              </view>
+              <view class="status-btn cancel-pending-btn" wx:elif="{{item.displayStatus === 'cancel-pending'}}">
+                申请取消中
+              </view>
+              <view class="status-btn cancelled-btn" wx:elif="{{item.displayStatus === 'cancelled'}}">
+                已取消
+              </view>
+              <view class="status-btn rejected-btn" wx:elif="{{item.displayStatus === 'rejected'}}">
+                已拒绝
+              </view>
+            </view>
+            
+            <!-- 操作按钮 - 右下角 -->
+            <view class="course-actions-bottom" wx:if="{{!item.isEnded && item.displayStatus !== 'cancelled' && item.displayStatus !== 'rejected' && item.displayStatus !== 'cancel-pending'}}">
+              <view class="action-btn cancel-btn" bindtap="cancelPrivateBooking" data-id="{{item._id}}" data-status="{{item.status}}" data-date="{{item.date}}" data-start-time="{{item.startTime}}">
+                取消预约
+              </view>
+            </view>
+          </view>
+        </block>
+        <view wx:if="{{privateBookings.length === 0}}" class="empty-state">
+          <text class="empty-text">暂无已约私教</text>
+          <text class="empty-hint">快去预约您的专属私教吧！</text>
+        </view>
+      </block>
+      <block wx:else>
+        <view class="empty-state">
+          <text class="empty-text">暂无私教安排，请登录后查看</text>
+        </view>
+      </block>
+    </view>
+    <!-- 查看往期记录按钮 - 右对齐 -->
+    <view wx:if="{{hasUserInfo}}" class="view-history-container">
+      <text class="view-history" bindtap="viewPrivateHistory">查看往期记录 ></text>
+    </view>
+  </view>
+
+  <!-- 第四部分：更多服务 -->
+  <view class="more-services-section">
+    <view class="section-header">
+      <view class="section-title">更多服务</view>
+    </view>
+    <view class="services-grid">
+      <view class="service-item" bindtap="contactService">
+        <image class="service-icon" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/images/icon_contact.png" mode="aspectFit"/>
+        <view class="service-name">联系客服</view>
+      </view>
+      <view class="service-item" bindtap="joinCommunity">
+        <image class="service-icon" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/images/icon_community.png" mode="aspectFit"/>
+        <view class="service-name">加入社群</view>
+      </view>
+      <view class="service-item" bindtap="giveFeedback">
+        <image class="service-icon" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/images/icon_feedback.png" mode="aspectFit"/>
+        <view class="service-name">提出建议</view>
+      </view>
+      <view class="service-item" bindtap="buyCourse">
+        <image class="service-icon" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/images/icon_buy.png" mode="aspectFit"/>
+        <view class="service-name">购买课程</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 第四部分：我的足迹 -->
+  <view class="footprints-section">
+    <view class="section-header">
+      <view class="section-title">我的足迹</view>
+    </view>
+    <view class="footprints-card">
+      <view class="development-notice">
+        <text class="notice-icon">🚧</text>
+        <text class="notice-text">功能开发中</text>
+        <text class="notice-desc">敬请期待更精彩的足迹功能</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 管理员入口和老师入口按钮 - 位于页面底部居中 -->
+  <view wx:if="{{hasUserInfo}}" class="admin-entry-bottom">
+    <view class="admin-entry" bindtap="checkAdminAccess">
+      <text class="admin-icon">⚙️</text>
+      <text class="admin-text">管理员入口</text>
+    </view>
+    <view class="teacher-entry" bindtap="checkTeacherAccess">
+      <text class="teacher-icon">👩‍🏫</text>
+      <text class="teacher-text">老师入口</text>
+    </view>
+  </view>
+
+</view>
+</view> 

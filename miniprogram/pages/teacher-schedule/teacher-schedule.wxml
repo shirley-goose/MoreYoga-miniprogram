@@ -1,0 +1,78 @@
+<!-- 背景图 -->
+<image class="global-bg" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/background.png" mode="aspectFill"/>
+
+<!-- 自定义导航栏 -->
+<view class="nav-bar">
+  <view class="nav-left">
+    <view class="nav-back" bindtap="navigateBack">
+      <text class="back-icon">‹</text>
+    </view>
+  </view>
+  <view class="nav-title">时间管理</view>
+  <view class="nav-right"></view>
+</view>
+
+<!-- 页面内容 -->
+<view class="container">
+  <!-- 老师信息 -->
+  <view class="teacher-info">
+    <view class="teacher-name">{{teacherInfo.name}}</view>
+    <view class="teacher-desc">设置您的可用时间段</view>
+  </view>
+
+  <!-- 日期选择 -->
+  <view class="date-selector">
+    <view class="date-list">
+      <view 
+        class="date-item {{index === selectedDateIndex ? 'active' : ''}}"
+        wx:for="{{dateList}}" 
+        wx:key="date"
+        bindtap="selectDate"
+        data-index="{{index}}"
+      >
+        <view class="date-weekday">{{item.weekday}}</view>
+        <view class="date-day">{{item.day}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 时间段设置 -->
+  <view class="time-slots">
+    <view class="time-header">
+      <view class="time-title">可用时间段</view>
+      <view class="time-desc">点击选择/取消时间段</view>
+    </view>
+
+    <view class="time-grid">
+      <view 
+        class="time-slot {{item.available ? 'available' : ''}} {{item.booked ? 'booked' : ''}}"
+        wx:for="{{timeSlots}}" 
+        wx:key="time"
+        bindtap="toggleTimeSlot"
+        data-time="{{item.time}}"
+      >
+        <view class="time-text">{{item.time}}</view>
+        <view class="time-status" wx:if="{{item.booked}}">已预约</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="action-buttons">
+    <button class="save-btn" bindtap="saveSchedule" disabled="{{saving}}">
+      {{saving ? '保存中...' : '保存设置'}}
+    </button>
+    <button class="clear-btn" bindtap="clearDaySchedule">
+      清空当天
+    </button>
+  </view>
+
+  <!-- 使用说明 -->
+  <view class="usage-tips">
+    <view class="tips-title">使用说明</view>
+    <view class="tips-item">• 绿色：可预约时间</view>
+    <view class="tips-item">• 灰色：不可预约</view>
+    <view class="tips-item">• 红色：已被预约</view>
+    <view class="tips-item">• 每个时间段为15分钟</view>
+  </view>
+</view>

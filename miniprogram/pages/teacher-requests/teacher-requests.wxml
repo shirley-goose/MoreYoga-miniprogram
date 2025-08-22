@@ -1,0 +1,163 @@
+<!-- 老师预约申请页面 -->
+<!-- 背景图 -->
+<image class="global-bg" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/background.png" mode="aspectFill"/>
+
+<!-- 自定义导航栏 -->
+<view class="nav-bar">
+  <view class="nav-left">
+    <view class="back-btn" bindtap="goBack">
+      <view class="back-icon">←</view>
+    </view>
+  </view>
+  <view class="nav-center">
+    <view class="nav-title">预约申请</view>
+  </view>
+  <view class="nav-right"></view>
+</view>
+
+<!-- 页面内容 -->
+<view class="container">
+  
+  <!-- 状态切换 -->
+  <view class="status-tabs">
+    <view class="tab-item {{currentTab === 'pending' ? 'active' : ''}}" 
+          bindtap="switchTab" 
+          data-tab="pending">
+      <text class="tab-text">待处理</text>
+      <view wx:if="{{pendingCount > 0}}" class="tab-badge">{{pendingCount}}</view>
+    </view>
+    <view class="tab-item {{currentTab === 'processed' ? 'active' : ''}}" 
+          bindtap="switchTab" 
+          data-tab="processed">
+      <text class="tab-text">已处理</text>
+    </view>
+  </view>
+
+  <!-- 待处理申请列表 -->
+  <view wx:if="{{currentTab === 'pending'}}">
+    <view wx:if="{{pendingRequests.length > 0}}" class="requests-list">
+      <view class="request-item" 
+            wx:for="{{pendingRequests}}" 
+            wx:key="_id">
+        
+        <!-- 申请类型标签 -->
+        <view class="request-type-badge">
+          <text wx:if="{{item.requestType === 'booking'}}">新课预约</text>
+          <text wx:elif="{{item.requestType === 'cancel'}}" class="cancel-type">取消申请</text>
+        </view>
+        
+        <view class="request-header">
+          <view class="student-info">
+            <text class="student-name">{{item.studentName || item.studentPhone}}</text>
+            <text class="student-phone">{{item.studentPhone}}</text>
+          </view>
+          <view class="request-time">{{item.createTimeDisplay}}</view>
+        </view>
+        
+        <view class="request-details">
+          <view class="detail-row">
+            <text class="detail-label">上课时间:</text>
+            <text class="detail-value">{{item.date}} {{item.timeRange}}</text>
+          </view>
+          <view class="detail-row" wx:if="{{item.content}}">
+            <text class="detail-label">内容需求:</text>
+            <text class="detail-value">{{item.content}}</text>
+          </view>
+        </view>
+        
+        <view class="request-actions">
+          <!-- 新课预约操作 -->
+          <block wx:if="{{item.requestType === 'booking'}}">
+            <button class="action-btn reject-btn" 
+                    bindtap="handleRequest" 
+                    data-id="{{item._id}}" 
+                    data-action="reject"
+                    data-type="booking">
+              拒绝
+            </button>
+            <button class="action-btn confirm-btn" 
+                    bindtap="handleRequest" 
+                    data-id="{{item._id}}" 
+                    data-action="confirm"
+                    data-type="booking">
+              确认
+            </button>
+          </block>
+          
+          <!-- 取消申请操作 -->
+          <block wx:elif="{{item.requestType === 'cancel'}}">
+            <button class="action-btn reject-btn" 
+                    bindtap="handleCancelRequest" 
+                    data-id="{{item._id}}" 
+                    data-action="reject">
+              拒绝取消
+            </button>
+            <button class="action-btn confirm-btn" 
+                    bindtap="handleCancelRequest" 
+                    data-id="{{item._id}}" 
+                    data-action="approve">
+              同意取消
+            </button>
+          </block>
+        </view>
+      </view>
+    </view>
+    
+    <view wx:else class="empty-state">
+      <text class="empty-text">暂无待处理的申请</text>
+    </view>
+  </view>
+
+  <!-- 已处理申请列表 -->
+  <view wx:if="{{currentTab === 'processed'}}">
+    <view wx:if="{{processedRequests.length > 0}}" class="requests-list">
+      <view class="request-item processed" 
+            wx:for="{{processedRequests}}" 
+            wx:key="_id">
+        
+        <!-- 申请类型标签 -->
+        <view class="request-type-badge">
+          <text wx:if="{{item.requestType === 'booking'}}">新课预约</text>
+          <text wx:elif="{{item.requestType === 'cancel'}}" class="cancel-type">取消申请</text>
+        </view>
+        
+        <view class="request-header">
+          <view class="student-info">
+            <text class="student-name">{{item.studentName || item.studentPhone}}</text>
+            <text class="student-phone">{{item.studentPhone}}</text>
+          </view>
+          <view class="request-time">{{item.createTimeDisplay}}</view>
+        </view>
+        
+        <!-- 状态标签 - 右下角 (仅在已处理列表显示) -->
+        <block wx:if="{{currentTab === 'processed'}}">
+          <view class="status-badge" wx:if="{{item.requestType === 'booking'}}">
+            <text wx:if="{{item.status === 'confirmed'}}">已确认</text>
+            <text wx:elif="{{item.status === 'rejected'}}">已拒绝</text>
+            <text wx:elif="{{item.status === 'cancelled'}}">已取消</text>
+          </view>
+          <view class="status-badge" wx:elif="{{item.requestType === 'cancel'}}">
+            <text wx:if="{{item.cancelRequestStatus === 'approved'}}">同意取消</text>
+            <text wx:elif="{{item.cancelRequestStatus === 'rejected'}}">拒绝取消</text>
+          </view>
+        </block>
+        
+        <view class="request-details">
+          <view class="detail-row">
+            <text class="detail-label">上课时间:</text>
+            <text class="detail-value">{{item.date}} {{item.timeRange}}</text>
+          </view>
+          <view class="detail-row" wx:if="{{item.content}}">
+            <text class="detail-label">内容需求:</text>
+            <text class="detail-value">{{item.content}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view wx:else class="empty-state">
+      <text class="empty-text">暂无已处理的预约申请</text>
+    </view>
+  </view>
+
+</view>

@@ -1,0 +1,219 @@
+/* 页面容器 */
+.container {
+  padding: 30rpx;
+  padding-top: 200rpx; /* 导航栏高度 + 间距 */
+  min-height: 100vh;
+}
+
+/* 老师信息 */
+.teacher-info {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+  text-align: center;
+  border: 1px solid #e9ecef;
+}
+
+.teacher-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 8rpx;
+}
+
+.teacher-desc {
+  font-size: 22rpx;
+  color: #6c757d;
+}
+
+/* 日期选择器 */
+.date-selector {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20rpx;
+  padding: 20rpx;
+  margin-bottom: 30rpx;
+  border: 1px solid #e9ecef;
+}
+
+.date-list {
+  display: flex;
+  justify-content: space-between;
+  gap: 10rpx;
+}
+
+.date-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15rpx 8rpx;
+  border-radius: 12rpx;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.date-item.active {
+  background: #495057;
+  color: white;
+  border-color: #495057;
+}
+
+.date-weekday {
+  font-size: 20rpx;
+  margin-bottom: 4rpx;
+  color: #6c757d;
+}
+
+.date-item.active .date-weekday {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.date-day {
+  font-size: 24rpx;
+  font-weight: 600;
+  color: #495057;
+}
+
+.date-item.active .date-day {
+  color: white;
+}
+
+/* 时间段设置 */
+.time-slots {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+  border: 1px solid #e9ecef;
+}
+
+.time-header {
+  margin-bottom: 20rpx;
+}
+
+.time-title {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 8rpx;
+}
+
+.time-desc {
+  font-size: 22rpx;
+  color: #6c757d;
+}
+
+.time-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12rpx;
+}
+
+.time-slot {
+  position: relative;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8rpx;
+  padding: 12rpx 8rpx;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  min-height: 60rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.time-slot.available {
+  background: #d4edda;
+  border-color: #c3e6cb;
+  color: #155724;
+}
+
+.time-slot.booked {
+  background: #f8d7da;
+  border-color: #f5c6cb;
+  color: #721c24;
+  cursor: not-allowed;
+}
+
+.time-slot:active {
+  transform: scale(0.95);
+}
+
+.time-text {
+  font-size: 20rpx;
+  font-weight: 500;
+}
+
+.time-status {
+  font-size: 16rpx;
+  margin-top: 2rpx;
+  opacity: 0.8;
+}
+
+/* 操作按钮 */
+.action-buttons {
+  display: flex;
+  gap: 20rpx;
+  margin-bottom: 30rpx;
+}
+
+.save-btn, .clear-btn {
+  flex: 1;
+  height: 80rpx;
+  border-radius: 12rpx;
+  font-size: 26rpx;
+  font-weight: 600;
+  border: none;
+}
+
+.save-btn {
+  background: #495057;
+  color: white;
+}
+
+.save-btn:disabled {
+  background: #6c757d;
+  opacity: 0.6;
+}
+
+.clear-btn {
+  background: #f8f9fa;
+  color: #495057;
+  border: 1px solid #dee2e6;
+}
+
+.clear-btn:active {
+  background: #e9ecef;
+}
+
+/* 使用说明 */
+.usage-tips {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20rpx;
+  padding: 30rpx;
+  border: 1px solid #e9ecef;
+}
+
+.tips-title {
+  font-size: 24rpx;
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 15rpx;
+}
+
+.tips-item {
+  font-size: 22rpx;
+  color: #6c757d;
+  line-height: 1.6;
+  margin-bottom: 8rpx;
+}
+
+.tips-item:last-child {
+  margin-bottom: 0;
+}

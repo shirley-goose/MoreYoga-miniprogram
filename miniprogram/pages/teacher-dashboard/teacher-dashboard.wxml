@@ -1,0 +1,58 @@
+<!-- 老师工作台页面 -->
+<!-- 背景图 -->
+<image class="global-bg" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/background.png" mode="aspectFill"/>
+
+<!-- 自定义导航栏 -->
+<view class="nav-bar">
+  <view class="nav-left"></view>
+  <view class="nav-center">
+    <view class="nav-title">老师工作台</view>
+    <view class="logout-btn" bindtap="logout">
+      <text class="logout-icon">🚪</text>
+    </view>
+  </view>
+  <view class="nav-right"></view>
+</view>
+
+<!-- 页面内容 -->
+<view class="container">
+  
+  <!-- 老师信息 -->
+  <view class="teacher-info">
+    <view class="teacher-welcome">👋 欢迎回来，{{teacherInfo.name}}</view>
+    <view class="teacher-specialties">专业：{{teacherInfo.specialties}}</view>
+  </view>
+
+  <!-- 功能菜单 -->
+  <view class="function-menu">
+    <view class="menu-title">工作功能</view>
+    
+    <view class="menu-grid">
+      <view class="menu-item" bindtap="navigateTo" data-url="../teacher-schedule/teacher-schedule">
+        <view class="menu-icon">📅</view>
+        <view class="menu-name">时间管理</view>
+        <view class="menu-desc">设置可用时间段</view>
+      </view>
+      
+      <view class="menu-item" bindtap="navigateTo" data-url="../teacher-requests/teacher-requests">
+        <view class="menu-icon">📋</view>
+        <view class="menu-name">预约申请</view>
+        <view class="menu-desc">处理学生预约申请</view>
+        <view wx:if="{{pendingCount > 0}}" class="badge">{{pendingCount}}</view>
+      </view>
+      
+      <view class="menu-item" bindtap="navigateTo" data-url="../teacher-classes/teacher-classes">
+        <view class="menu-icon">📚</view>
+        <view class="menu-name">我的课程</view>
+        <view class="menu-desc">查看已确认课程</view>
+      </view>
+      
+
+    </view>
+  </view>
+
+
+
+
+
+</view>

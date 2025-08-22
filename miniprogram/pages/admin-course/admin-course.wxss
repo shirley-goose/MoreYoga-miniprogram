@@ -1,0 +1,225 @@
+.container {
+  padding: 40rpx;
+  padding-top: 225rpx; /* 导航栏高度185rpx + 额外间距40rpx */
+  min-height: 100vh;
+}
+
+/* 页面标题 */
+.page-title {
+  text-align: center;
+  margin-bottom: 40rpx;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20rpx;
+  padding: 30rpx;
+  box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.1);
+}
+
+.title-text {
+  display: block;
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10rpx;
+}
+
+.title-desc {
+  display: block;
+  font-size: 24rpx;
+  color: #666;
+}
+
+/* 表单容器 */
+.form-container {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20rpx;
+  padding: 40rpx;
+  box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* 表单组 */
+.form-group {
+  margin-bottom: 40rpx;
+}
+
+.form-label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.label-number {
+  font-weight: 600;
+  color: #667eea;
+  margin-right: 10rpx;
+}
+
+.label-text {
+  font-weight: 500;
+}
+
+/* 输入框 */
+.form-input {
+  width: 100%;
+  padding: 35rpx 24rpx; /* 增加高度 */
+  border: 2rpx solid #e0e6ed;
+  border-radius: 12rpx;
+  font-size: 32rpx; /* 增加字体大小 */
+  background: #fff;
+  box-sizing: border-box;
+  min-height: 100rpx; /* 设置最小高度 */
+}
+
+.form-input:focus {
+  border-color: #667eea;
+}
+
+/* 文本域 */
+.form-textarea {
+  width: 100%;
+  min-height: 120rpx;
+  padding: 24rpx;
+  border: 2rpx solid #e0e6ed;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.form-textarea:focus {
+  border-color: #667eea;
+}
+
+/* 选择器 */
+.form-picker {
+  position: relative;
+  width: 280rpx; /* 设置固定宽度，与时间选择器一致 */
+  padding: 35rpx 24rpx; /* 增加高度 */
+  border: 2rpx solid #e0e6ed;
+  border-radius: 12rpx;
+  background: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 100rpx; /* 设置最小高度 */
+}
+
+.picker-display {
+  font-size: 32rpx; /* 增加字体大小 */
+  color: #333;
+  flex: 1;
+}
+
+.picker-display.placeholder {
+  color: #999;
+}
+
+.picker-arrow {
+  font-size: 24rpx;
+  color: #666;
+  margin-left: 20rpx;
+}
+
+/* 时间选择器行 */
+.time-picker-row {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.time-picker {
+  width: 280rpx; /* 固定宽度，不要太宽 */
+}
+
+.time-separator {
+  font-size: 28rpx;
+  color: #666;
+  font-weight: 600;
+}
+
+/* 人数设置行 */
+.number-setting-row {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.number-item {
+  flex: 1;
+  text-align: center;
+}
+
+.number-label {
+  display: block;
+  font-size: 24rpx;
+  color: #666;
+  margin-bottom: 10rpx;
+}
+
+.number-input {
+  width: 100%;
+  padding: 35rpx 20rpx; /* 增加高度，与其他输入框一致 */
+  border: 2rpx solid #e0e6ed;
+  border-radius: 12rpx;
+  font-size: 32rpx; /* 增加字体大小 */
+  text-align: center;
+  background: #fff;
+  box-sizing: border-box;
+  min-height: 100rpx; /* 设置最小高度 */
+}
+
+.number-separator {
+  font-size: 28rpx;
+  color: #666;
+  font-weight: 600;
+  margin-top: 30rpx;
+}
+
+/* 次卡设置 */
+.credits-setting {
+  display: flex;
+  align-items: center;
+  gap: 15rpx;
+}
+
+.credits-input {
+  flex: 0 0 200rpx;
+  padding: 20rpx;
+  border: 2rpx solid #e0e6ed;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  text-align: center;
+  background: #fff;
+}
+
+.credits-unit {
+  font-size: 28rpx;
+  color: #666;
+  font-weight: 500;
+}
+
+/* 提交按钮 */
+.submit-btn {
+  width: 100%;
+  padding: 24rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 15rpx;
+  font-size: 32rpx;
+  font-weight: 600;
+  margin-top: 40rpx;
+  box-shadow: 0 8rpx 20rpx rgba(102, 126, 234, 0.3);
+}
+
+.submit-btn:disabled {
+  background: #ccc;
+  box-shadow: none;
+}
+
+.submit-btn:not(:disabled):active {
+  transform: translateY(2rpx);
+  box-shadow: 0 4rpx 10rpx rgba(102, 126, 234, 0.3);
+}

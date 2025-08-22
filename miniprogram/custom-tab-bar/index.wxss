@@ -1,0 +1,34 @@
+.tab-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120rpx; /* 增加高度给图标更多空间 */
+  background: #202632;
+  display: flex;
+  padding-bottom: env(safe-area-inset-bottom);
+  border-top: 1rpx solid rgba(255, 255, 255, 0.1);
+  z-index: 9999;
+}
+
+.tab-bar-item {
+  flex: 1;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 16rpx; /* 增加图标距离顶部的距离 */
+  padding-bottom: 8rpx;
+}
+
+.tab-bar-icon {
+  width: 48rpx;
+  height: 48rpx;
+  margin-bottom: 8rpx; /* 图标和文字之间的间距 */
+}
+
+.tab-bar-text {
+  font-size: 20rpx;
+  line-height: 1;
+} 

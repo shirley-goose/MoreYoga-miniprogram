@@ -1,0 +1,105 @@
+<!-- 背景图 -->
+<image class="global-bg" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/background.png" mode="aspectFill"/>
+
+<!-- 自定义导航栏 -->
+<view class="nav-bar">
+  <view class="nav-left">
+    <view class="nav-back" bindtap="navigateBack">
+      <text class="back-icon">‹</text>
+    </view>
+  </view>
+  <view class="nav-title">{{loginType === 'admin' ? '管理员' : '老师'}}登录</view>
+  <view class="nav-right"></view>
+</view>
+
+
+<!-- 页面内容 -->
+<view class="container">
+  <!-- Logo区域 -->
+  <view class="logo-section">
+    <image class="logo" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/logo.png" mode="aspectFit"/>
+    <view class="app-name">墨瑜伽{{loginType === 'admin' ? '管理后台' : '老师工作台'}}</view>
+    <view class="app-desc">{{loginType === 'admin' ? '馆主专用管理系统' : '老师专用工作平台'}}</view>
+  </view>
+
+  <!-- 登录类型切换 -->
+  <view class="login-type-switch">
+    <view class="type-item {{loginType === 'admin' ? 'active' : ''}}" bindtap="switchLoginType" data-type="admin">
+      <text class="type-icon">👑</text>
+      <text class="type-text">管理员</text>
+    </view>
+    <view class="type-item {{loginType === 'teacher' ? 'active' : ''}}" bindtap="switchLoginType" data-type="teacher">
+      <text class="type-icon">👩‍🏫</text>
+      <text class="type-text">老师</text>
+    </view>
+  </view>
+  
+  <!-- 登录表单 -->
+  <view class="login-form">
+    <view class="form-title">{{loginType === 'admin' ? '管理员' : '老师'}}登录</view>
+    
+    <view class="input-group">
+      <view class="input-label">
+        <text class="label-icon">👤</text>
+        <text class="label-text">账号</text>
+      </view>
+      <input 
+        class="form-input" 
+        placeholder="{{loginType === 'admin' ? '请输入管理员账号' : '请输入老师账号'}}" 
+        value="{{username}}" 
+        bindinput="onUsernameInput"
+        maxlength="20"
+      />
+    </view>
+    
+    <view class="input-group">
+      <view class="input-label">
+        <text class="label-icon">🔒</text>
+        <text class="label-text">密码</text>
+      </view>
+      <input 
+        class="form-input password-input" 
+        placeholder="请输入密码" 
+        password="{{!showPassword}}"
+        value="{{password}}" 
+        bindinput="onPasswordInput"
+        maxlength="20"
+      />
+      <view class="password-toggle" bindtap="togglePassword">
+        <text class="toggle-icon">{{showPassword ? '🙈' : '👁️'}}</text>
+      </view>
+    </view>
+
+    <!-- 记住密码 -->
+    <view class="remember-section">
+      <view class="remember-option" bindtap="toggleRemember">
+        <text class="checkbox">{{rememberPassword ? '☑️' : '☐'}}</text>
+        <text class="checkbox-text">记住密码</text>
+      </view>
+    </view>
+
+    <!-- 登录按钮 -->
+    <button 
+      class="login-btn {{username && password ? 'active' : 'disabled'}}" 
+      bindtap="handleLogin"
+      disabled="{{!username || !password || logging}}"
+    >
+      {{logging ? '登录中...' : '登录'}}
+    </button>
+
+    <!-- 提示信息 -->
+    <view class="tips-section">
+      <view class="tips-title">使用提示</view>
+      <view class="tips-item" wx:if="{{loginType === 'admin'}}">• 管理员账号由系统预设</view>
+      <view class="tips-item" wx:if="{{loginType === 'teacher'}}">• 请输入自己的老师账号</view>
+      <view class="tips-item">• 账号密码区分大小写</view>
+      <view class="tips-item" wx:if="{{loginType === 'admin'}}">• 登录后可管理课程和用户</view>
+      <view class="tips-item" wx:if="{{loginType === 'teacher'}}">• 登录后可处理预约申请</view>
+    </view>
+  </view>
+
+  <!-- 联系信息 -->
+  <view class="contact-section">
+    <view class="contact-text">需要帮助？请联系技术支持</view>
+  </view>
+</view>

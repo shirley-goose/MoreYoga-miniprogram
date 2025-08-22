@@ -1,0 +1,997 @@
+/* 页面整体样式 */
+.page-container {
+  background: transparent; /* 让背景图片显示 */
+  padding-bottom: 160rpx; /* 适配自定义TabBar */
+  padding-top: 160rpx; /* 适配固定导航栏 */
+  min-height: 100vh;
+  position: relative;
+}
+
+.container {
+  min-height: 100vh;
+  position: relative;
+}
+
+/* 导航栏样式 - 与app.wxss保持一致 */
+.nav-bar {
+  height: 100rpx;
+  padding-top: 60rpx;
+  padding-bottom: 25rpx;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  background: #202632;
+  color: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.nav-left {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding-left: 30rpx;
+}
+
+.nav-title {
+  flex: 1;
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: 600;
+  align-self: flex-end;
+}
+
+.nav-right {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+/* 管理员和老师入口容器 - 位于页面底部居中 */
+.admin-entry-bottom {
+  display: flex;
+  justify-content: center;
+  gap: 30rpx; /* 两个按钮之间的间距 */
+  padding: 40rpx 30rpx 60rpx;
+  margin-top: 30rpx;
+}
+
+.admin-entry {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(200, 200, 200, 0.7); /* 半透明浅灰色 */
+  border-radius: 50rpx;
+  padding: 20rpx 40rpx;
+  box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  min-width: 200rpx;
+}
+
+.admin-entry:active {
+  background: rgba(180, 180, 180, 0.8); /* 点击时稍微变深 */
+  transform: scale(0.95);
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.2);
+}
+
+.admin-icon {
+  font-size: 30rpx;
+  color: #fff;
+  margin-right: 12rpx;
+}
+
+.admin-text {
+  font-size: 28rpx;
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 1rpx;
+}
+
+/* 老师入口样式 */
+.teacher-entry {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(118, 174, 76, 0.8); /* 绿色系，适合瑜伽主题 */
+  border-radius: 50rpx;
+  padding: 20rpx 40rpx;
+  box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  min-width: 200rpx;
+}
+
+.teacher-entry:active {
+  background: rgba(98, 154, 56, 0.9); /* 点击时稍微变深 */
+  transform: scale(0.95);
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.2);
+}
+
+.teacher-icon {
+  font-size: 30rpx;
+  color: #fff;
+  margin-right: 12rpx;
+}
+
+.teacher-text {
+  font-size: 28rpx;
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 1rpx;
+}
+
+/* ========== 第一部分：个人信息 ========== */
+.profile-info-section {
+  margin: 36rpx 30rpx 40rpx; /* 恢复正常上边距 */
+}
+
+.profile-card {
+  background: rgba(217, 217, 217, 0.4);
+  border-radius: 10px;
+  padding: 40rpx;
+  box-shadow: 0 8rpx 30rpx rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  position: relative;
+  min-height: 164rpx;
+}
+
+/* 头像相关样式 */
+.avatar-wrapper {
+  position: relative;
+  margin-right: 30rpx;
+  background: transparent;
+  border: none;
+  padding: 0;
+  border-radius: 80rpx;
+  overflow: hidden;
+}
+
+.avatar {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 80rpx;
+  border: 4rpx solid #fff;
+  box-shadow: 0 4rpx 15rpx rgba(0, 0, 0, 0.1);
+  display: block;
+}
+
+
+
+.avatar-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 80rpx;
+}
+
+.avatar-tip {
+  color: #fff;
+  font-size: 22rpx;
+  text-align: center;
+}
+
+.user-info {
+  flex: 1;
+}
+
+.nickname {
+  font-size: 48rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10rpx;
+  letter-spacing: 2rpx;
+}
+
+.practice-time {
+  font-size: 28rpx;
+  color: #7C7C7C;
+  letter-spacing: 2rpx;
+}
+
+.phone-info {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 5rpx;
+}
+
+.login-tips {
+  font-size: 32rpx;
+  color: #667eea;
+  margin-bottom: 20rpx;
+  font-weight: 500;
+}
+
+
+
+
+
+.phone-btn {
+  width: 100%;
+  padding: 20rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  border: none;
+  margin-bottom: 20rpx;
+  box-shadow: 0 4rpx 15rpx rgba(102, 126, 234, 0.3);
+}
+
+.complete-btn {
+  width: 100%;
+  padding: 25rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border-radius: 15rpx;
+  font-size: 32rpx;
+  font-weight: 600;
+  border: none;
+  box-shadow: 0 8rpx 20rpx rgba(102, 126, 234, 0.3);
+}
+
+.complete-btn:disabled {
+  background: #f0f0f0;
+  color: #ccc;
+  box-shadow: none;
+}
+
+/* ========== 个人信息区域样式 ========== */
+.profile-info {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 0;
+}
+
+.avatar-login-btn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin-right: 30rpx;
+}
+
+.avatar {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 80rpx;
+  border: 4rpx solid #fff;
+  box-shadow: 0 4rpx 15rpx rgba(0, 0, 0, 0.1);
+}
+
+/* 未登录状态的灰色头像占位符 - 按照Figma设计 */
+.placeholder-avatar {
+  background: #D9D9D9;
+  border: none;
+}
+
+/* 头像按钮样式 */
+.avatar-btn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin-right: 30rpx;
+  border-radius: 80rpx;
+  overflow: hidden;
+}
+
+/* 登录步骤样式 */
+.login-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40rpx;
+  width: 100%;
+}
+
+.step-title {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 40rpx;
+}
+
+.selected-avatar {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 60rpx;
+  margin-bottom: 30rpx;
+}
+
+.login-btn {
+  background: transparent !important;
+  border: none !important;
+  outline: none !important; /* 去除聚焦时的外边框 */
+  box-shadow: none !important; /* 去除阴影 */
+  padding: 0;
+  margin-left: 4rpx; /* 向右移动2px */
+}
+
+/* 重置微信小程序按钮默认样式 */
+.login-btn::after {
+  border: none !important;
+  outline: none !important;
+}
+
+.login-text {
+  font-size: 48rpx;
+  font-weight: 500;
+  color: #000;
+  letter-spacing: 10%;
+}
+
+.phone-display {
+  font-size: 40rpx;
+  font-weight: 500;
+  color: #000;
+  letter-spacing: 10%;
+  margin-left: 15rpx; /* 向右移动2rpx */
+}
+
+/* 课时显示样式 - 在个人信息卡片内部 */
+.credits-display {
+  position: absolute;
+  bottom: 30rpx;
+  right: 40rpx;
+  display: flex;
+  gap: 40rpx;
+}
+
+.credit-item {
+  text-align: center;
+}
+
+.credit-number {
+  font-size: 40rpx;
+  font-weight: 600;
+  color: #000;
+  line-height: 0.9;
+  display: block;
+}
+
+.credit-label {
+  font-size: 28rpx;
+  color: #000;
+  letter-spacing: 10%;
+  margin-top: 5rpx;
+  display: block;
+}
+
+/* ========== 登录步骤样式 ========== */
+.login-process {
+  width: 100%;
+  text-align: center;
+  padding: 40rpx 20rpx;
+}
+
+.login-header {
+  margin-bottom: 40rpx;
+}
+
+.login-title {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10rpx;
+  display: block;
+}
+
+.login-desc {
+  font-size: 26rpx;
+  color: #666;
+  display: block;
+}
+
+/* 头像选择按钮 */
+.avatar-choose-btn {
+  position: relative;
+  width: 200rpx;
+  height: 200rpx;
+  margin: 0 auto 30rpx;
+  background: transparent;
+  border: none;
+  padding: 0;
+  border-radius: 100rpx;
+  overflow: hidden;
+}
+
+.choose-avatar {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 100rpx;
+  border: 4rpx solid #fff;
+  box-shadow: 0 8rpx 25rpx rgba(0, 0, 0, 0.15);
+}
+
+.choose-hint {
+  position: absolute;
+  bottom: -30rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 24rpx;
+  color: #666;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 5rpx 15rpx;
+  border-radius: 15rpx;
+}
+
+/* 手机号验证按钮 */
+.phone-auth-btn {
+  width: 100%;
+  padding: 30rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border-radius: 15rpx;
+  font-size: 32rpx;
+  font-weight: 600;
+  border: none;
+  box-shadow: 0 8rpx 20rpx rgba(102, 126, 234, 0.3);
+  margin-bottom: 20rpx;
+}
+
+/* 完成登录按钮 */
+.complete-login-btn {
+  width: 100%;
+  padding: 25rpx;
+  background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+  color: #fff;
+  border-radius: 15rpx;
+  font-size: 32rpx;
+  font-weight: 600;
+  border: none;
+  box-shadow: 0 8rpx 20rpx rgba(76, 175, 80, 0.3);
+  margin-bottom: 15rpx;
+}
+
+/* 取消按钮 */
+.cancel-login-btn {
+  padding: 20rpx 30rpx;
+  background: #f0f0f0;
+  color: #666;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  border: none;
+}
+
+/* 资料填写表单样式 */
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30rpx;
+}
+
+.weui-input {
+  width: 100%;
+  padding: 25rpx 20rpx;
+  border: 2rpx solid #e5e5e5;
+  border-radius: 12rpx;
+  font-size: 32rpx;
+  color: #333;
+  background: #fff;
+  margin-bottom: 20rpx;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.weui-input:focus {
+  border-color: #667eea;
+}
+
+.step-header {
+  margin-bottom: 40rpx;
+}
+
+.step-title {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10rpx;
+}
+
+.step-desc {
+  font-size: 26rpx;
+  color: #666;
+}
+
+.step-phone-btn {
+  width: 100%;
+  padding: 30rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border-radius: 15rpx;
+  font-size: 32rpx;
+  font-weight: 600;
+  border: none;
+  box-shadow: 0 8rpx 20rpx rgba(102, 126, 234, 0.3);
+  margin-bottom: 30rpx;
+}
+
+.step-input {
+  width: 100%;
+  padding: 25rpx 20rpx;
+  border: 2rpx solid #e5e5e5;
+  border-radius: 12rpx;
+  font-size: 32rpx;
+  color: #333;
+  background: #fff;
+  margin-bottom: 40rpx;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.step-input:focus {
+  border-color: #667eea;
+}
+
+.step-avatar-wrapper {
+  position: relative;
+  width: 200rpx;
+  height: 200rpx;
+  margin: 0 auto 40rpx;
+  background: transparent;
+  border: none;
+  padding: 0;
+  border-radius: 100rpx;
+  overflow: hidden;
+}
+
+.step-avatar {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 100rpx;
+  border: 4rpx solid #fff;
+  box-shadow: 0 8rpx 25rpx rgba(0, 0, 0, 0.15);
+}
+
+.step-avatar-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100rpx;
+}
+
+.step-avatar-tip {
+  color: #fff;
+  font-size: 24rpx;
+  text-align: center;
+}
+
+.step-actions {
+  display: flex;
+  gap: 20rpx;
+  justify-content: center;
+}
+
+.step-cancel-btn,
+.step-prev-btn {
+  padding: 20rpx 30rpx;
+  background: #f0f0f0;
+  color: #666;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  border: none;
+  min-width: 120rpx;
+}
+
+.step-next-btn,
+.step-complete-btn {
+  padding: 20rpx 30rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  font-weight: 500;
+  border: none;
+  box-shadow: 0 4rpx 15rpx rgba(102, 126, 234, 0.3);
+  min-width: 120rpx;
+}
+
+.step-next-btn:disabled,
+.step-complete-btn:disabled {
+  background: #f0f0f0;
+  color: #ccc;
+  box-shadow: none;
+}
+
+
+.credits-section {
+  position: absolute;
+  bottom: 30rpx;
+  right: 40rpx;
+  display: flex;
+  gap: 40rpx;
+}
+
+.credit-item {
+  text-align: center;
+}
+
+.credit-number {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #333;
+  line-height: 1.2;
+}
+
+.credit-label {
+  font-size: 24rpx;
+  color: #666;
+  letter-spacing: 4rpx;
+  margin-top: 5rpx;
+}
+
+/* ========== 通用区块样式 ========== */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0 30rpx;
+  margin-bottom: 20rpx;
+}
+
+.section-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.view-history-container {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20rpx 30rpx 0;
+}
+
+.view-history {
+  font-size: 24rpx;
+  color: #4CAF50;
+  text-decoration: underline;
+}
+
+.section-title {
+  font-size: 36rpx;
+  font-weight: 500;
+  color: #000;
+  letter-spacing: 10%;
+}
+
+.section-notice {
+  font-size: 24rpx;
+  color: #999;
+  font-weight: 400;
+}
+
+/* ========== 第二部分：我的足迹 ========== */
+.footprints-section {
+  margin-bottom: 40rpx;
+}
+
+.footprints-card {
+  background: rgba(218, 218, 218, 0.51);
+  margin: 0 30rpx;
+  border-radius: 10px;
+  padding: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.05);
+}
+
+.calendar-heatmap {
+  display: grid;
+  grid-template-columns: repeat(14, 1fr);
+  gap: 6rpx;
+}
+
+.day-cell {
+  width: 100%;
+  padding-bottom: 100%;
+  background-color: #ebedf0;
+  border-radius: 6rpx;
+  transition: all 0.2s;
+}
+
+.day-cell:hover {
+  transform: scale(1.1);
+}
+
+/* ========== 第三部分：已约课程 ========== */
+.booked-courses-section {
+  margin-bottom: 40rpx;
+}
+
+.courses-list {
+  margin: 0 30rpx;
+}
+
+.course-card {
+  background: #F8FCFF;
+  border-radius: 12px;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.course-image {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 15rpx;
+  margin-right: 25rpx;
+  box-shadow: 0 4rpx 15rpx rgba(0, 0, 0, 0.1);
+}
+
+.course-info {
+  flex: 1;
+}
+
+.course-name {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.teacher-name {
+  font-size: 26rpx;
+  color: #666;
+  margin-bottom: 8rpx;
+}
+
+.course-time {
+  font-size: 24rpx;
+  color: #7C7C7C;
+  line-height: 1.5;
+}
+
+.course-status {
+  position: absolute;
+  top: 30rpx;
+  right: 30rpx;
+}
+
+.status-btn {
+  padding: 12rpx 25rpx;
+  border-radius: 50rpx;
+  font-size: 24rpx;
+  text-align: center;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
+}
+
+.cancel-btn {
+  background: rgba(255, 107, 107, 0.1);
+  color: #ff6b6b;
+  border: 1rpx solid rgba(255, 107, 107, 0.3);
+}
+
+.disabled-btn {
+  background: rgba(102, 126, 234, 0.1);
+  color: #667eea;
+  border: 1rpx solid rgba(102, 126, 234, 0.3);
+}
+
+.ended-btn {
+  background: rgba(189, 189, 189, 0.2);
+  color: #999;
+  border: 1rpx solid rgba(189, 189, 189, 0.3);
+}
+
+/* 私教课程卡片样式 */
+.private-card {
+  background: #F8FCFF; /* 与团课模块相同的背景色 */
+  position: relative; /* 为绝对定位的状态标签提供参考 */
+}
+
+.course-content {
+  font-size: 22rpx;
+  color: #888;
+  margin-top: 8rpx;
+  line-height: 1.4;
+  max-width: 300rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 状态标签 - 右上角 */
+.course-status-top {
+  position: absolute;
+  top: 20rpx;
+  right: 20rpx;
+}
+
+/* 操作按钮 - 右下角 */
+.course-actions-bottom {
+  position: absolute;
+  bottom: 20rpx;
+  right: 20rpx;
+}
+
+.course-actions-bottom .action-btn {
+  padding: 8rpx 20rpx;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+  text-align: center;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
+}
+
+.confirmed-btn {
+  background: rgba(76, 175, 80, 0.1);
+  color: #4caf50;
+  border: 1rpx solid rgba(76, 175, 80, 0.3);
+}
+
+.pending-btn {
+  background: rgba(255, 193, 7, 0.1);
+  color: #ffc107;
+  border: 1rpx solid rgba(255, 193, 7, 0.3);
+}
+
+.cancelled-btn {
+  background: rgba(158, 158, 158, 0.1);
+  color: #9e9e9e;
+  border: 1rpx solid rgba(158, 158, 158, 0.3);
+}
+
+.rejected-btn {
+  background: rgba(244, 67, 54, 0.1);
+  color: #f44336;
+  border: 1rpx solid rgba(244, 67, 54, 0.3);
+}
+
+.cancel-pending-btn {
+  background: rgba(255, 152, 0, 0.1);
+  color: #ff9800;
+  border: 1rpx solid rgba(255, 152, 0, 0.3);
+}
+
+/* 已约私教section样式 */
+.booked-private-section {
+  margin-bottom: 40rpx;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 80rpx 40rpx;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20rpx;
+  margin: 0 30rpx;
+}
+
+.empty-text {
+  display: block;
+  font-size: 32rpx;
+  color: #999;
+  margin-bottom: 15rpx;
+}
+
+.development-notice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80rpx 40rpx;
+  text-align: center;
+}
+
+.notice-icon {
+  font-size: 48rpx;
+  margin-bottom: 20rpx;
+}
+
+.notice-text {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #666;
+  margin-bottom: 10rpx;
+}
+
+.notice-desc {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.empty-hint {
+  display: block;
+  font-size: 26rpx;
+  color: #bbb;
+}
+
+.booking-notice {
+  text-align: center;
+  margin: 20rpx 30rpx 0;
+}
+
+.notice-text {
+  font-size: 22rpx;
+  color: #999;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 15rpx 30rpx;
+  border-radius: 50rpx;
+}
+
+/* ========== 第四部分：更多服务 ========== */
+.more-services-section {
+  margin-bottom: 40rpx;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20rpx;
+  margin: 0 30rpx;
+}
+
+.service-item {
+  background: #F8FCFF;
+  border-radius: 12px;
+  padding: 30rpx 20rpx;
+  text-align: center;
+  box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s;
+}
+
+.service-item:active {
+  transform: translateY(4rpx);
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+}
+
+.service-icon {
+  width: 80rpx;
+  height: 80rpx;
+  margin-bottom: 20rpx;
+}
+
+.service-name {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #333;
+}
+
+
+
+/* ========== 响应式适配 ========== */
+@media screen and (max-width: 375px) {
+  .profile-card {
+    padding: 30rpx;
+  }
+  
+  .avatar {
+    width: 120rpx;
+    height: 120rpx;
+  }
+  
+  .nickname {
+    font-size: 40rpx;
+  }
+  
+  .services-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .service-item {
+    padding: 25rpx 15rpx;
+  }
+  
+  .service-icon {
+    width: 60rpx;
+    height: 60rpx;
+  }
+  
+  .service-name {
+    font-size: 24rpx;
+  }
+} 

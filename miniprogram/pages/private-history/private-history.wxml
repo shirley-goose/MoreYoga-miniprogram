@@ -1,0 +1,55 @@
+<!-- 私教往期记录页面 -->
+<!-- 背景图 -->
+<image class="global-bg" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/background.png" mode="aspectFill"/>
+
+<!-- 自定义导航栏 -->
+<view class="nav-bar">
+  <view class="nav-left">
+    <view class="back-btn" bindtap="goBack">
+      <view class="back-icon">←</view>
+    </view>
+  </view>
+  <view class="nav-center">
+    <view class="nav-title">私教往期记录</view>
+  </view>
+  <view class="nav-right"></view>
+</view>
+
+<!-- 页面内容 -->
+<view class="container">
+  
+  <!-- 私教历史记录列表 -->
+  <view wx:if="{{privateHistory.length > 0}}" class="history-list">
+    <block wx:for="{{privateHistory}}" wx:key="_id">
+      <view class="history-item">
+        <image class="course-image" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/logo.png" mode="aspectFill"/>
+        <view class="course-info">
+          <view class="course-name">私教课程</view>
+          <view class="teacher-name">{{item.teacherName}}</view>
+          <view class="course-time">{{item.date}} {{item.timeRange}}</view>
+          <view wx:if="{{item.content}}" class="course-content">需求：{{item.content}}</view>
+        </view>
+        
+        <!-- 状态标签 - 右上角 -->
+        <view class="course-status-top">
+          <view class="status-btn completed-btn" wx:if="{{item.displayStatus === 'completed'}}">
+            已完成
+          </view>
+          <view class="status-btn cancelled-btn" wx:elif="{{item.displayStatus === 'cancelled'}}">
+            已取消
+          </view>
+          <view class="status-btn rejected-btn" wx:elif="{{item.displayStatus === 'rejected'}}">
+            已拒绝
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+  
+  <!-- 空状态 -->
+  <view wx:else class="empty-state">
+    <text class="empty-text">暂无私教往期记录</text>
+    <text class="empty-hint">完成的私教课程会在这里显示</text>
+  </view>
+
+</view>

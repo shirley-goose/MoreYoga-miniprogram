@@ -1,0 +1,64 @@
+<!-- 背景图 -->
+<image class="global-bg" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/background.png" mode="aspectFill"/>
+
+<!-- 自定义导航栏 -->
+<view class="nav-bar">
+  <view class="nav-left">
+    <view class="nav-back" bindtap="navigateBack">
+      <text class="back-icon">‹</text>
+    </view>
+  </view>
+  <view class="nav-title">管理后台</view>
+  <view class="nav-right">
+    <view wx:if="{{isAdmin}}" class="logout-btn" bindtap="logout">
+      <text class="logout-icon">🚪</text>
+    </view>
+  </view>
+</view>
+
+<!-- 页面内容 -->
+<view class="container">
+  <!-- 管理员权限验证 -->
+  <view wx:if="{{!isAdmin}}" class="no-permission">
+    <view class="no-permission-text">您没有管理员权限</view>
+    <button class="login-btn" bindtap="checkAdminPermission">重新验证</button>
+  </view>
+
+  <!-- 管理员信息 -->
+  <view wx:if="{{isAdmin && adminInfo}}" class="admin-info">
+    <view class="admin-welcome">👋 欢迎回来，{{adminInfo.name || adminInfo.username}}</view>
+  </view>
+
+  <!-- 管理功能菜单 -->
+  <view wx:if="{{isAdmin}}" class="admin-menu">
+    <view class="menu-title">管理功能</view>
+    
+    <view class="menu-grid">
+      <view class="menu-item" bindtap="navigateTo" data-url="../admin-course/admin-course">
+        <view class="menu-icon">📅</view>
+        <view class="menu-name">课程管理</view>
+        <view class="menu-desc">添加课程、安排日程</view>
+      </view>
+      
+      <view class="menu-item" bindtap="navigateTo" data-url="../admin-users/admin-users">
+        <view class="menu-icon">👥</view>
+        <view class="menu-name">用户管理</view>
+        <view class="menu-desc">管理用户课时</view>
+      </view>
+      
+      <view class="menu-item" bindtap="navigateTo" data-url="../admin-stats/admin-stats">
+        <view class="menu-icon">📊</view>
+        <view class="menu-name">团课数据统计</view>
+        <view class="menu-desc">课程预约统计</view>
+      </view>
+      
+      <view class="menu-item" bindtap="viewLogs">
+        <view class="menu-icon">📋</view>
+        <view class="menu-name">操作日志</view>
+        <view class="menu-desc">查看操作记录</view>
+      </view>
+    </view>
+  </view>
+
+
+</view>

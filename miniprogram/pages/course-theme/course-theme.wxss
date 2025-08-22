@@ -1,0 +1,61 @@
+/* 课程主题页面样式 */
+page {
+  background: #f5f5f5;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f5f5f5;
+}
+
+/* 内容区域 */
+.content-section {
+  flex: 1;
+  margin-top: 185rpx; /* 为固定导航栏留出空间 */
+  padding: 40rpx 24rpx 0 24rpx;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.page-title {
+  font-size: 72rpx;
+  font-weight: 500;
+  color: #000;
+  margin-bottom: 40rpx;
+  letter-spacing: 0.1em;
+}
+
+/* 课程列表 */
+.course-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+  padding-bottom: 160rpx; /* 为底部留出空间 */
+}
+
+.course-item {
+  width: 100%;
+}
+
+.course-card {
+  width: 100%;
+  height: 220rpx;
+  background: rgba(217, 217, 217, 0.8);
+  border-radius: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.1);
+}
+
+.course-name {
+  font-size: 64rpx;
+  font-weight: 400;
+  color: #000;
+  letter-spacing: -0.02em;
+  text-align: center;
+}

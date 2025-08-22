@@ -1,0 +1,10 @@
+<!-- 自定义导航栏组件 -->
+<view class="nav-bar">
+  <view class="nav-left">
+    <view wx:if="{{showBack}}" class="nav-back" bindtap="onBackTap">
+      <text class="back-icon">‹</text>
+    </view>
+  </view>
+  <view class="nav-title">{{title || '墨瑜伽'}}</view>
+  <view class="nav-right"></view>
+</view>

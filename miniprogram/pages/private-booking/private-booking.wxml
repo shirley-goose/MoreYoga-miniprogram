@@ -1,0 +1,87 @@
+<!-- 私教预约页面 -->
+<!-- 背景图 -->
+<image class="global-bg" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/background.png" mode="aspectFill"/>
+
+<!-- 自定义导航栏 -->
+<view class="nav-bar">
+  <view class="nav-left">
+    <!-- 返回键 -->
+    <view class="back-btn" bindtap="goBack">
+      <view class="back-icon">←</view>
+    </view>
+  </view>
+  <view class="nav-title">墨瑜伽</view>
+  <view class="nav-right"></view>
+</view>
+
+<view class="page-container">
+  <view class="container">
+    
+    <!-- 页面标题 -->
+    <view class="page-title">私教预约</view>
+
+    <!-- 周日历 -->
+    <view class="week-calendar">
+      <view class="calendar-item {{selectedDate === item.date ? 'selected' : ''}}" 
+            wx:for="{{weekDays}}" 
+            wx:key="date" 
+            bindtap="onDateSelect" 
+            data-date="{{item.date}}">
+        <view class="week-name">{{item.weekName}}</view>
+        <view class="date-number">{{item.dateText}}</view>
+      </view>
+    </view>
+
+    <!-- 当日可用老师 -->
+    <view class="daily-teachers-section">
+      <view class="section-title">{{selectedDateDisplay}} 可约老师</view>
+      
+      <view wx:if="{{availableTeachers.length > 0}}" class="available-teachers-list">
+        <view 
+          wx:for="{{availableTeachers}}" 
+          wx:key="id" 
+          class="teacher-card"
+          bindtap="selectTeacher"
+          data-teacher="{{item}}"
+          data-date="{{selectedDate}}"
+        >
+          <view class="teacher-avatar">
+            <image 
+              wx:if="{{item.avatar}}" 
+              class="avatar-image" 
+              src="{{item.avatar}}" 
+              mode="aspectFill"
+            />
+            <view wx:else class="avatar-placeholder">
+              <text class="placeholder-text">照片待补充</text>
+            </view>
+          </view>
+          <view class="teacher-info">
+            <view class="teacher-name">{{item.name}}</view>
+            <view class="available-times">
+              <text class="time-text">{{item.slotCount}}个时段可约</text>
+            </view>
+            <view class="booking-btn">
+              <text class="btn-text">选择时间</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view wx:else class="no-teachers">
+        <text class="no-teachers-text">今日暂无老师可约</text>
+      </view>
+    </view>
+
+    <!-- 预约须知 -->
+    <view class="notes-section">
+      <view class="notes-title">预约须知：</view>
+      <view class="notes-content">
+        <text class="notes-item">老师空闲时间可约。</text>
+        <text class="notes-item">预约申请需老师确认。</text>
+        <text class="notes-item">取消需提前三天。</text>
+      </view>
+    </view>
+
+  </view>
+</view> 

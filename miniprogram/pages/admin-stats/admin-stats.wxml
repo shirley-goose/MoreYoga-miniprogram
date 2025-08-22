@@ -1,0 +1,90 @@
+<!-- 背景图 -->
+<image class="global-bg" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/background.png" mode="aspectFill"/>
+
+<!-- 自定义导航栏 -->
+<view class="nav-bar">
+  <view class="nav-left">
+    <view class="nav-back" bindtap="navigateBack">
+      <text class="back-icon">‹</text>
+    </view>
+  </view>
+  <view class="nav-title">团课数据统计</view>
+  <view class="nav-right"></view>
+</view>
+
+<!-- 页面内容 -->
+<view class="container">
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading-container">
+    <view class="loading-text">加载中...</view>
+  </view>
+
+  <!-- 课程列表 -->
+  <view wx:else class="course-list">
+    <view wx:if="{{courseList.length === 0}}" class="empty-state">
+      <view class="empty-icon">📅</view>
+      <view class="empty-text">暂无未发生的课程</view>
+    </view>
+
+    <view wx:else>
+      <view class="list-header">
+        <view class="header-text">未发生课程 ({{courseList.length}}节)</view>
+        <view class="header-desc">按日期时间排序</view>
+      </view>
+
+      <view class="course-item" wx:for="{{courseList}}" wx:key="id" bindtap="toggleCourseDetail" data-index="{{index}}">
+        <!-- 课程基本信息 -->
+        <view class="course-info">
+          <view class="course-header">
+            <view class="course-title">{{item.courseName}}</view>
+            <view class="booking-count">
+              <text class="count-number">{{item.bookingCount}}</text>
+              <text class="count-label">人已预约</text>
+            </view>
+          </view>
+          
+          <view class="course-details">
+            <view class="detail-item">
+              <text class="detail-icon">📅</text>
+              <text class="detail-text">{{item.dateStr}}</text>
+            </view>
+            <view class="detail-item">
+              <text class="detail-icon">🕐</text>
+              <text class="detail-text">{{item.timeStr}}</text>
+            </view>
+            <view class="detail-item">
+              <text class="detail-icon">老师:</text>
+              <text class="detail-text">{{item.teacherName}}</text>
+            </view>
+          </view>
+
+          <!-- 展开/收起图标 -->
+          <view class="expand-icon">
+            <text class="expand-text">{{item.showDetail ? '收起' : '查看预约'}}</text>
+            <text class="expand-arrow">{{item.showDetail ? '▲' : '▼'}}</text>
+          </view>
+        </view>
+
+        <!-- 预约学员列表 -->
+        <view wx:if="{{item.showDetail}}" class="booking-list">
+          <view wx:if="{{item.bookings.length === 0}}" class="no-bookings">
+            <text class="no-bookings-text">暂无预约</text>
+          </view>
+          
+          <view wx:else class="booking-students">
+            <view class="students-header">预约学员列表：</view>
+            <view class="student-item" wx:for="{{item.bookings}}" wx:for-item="booking" wx:key="id">
+              <view class="student-info">
+                <view class="student-name">{{booking.userName}}</view>
+                <view class="student-phone">{{booking.userPhone}}</view>
+              </view>
+              <view class="booking-status {{booking.status}}">
+                {{booking.status === 'confirmed' ? '已确认' : booking.status === 'pending' ? '待确认' : booking.status === 'booked' ? '已预约' : booking.status === 'cancelled' ? '已取消' : booking.status}}
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

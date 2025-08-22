@@ -1,0 +1,9 @@
+{
+  "name": "getAllUsers",
+  "version": "1.0.0",
+  "description": "获取所有用户列表云函数（仅管理员可用）",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

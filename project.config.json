@@ -1,0 +1,33 @@
+{
+  "description": "瑜伽馆预约小程序",
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
+  "miniprogramRoot": "miniprogram/",
+  "cloudfunctionRoot": "cloudfunctions/",
+  "compileType": "miniprogram",
+  "projectname": "yoga",
+  "setting": {
+    "useCompilerPlugins": [
+      "sass",
+      "typescript"
+    ],
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    },
+    "es6": true,
+    "enhance": true,
+    "minified": true
+  },
+  "condition": {},
+  "srcMiniprogramRoot": "miniprogram/",
+  "appid": "wx26dbb56b652dd23d",
+  "libVersion": "3.9.1",
+  "editorSetting": {
+    "tabIndent": "insertSpaces",
+    "tabSize": 2
+  }
+}

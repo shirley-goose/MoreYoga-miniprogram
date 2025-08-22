@@ -1,0 +1,125 @@
+<!-- 背景图 -->
+<image class="global-bg" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/background.png" mode="aspectFill"/>
+
+<!-- 自定义导航栏 -->
+<view class="nav-bar">
+  <view class="nav-left">
+    <view class="nav-back" bindtap="navigateBack">
+      <text class="back-icon">‹</text>
+    </view>
+  </view>
+  <view class="nav-title">课程管理</view>
+  <view class="nav-right"></view>
+</view>
+
+<!-- 页面内容 -->
+<view class="container">
+  <!-- 页面标题 -->
+  <view class="page-title">
+    <text class="title-text">📅 安排团课</text>
+    <text class="title-desc">设置课程信息和上课时间</text>
+  </view>
+
+  <!-- 课程安排表单 -->
+  <view class="form-container">
+    <!-- 一、课程名称 -->
+    <view class="form-group">
+      <view class="form-label">
+        <text class="label-number">1. </text>
+        <text class="label-text">课程名称 *</text>
+      </view>
+      <input class="form-input" placeholder="请输入课程名称" value="{{scheduleForm.courseName}}" bindinput="onFormInput" data-field="courseName"/>
+    </view>
+    
+    <!-- 二、选择授课老师 -->
+    <view class="form-group">
+      <view class="form-label">
+        <text class="label-number">2. </text>
+        <text class="label-text">授课老师 *</text>
+      </view>
+      <picker class="form-picker" mode="selector" range="{{teacherList}}" range-key="name" value="{{scheduleForm.teacherIndex}}" bindchange="onTeacherChange">
+        <view class="picker-display {{scheduleForm.teacher ? '' : 'placeholder'}}">
+          {{scheduleForm.teacher || '请选择授课老师'}}
+        </view>
+      </picker>
+    </view>
+    
+    <!-- 三、设置授课日期 -->
+    <view class="form-group">
+      <view class="form-label">
+        <text class="label-number">3. </text>
+        <text class="label-text">授课日期 *</text>
+      </view>
+      <picker class="form-picker" mode="date" value="{{scheduleForm.date}}" start="{{todayDate}}" bindchange="onDateChange">
+        <view class="picker-display {{scheduleForm.date ? '' : 'placeholder'}}">
+          {{scheduleForm.date || '请选择授课日期'}}
+        </view>
+      </picker>
+    </view>
+    
+    <!-- 四、选择开始和结束时间 -->
+    <view class="form-group">
+      <view class="form-label">
+        <text class="label-number">4. </text>
+        <text class="label-text">上课时间 *</text>
+      </view>
+      <view class="time-picker-row">
+        <picker class="form-picker time-picker" mode="time" value="{{scheduleForm.startTime}}" bindchange="onStartTimeChange">
+          <view class="picker-display {{scheduleForm.startTime ? '' : 'placeholder'}}">
+            {{scheduleForm.startTime || '开始时间'}}
+          </view>
+        </picker>
+        <text class="time-separator">-</text>
+        <picker class="form-picker time-picker" mode="time" value="{{scheduleForm.endTime}}" bindchange="onEndTimeChange">
+          <view class="picker-display {{scheduleForm.endTime ? '' : 'placeholder'}}">
+            {{scheduleForm.endTime || '结束时间'}}
+          </view>
+        </picker>
+      </view>
+    </view>
+    
+    <!-- 五、课程描述 -->
+    <view class="form-group">
+      <view class="form-label">
+        <text class="label-number">5. </text>
+        <text class="label-text">课程描述</text>
+      </view>
+      <textarea class="form-textarea" placeholder="请输入课程描述（可选）" value="{{scheduleForm.description}}" bindinput="onFormInput" data-field="description"></textarea>
+    </view>
+    
+    <!-- 六、人数设置 -->
+    <view class="form-group">
+      <view class="form-label">
+        <text class="label-number">6. </text>
+        <text class="label-text">人数设置 *</text>
+      </view>
+      <view class="number-setting-row">
+        <view class="number-item">
+          <text class="number-label">最少人数</text>
+          <input class="number-input" type="number" placeholder="1" value="{{scheduleForm.minCapacity}}" bindinput="onFormInput" data-field="minCapacity"/>
+        </view>
+        <text class="number-separator">-</text>
+        <view class="number-item">
+          <text class="number-label">最多人数</text>
+          <input class="number-input" type="number" placeholder="20" value="{{scheduleForm.maxCapacity}}" bindinput="onFormInput" data-field="maxCapacity"/>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 七、消耗次卡次数 -->
+    <view class="form-group">
+      <view class="form-label">
+        <text class="label-number">7. </text>
+        <text class="label-text">消耗次卡 *</text>
+      </view>
+      <view class="credits-setting">
+        <input class="credits-input" type="number" placeholder="1" value="{{scheduleForm.creditsRequired}}" bindinput="onFormInput" data-field="creditsRequired"/>
+        <text class="credits-unit">次</text>
+      </view>
+    </view>
+    
+    <button class="submit-btn" bindtap="submitSchedule" disabled="{{submitting}}">
+      {{submitting ? '提交中...' : '创建课程安排'}}
+    </button>
+  </view>
+</view>

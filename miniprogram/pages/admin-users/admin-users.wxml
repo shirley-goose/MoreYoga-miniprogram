@@ -1,0 +1,96 @@
+<!-- 背景图 -->
+<image class="global-bg" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/background.png" mode="aspectFill"/>
+
+<!-- 自定义导航栏 -->
+<view class="nav-bar">
+  <view class="nav-left">
+    <view class="nav-back" bindtap="navigateBack">
+      <text class="back-icon">‹</text>
+    </view>
+  </view>
+  <view class="nav-title">用户管理</view>
+  <view class="nav-right"></view>
+</view>
+
+<!-- 页面内容 -->
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-container">
+    <input class="search-input" placeholder="搜索用户昵称或手机号" value="{{searchKeyword}}" bindinput="onSearchInput" bindconfirm="searchUsers"/>
+    <button class="search-btn" bindtap="searchUsers">搜索</button>
+  </view>
+
+  <!-- 用户列表 -->
+  <view class="user-list">
+    <view wx:if="{{loading}}" class="loading">加载中...</view>
+    
+    <view wx:elif="{{userList.length === 0}}" class="no-data">暂无用户数据</view>
+    
+    <view wx:else>
+      <view class="user-item" wx:for="{{userList}}" wx:key="_id" bindtap="selectUser" data-user="{{item}}">
+        <view class="user-avatar">
+          <image wx:if="{{item.avatarUrl}}" src="{{item.avatarUrl}}" mode="aspectFill"/>
+          <view wx:else class="default-avatar">{{item.nickName.charAt(0)}}</view>
+        </view>
+        
+        <view class="user-info">
+          <view class="user-name">{{item.nickName}}</view>
+          <view class="user-phone">{{item.phoneNumber || '未绑定手机'}}</view>
+          <view class="user-credits">
+            团课: {{item.groupCredits}}次 | 私教: {{item.termCredits}}次
+          </view>
+        </view>
+        
+        <view class="user-actions">
+          <text class="edit-icon">✏️</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 课时修改弹窗 -->
+  <view wx:if="{{showEditModal}}" class="modal-overlay" bindtap="hideEditModal">
+    <view class="modal-content" catchtap="preventClose">
+      <view class="modal-title">修改课时</view>
+      
+      <view class="selected-user">
+        <view class="user-name">{{selectedUser.nickName}}</view>
+        <view class="current-credits">
+          当前: 团课{{selectedUser.groupCredits}}次 | 私教{{selectedUser.termCredits}}次
+        </view>
+      </view>
+      
+      <view class="edit-form">
+        <view class="form-group">
+          <view class="form-label">操作类型</view>
+          <picker mode="selector" range="{{operationTypes}}" value="{{editForm.operationIndex}}" bindchange="onOperationChange">
+            <view class="form-picker">{{operationTypes[editForm.operationIndex]}}</view>
+          </picker>
+        </view>
+        
+        <view class="form-row">
+          <view class="form-group half">
+            <view class="form-label">团课次卡</view>
+            <input class="form-input" type="number" placeholder="0" value="{{editForm.groupCredits}}" bindinput="onEditFormInput" data-field="groupCredits"/>
+          </view>
+          <view class="form-group half">
+            <view class="form-label">私教次卡</view>
+            <input class="form-input" type="number" placeholder="0" value="{{editForm.termCredits}}" bindinput="onEditFormInput" data-field="termCredits"/>
+          </view>
+        </view>
+        
+        <view class="form-group">
+          <view class="form-label">操作说明</view>
+          <input class="form-input" placeholder="请输入操作原因" value="{{editForm.reason}}" bindinput="onEditFormInput" data-field="reason"/>
+        </view>
+      </view>
+      
+      <view class="modal-buttons">
+        <button class="cancel-btn" bindtap="hideEditModal">取消</button>
+        <button class="confirm-btn" bindtap="submitEdit" disabled="{{submitting}}">
+          {{submitting ? '提交中...' : '确认修改'}}
+        </button>
+      </view>
+    </view>
+  </view>
+</view>

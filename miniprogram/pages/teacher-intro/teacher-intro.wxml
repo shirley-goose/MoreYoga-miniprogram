@@ -1,0 +1,65 @@
+<!-- 师资介绍页面 -->
+<!-- 背景图 -->
+<image class="global-bg" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/background.png" mode="aspectFill"/>
+
+<!-- 自定义导航栏 -->
+<view class="nav-bar">
+  <view class="nav-left">
+    <!-- 返回键 -->
+    <view class="back-btn" bindtap="goBack">
+      <view class="back-icon">←</view>
+    </view>
+  </view>
+  <view class="nav-title">墨瑜伽</view>
+  <view class="nav-right"></view>
+</view>
+
+<view class="page-container">
+  <view class="container">
+    
+    <!-- 老师头像和姓名 -->
+    <view class="teacher-header">
+      <image class="teacher-photo" src="{{teacherInfo.photo}}" mode="aspectFill"/>
+      <view class="teacher-name">{{teacherInfo.name}}</view>
+    </view>
+
+    <!-- 擅长课程板块 -->
+    <view class="course-section">
+      <view class="section-divider"></view>
+      <view class="section-title">擅长课程</view>
+      <view class="course-content">
+        <view wx:for="{{teacherInfo.specialties}}" wx:key="index" class="course-item">
+          <text class="course-category">【{{item.category}}】</text>
+          <text class="course-description">{{item.description}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 奖项与证书板块 -->
+    <view class="awards-section">
+      <view class="section-divider"></view>
+      <view class="section-title">奖项与证书</view>
+      <view class="awards-content">
+        <!-- 第一列证书 -->
+        <view class="awards-column">
+          <view wx:for="{{teacherInfo.awards.column1}}" wx:key="index" class="award-item">
+            {{item}}
+          </view>
+        </view>
+        <!-- 第二列证书 -->
+        <view class="awards-column">
+          <view wx:for="{{teacherInfo.awards.column2}}" wx:key="index" class="award-item">
+            {{item}}
+          </view>
+        </view>
+        <!-- 第三列证书 -->
+        <view class="awards-column">
+          <view wx:for="{{teacherInfo.awards.column3}}" wx:key="index" class="award-item">
+            {{item}}
+          </view>
+        </view>
+      </view>
+    </view>
+
+  </view>
+</view>

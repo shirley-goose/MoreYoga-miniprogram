@@ -1,0 +1,24 @@
+<!-- 聚（活动）页面 -->
+<view class="container">
+  <image class="global-bg" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/background.png" mode="aspectFill"/>
+  <!-- 自定义导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-left"></view>
+    <view class="nav-title">墨瑜伽</view>
+    <view class="nav-right"></view>
+  </view>
+  
+  <view class="page-title">静修活动</view>
+
+  <!-- 活动卡片列表 -->
+  <view class="activity-list">
+    <block wx:for="{{activityList}}" wx:key="title">
+      <view class="activity-card" bindtap="onActivityTap" data-activity="{{item}}">
+        <image class="activity-bg" src="{{item.bgImage}}" mode="aspectFill"/>
+        <view class="activity-title">{{item.title}}</view>
+      </view>
+    </block>
+  </view>
+
+
+</view> 

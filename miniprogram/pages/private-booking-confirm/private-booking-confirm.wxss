@@ -1,0 +1,354 @@
+/* 私教预约确认页面样式 */
+
+/* 页面整体样式 */
+.page-container {
+  background: transparent; /* 让背景图片显示 */
+  padding-bottom: 160rpx; /* 适配自定义TabBar */
+  padding-top: 185rpx; /* 适配固定导航栏 */
+  min-height: 100vh;
+  position: relative;
+}
+
+.container {
+  min-height: 100vh;
+  position: relative;
+  padding: 0 30rpx;
+}
+
+/* 导航栏样式 */
+.nav-bar {
+  height: 100rpx;
+  padding-top: 60rpx;
+  padding-bottom: 25rpx;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  background: #202632;
+  color: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.nav-left {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding-left: 30rpx;
+}
+
+.nav-title {
+  flex: 1;
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: 600;
+  align-self: flex-end;
+}
+
+.nav-right {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 30rpx;
+}
+
+/* 返回键样式 */
+.back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(217, 217, 217, 0);
+  border-radius: 50rpx;
+  width: 108rpx;
+  height: 58rpx;
+  transition: all 0.3s ease;
+}
+
+.back-btn:active {
+  background: rgba(217, 217, 217, 0.2);
+  transform: scale(0.95);
+}
+
+.back-icon {
+  font-size: 36rpx;
+  color: #fff;
+  font-weight: 300;
+}
+
+/* 页面标题 */
+.page-title {
+  font-size: 72rpx;
+  font-weight: 500;
+  color: #000;
+  letter-spacing: 0.1em;
+  text-align: left;
+  margin: 40rpx 0 60rpx 0;
+  line-height: 1.2;
+}
+
+/* 老师信息区域 */
+.teacher-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 60rpx;
+}
+
+.teacher-photo {
+  width: 302rpx;
+  height: 402rpx;
+  border-radius: 20rpx;
+  overflow: hidden;
+  margin-bottom: 30rpx;
+  box-shadow: 0 8rpx 30rpx rgba(0, 0, 0, 0.15);
+  align-self: flex-end;
+  margin-right: 50rpx;
+}
+
+.teacher-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 20rpx;
+}
+
+.photo-placeholder {
+  width: 100%;
+  height: 100%;
+  background: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20rpx;
+}
+
+.placeholder-text {
+  font-size: 24rpx;
+  color: #999;
+  text-align: center;
+}
+
+.teacher-name {
+  font-size: 80rpx;
+  font-weight: 400;
+  color: #000;
+  letter-spacing: 10%;
+  text-align: left;
+  line-height: 1.4;
+  align-self: flex-start;
+  margin-left: 0;
+}
+
+/* 预约表单样式 */
+.booking-form {
+  margin-bottom: 60rpx;
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30rpx 0;
+}
+
+.form-label {
+  font-size: 24rpx;
+  font-weight: 500;
+  color: #202632;
+  letter-spacing: 10%;
+  min-width: 120rpx;
+}
+
+.form-inputs {
+  display: flex;
+  gap: 20rpx;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.date-picker,
+.time-picker,
+.course-picker {
+  font-size: 24rpx;
+  color: #202632;
+  letter-spacing: 10%;
+}
+
+.picker-display {
+  font-size: 24rpx;
+  color: #202632;
+  letter-spacing: 10%;
+}
+
+.picker-display.placeholder {
+  color: #999;
+}
+
+/* 日期显示样式 */
+.date-display {
+  padding: 30rpx 20rpx;
+  background: #f8f8f8;
+  border-radius: 15rpx;
+  font-size: 28rpx;
+  color: #000;
+  text-align: right;
+  flex: 1;
+}
+
+/* 时间显示样式 */
+.time-display {
+  padding: 30rpx 20rpx;
+  background: #f8f8f8;
+  border-radius: 15rpx;
+  font-size: 28rpx;
+  color: #000;
+  text-align: right;
+  flex: 1;
+  font-weight: 500;
+}
+
+/* 内容输入框样式 */
+.content-input {
+  padding: 30rpx 20rpx;
+  background: #f8f8f8;
+  border-radius: 15rpx;
+  font-size: 28rpx;
+  color: #000;
+  min-height: 120rpx;
+  flex: 1;
+  border: none;
+  outline: none;
+}
+
+.input-placeholder {
+  color: #868e96;
+  font-size: 26rpx;
+}
+
+/* 时间段选择样式 */
+.time-slots-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15rpx;
+  margin-top: 10rpx;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.time-slot {
+  padding: 15rpx 25rpx;
+  background: #f8f8f8;
+  border-radius: 20rpx;
+  border: 2rpx solid transparent;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  min-width: 120rpx;
+  text-align: center;
+}
+
+.time-slot:active {
+  transform: scale(0.95);
+}
+
+.time-slot.selected {
+  background: #4CAF50;
+  border-color: #45a049;
+}
+
+.slot-text {
+  font-size: 24rpx;
+  color: #202632;
+}
+
+.time-slot.selected .slot-text {
+  color: #fff;
+  font-weight: 500;
+}
+
+/* 课时费样式 */
+.course-fee {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.fee-text {
+  font-size: 24rpx;
+  color: #202632;
+  font-weight: 500;
+}
+
+/* 分隔线 */
+.divider {
+  width: 100%;
+  height: 2rpx;
+  background: #A6A5A8;
+}
+
+/* 预约须知样式 */
+.notes-section {
+  margin-bottom: 80rpx;
+}
+
+.notes-title {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #000;
+  margin-bottom: 20rpx;
+}
+
+.notes-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.notes-item {
+  font-size: 24rpx;
+  color: #000;
+  line-height: 1.4;
+}
+
+/* 确认按钮 */
+.confirm-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #6c757d;
+  border-radius: 20rpx;
+  height: 100rpx;
+  margin: 40rpx 0;
+  box-shadow: 0 4rpx 12rpx rgba(108, 117, 125, 0.3);
+  transition: all 0.3s ease;
+}
+
+.confirm-btn:active {
+  transform: scale(0.98);
+  background: #5a6268;
+  box-shadow: 0 2rpx 8rpx rgba(108, 117, 125, 0.4);
+}
+
+.confirm-btn-text {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 2rpx;
+}
+
+/* 响应式适配 */
+@media screen and (max-width: 375px) {
+  .page-title {
+    font-size: 56rpx;
+  }
+  
+  .teacher-name {
+    font-size: 64rpx;
+  }
+  
+  .teacher-photo {
+    width: 250rpx;
+    height: 335rpx;
+  }
+}

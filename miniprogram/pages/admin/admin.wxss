@@ -1,0 +1,148 @@
+.container {
+  padding: 40rpx;
+  padding-top: 225rpx; /* 导航栏高度185rpx + 额外间距40rpx */
+  min-height: 100vh;
+}
+
+.no-permission {
+  text-align: center;
+  padding: 200rpx 40rpx;
+}
+
+.no-permission-text {
+  font-size: 32rpx;
+  color: #666;
+  margin-bottom: 60rpx;
+}
+
+.login-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 50rpx;
+  padding: 20rpx 60rpx;
+  font-size: 28rpx;
+}
+
+.admin-menu {
+  margin-bottom: 60rpx;
+}
+
+.menu-title {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 40rpx;
+}
+
+.menu-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.menu-item {
+  width: 48%;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20rpx;
+  padding: 40rpx 20rpx;
+  text-align: center;
+  margin-bottom: 20rpx;
+  box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.menu-icon {
+  font-size: 60rpx;
+  margin-bottom: 20rpx;
+}
+
+.menu-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10rpx;
+}
+
+.menu-desc {
+  font-size: 24rpx;
+  color: #666;
+}
+
+.quick-stats {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20rpx;
+  padding: 40rpx;
+  box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.stats-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 30rpx;
+  text-align: center;
+}
+
+.stats-row {
+  display: flex;
+  justify-content: space-around;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 48rpx;
+  font-weight: 700;
+  color: #667eea;
+  margin-bottom: 10rpx;
+}
+
+.stat-label {
+  font-size: 24rpx;
+  color: #666;
+}
+
+/* 退出登录按钮 */
+.logout-btn {
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20rpx;
+}
+
+.logout-icon {
+  font-size: 32rpx;
+  color: #fff;
+}
+
+/* 管理员信息 */
+.admin-info {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  text-align: center;
+}
+
+.admin-welcome {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10rpx;
+}
+
+.admin-role {
+  font-size: 24rpx;
+  color: #667eea;
+  background: #f0f4ff;
+  padding: 8rpx 20rpx;
+  border-radius: 20rpx;
+  display: inline-block;
+}
