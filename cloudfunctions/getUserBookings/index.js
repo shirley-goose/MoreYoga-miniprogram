@@ -23,7 +23,7 @@ exports.main = async (event, context) => {
     // 查询用户预约记录
     const bookings = await db.collection('bookings')
       .where(whereCondition)
-      .orderBy('createTime', 'desc')
+      .orderBy('createTime', 'desc') // 按创建时间倒序，最新的在前
       .skip(skip)
       .limit(limit)
       .get();

@@ -207,7 +207,7 @@
   height: 45rpx;
   border-radius: 5rpx;
   box-shadow: 2rpx 2rpx 4rpx 0rpx rgba(0, 0, 0, 0.25);
-  min-width: 60rpx;
+  min-width: 70rpx;
   margin-right: 20rpx;
 }
 

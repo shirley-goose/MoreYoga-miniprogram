@@ -86,9 +86,29 @@
   color: #F44336;
 }
 
-.status-tag.missed {
-  background: rgba(255, 152, 0, 0.1);
-  color: #FF9800;
+.status-tag.failed {
+  background: rgba(255, 87, 34, 0.1);
+  color: #FF5722;
+}
+
+.status-tag.refunded {
+  background: rgba(96, 125, 139, 0.1);
+  color: #607D8B;
+}
+
+.status-tag.booked {
+  background: rgba(33, 150, 243, 0.1);
+  color: #2196F3;
+}
+
+.status-tag.waitlist {
+  background: rgba(255, 193, 7, 0.1);
+  color: #FFC107;
+}
+
+.status-tag.unknown {
+  background: rgba(158, 158, 158, 0.1);
+  color: #9E9E9E;
 }
 
 .credits-info {

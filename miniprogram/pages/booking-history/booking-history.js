@@ -41,21 +41,59 @@ Page({
           let statusText = '';
           let statusClass = '';
           
-          if (booking.status === 'cancelled') {
-            statusText = '已取消';
-            statusClass = 'cancelled';
-          } else if (booking.schedule) {
-            const classEndTime = new Date(`${booking.schedule.date}T${booking.schedule.endTime}:00`);
-            if (classEndTime < now) {
+          // 根据数据库中的状态显示
+          switch (booking.status) {
+            case 'done':
               statusText = '已完成';
               statusClass = 'completed';
-            } else {
-              statusText = '已预约';
-              statusClass = 'completed';
-            }
-          } else {
-            statusText = '状态未知';
-            statusClass = 'missed';
+              break;
+            case 'cancelled':
+              statusText = '已取消';
+              statusClass = 'cancelled';
+              break;
+            case 'fail':
+              statusText = '等位失败';
+              statusClass = 'failed';
+              break;
+            case 'refunded':
+              statusText = '已返还';
+              statusClass = 'refunded';
+              break;
+            case 'booked':
+              // 检查是否已过期但状态未更新
+              if (booking.schedule) {
+                const classEndTime = new Date(`${booking.schedule.date}T${booking.schedule.endTime}:00`);
+                if (classEndTime < now) {
+                  statusText = '已完成';
+                  statusClass = 'completed';
+                } else {
+                  statusText = '已预约';
+                  statusClass = 'booked';
+                }
+              } else {
+                statusText = '已预约';
+                statusClass = 'booked';
+              }
+              break;
+            case 'waitlist':
+              // 检查是否已过期但状态未更新
+              if (booking.schedule) {
+                const classEndTime = new Date(`${booking.schedule.date}T${booking.schedule.endTime}:00`);
+                if (classEndTime < now) {
+                  statusText = '等位失败';
+                  statusClass = 'failed';
+                } else {
+                  statusText = '等位中';
+                  statusClass = 'waitlist';
+                }
+              } else {
+                statusText = '等位中';
+                statusClass = 'waitlist';
+              }
+              break;
+            default:
+              statusText = '状态未知';
+              statusClass = 'unknown';
           }
           
           return {
@@ -68,9 +106,13 @@ Page({
             statusText: statusText,
             statusClass: statusClass,
             creditsUsed: booking.creditsUsed || 1,
-            createTime: booking.createTime
+            createTime: booking.createTime,
+            courseDateTime: booking.schedule ? new Date(`${booking.schedule.date}T${booking.schedule.startTime}:00`) : new Date(booking.createTime)
           };
         });
+        
+        // 按课程时间排序，最近的在前
+        processedHistory.sort((a, b) => b.courseDateTime - a.courseDateTime);
         
         console.log('处理后的历史记录:', processedHistory);
         
