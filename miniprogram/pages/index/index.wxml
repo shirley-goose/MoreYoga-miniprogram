@@ -13,12 +13,12 @@
 
 <!-- logo在左上角20%处 -->
 <view class="logo-wrap">
-  <image class="logo" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/images/logo.png" mode="widthFix"/>
+  <image class="logo" src="../../images/logo.png" mode="widthFix"/>
 </view>
 
 <!-- 中文slogan图片居中 -->
 <view class="chinese-slogan-wrap">
-  <image class="chinese-slogan-img" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/images/slogan.png" mode="widthFix"/>
+  <image class="chinese-slogan-img" src="../../images/slogan.png" mode="widthFix"/>
 </view>
 
 <!-- 介绍模块区（无底色，横版排布） -->

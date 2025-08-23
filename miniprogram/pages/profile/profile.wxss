@@ -789,6 +789,27 @@
   border: 1rpx solid rgba(189, 189, 189, 0.3);
 }
 
+.waitlist-btn {
+  background: rgba(255, 193, 7, 0.1);
+  color: #ffc107;
+  border: 1rpx solid rgba(255, 193, 7, 0.3);
+}
+
+.waitlist-status {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.waiting-info {
+  font-size: 20rpx;
+  color: #ffc107;
+  text-align: center;
+  padding: 4rpx 8rpx;
+  background: rgba(255, 193, 7, 0.05);
+  border-radius: 8rpx;
+}
+
 /* 私教课程卡片样式 */
 .private-card {
   background: #F8FCFF; /* 与团课模块相同的背景色 */

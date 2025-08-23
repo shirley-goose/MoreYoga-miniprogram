@@ -86,6 +86,17 @@
               <view class="status-btn ended-btn" wx:if="{{item.isEnded}}">
                 已结束
               </view>
+              <view wx:elif="{{item.isWaitlist}}" class="waitlist-status">
+                <view class="status-btn waitlist-btn">
+                  等位中 {{item.position ? '第' + item.position + '位' : ''}}
+                </view>
+                <view wx:if="{{item.waitingAhead !== undefined}}" class="waiting-info">
+                  前面还有 {{item.waitingAhead}} 人
+                </view>
+                <view wx:if="{{item.canCancel}}" class="status-btn cancel-btn" bindtap="cancelCourse" data-id="{{item.id}}">
+                  取消等位
+                </view>
+              </view>
               <view class="status-btn cancel-btn" wx:elif="{{item.canCancel}}" bindtap="cancelCourse" data-id="{{item.id}}">
                 取消预约
               </view>
@@ -186,19 +197,19 @@
     </view>
     <view class="services-grid">
       <view class="service-item" bindtap="contactService">
-        <image class="service-icon" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/images/icon_contact.png" mode="aspectFit"/>
+        <image class="service-icon" src="../../images/icon_contact.png" mode="aspectFit"/>
         <view class="service-name">联系客服</view>
       </view>
       <view class="service-item" bindtap="joinCommunity">
-        <image class="service-icon" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/images/icon_community.png" mode="aspectFit"/>
+        <image class="service-icon" src="../../images/icon_community.png" mode="aspectFit"/>
         <view class="service-name">加入社群</view>
       </view>
       <view class="service-item" bindtap="giveFeedback">
-        <image class="service-icon" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/images/icon_feedback.png" mode="aspectFit"/>
+        <image class="service-icon" src="../../images/icon_feedback.png" mode="aspectFit"/>
         <view class="service-name">提出建议</view>
       </view>
       <view class="service-item" bindtap="buyCourse">
-        <image class="service-icon" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/images/icon_buy.png" mode="aspectFit"/>
+        <image class="service-icon" src="../../images/icon_buy.png" mode="aspectFit"/>
         <view class="service-name">购买课程</view>
       </view>
     </view>

@@ -89,7 +89,7 @@ Page({
       'yinger': {
         id: 'yinger',
         name: '莹儿老师',
-        photo: 'cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/images/teacher_yinger-6c1741.png',
+        photo: '../../images/teacher_yinger-6c1741.png',
         specialties: [
           {
             category: '产后私教',

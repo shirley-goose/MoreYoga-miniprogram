@@ -69,7 +69,7 @@
       <view class="notice-list">
         <view class="notice-item">
           <text class="notice-number">1. </text>
-          <text class="notice-text">每节课程满{{courseData.minCapacity}}人可开，上限{{courseData.maxCapacity}}人。课程预约满人时可加入等待队列候补；</text>
+          <text class="notice-text">此节课程满{{courseData.minCapacity}}人可开，上限{{courseData.maxCapacity}}人。课程预约满人时可加入等待队列候补；</text>
         </view>
         <view class="notice-item">
           <text class="notice-number">2. </text>

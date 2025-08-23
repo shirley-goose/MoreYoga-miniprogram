@@ -43,6 +43,9 @@ exports.main = async (event, context) => {
           if (userBooking) {
             userBookingStatus = userBooking.status;
           }
+          
+          // 计算等位人数
+          waitlistCount = schedule.bookings.filter(b => b.status === 'waitlist').length;
         }
         
         return {

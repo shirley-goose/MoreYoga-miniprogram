@@ -143,8 +143,8 @@ Page({
         const now = new Date();
         const upcomingClasses = result.result.data
           .filter(booking => {
-            // 只显示已预约的（排除等位）
-            if (booking.status !== 'booked') return false;
+            // 显示已预约的和等位的课程
+            if (booking.status !== 'booked' && booking.status !== 'waitlist') return false;
             
             if (!booking.schedule) {
               console.log('预约记录缺少schedule信息:', booking);
@@ -180,10 +180,14 @@ Page({
               date: booking.schedule.date,
               time: `${booking.schedule.startTime}-${booking.schedule.endTime}`,
               courseImage: '../../images/background.png', // 使用默认背景图
-              canCancel: !isEnded && hoursDiff > 1, // 未结束且距离开始时间超过1小时才能取消
+              canCancel: !isEnded && (booking.status === 'waitlist' || hoursDiff > 1), // 等位可以随时取消，已预约的需要距离开始时间超过1小时
               isEnded: isEnded,
               bookingId: booking._id,
-              scheduleId: booking.scheduleId
+              scheduleId: booking.scheduleId,
+              status: booking.status, // 添加预约状态
+              position: booking.position || null, // 等位位置
+              waitingAhead: booking.waitingAhead || 0, // 前面等位人数
+              isWaitlist: booking.status === 'waitlist' // 是否为等位
             };
             
             console.log('处理后的课程项:', courseItem);

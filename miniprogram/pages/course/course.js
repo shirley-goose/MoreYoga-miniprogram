@@ -277,7 +277,8 @@ Page({
           remainingSlots: Math.max(0, schedule.maxCapacity - (schedule.currentStudents || schedule.currentBookings || 0)),
           status: this.getCourseStatus(schedule),
           creditsRequired: schedule.creditsRequired || 1,
-          userBookingStatus: schedule.userBookingStatus
+          userBookingStatus: schedule.userBookingStatus,
+          waitlistCount: schedule.waitlistCount || 0
         }));
         
         console.log('处理后的课程列表:', courses);
@@ -386,7 +387,7 @@ Page({
       maxCapacity: course.maxCapacity,
       minCapacity: course.minCapacity,
       remainingSlots: course.remainingSlots,
-      waitlistCount: course.status === 'full' ? 3 : 0, // 模拟等位人数
+      waitlistCount: course.waitlistCount || 0, // 真实等位人数
       currentBookings: course.currentBookings
     };
     

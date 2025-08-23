@@ -12,6 +12,8 @@ exports.main = async (event, context) => {
   console.log('取消预约，bookingId:', bookingId, 'openid:', openid);
   
   try {
+    let promotedUser = null; // 声明递补用户变量
+    
     // 查询预约信息
     const bookingResult = await db.collection('bookings').doc(bookingId).get();
     if (!bookingResult.data) {
@@ -65,44 +67,130 @@ exports.main = async (event, context) => {
       }
     });
     
-    // 如果是正式预约（非等位），需要退还次卡并更新课程安排
+    // 退还次卡（无论是正式预约还是等位，都需要退还）
+    await db.collection('users').where({ openid }).update({
+      data: {
+        groupCredits: _.inc(booking.creditsUsed || 1),
+        updateTime: new Date()
+      }
+    });
+    
+    console.log('退还次卡:', booking.creditsUsed || 1, '原状态:', booking.status);
+    
+    // 如果是正式预约，需要更新课程安排并处理递补
     if (booking.status === 'booked') {
-      // 退还次卡
-      await db.collection('users').where({ openid }).update({
-        data: {
-          groupCredits: _.inc(booking.creditsUsed || 1),
-          updateTime: new Date()
+      
+      // 从课程安排的bookings数组中移除此预约
+      let updatedBookings = [];
+      if (schedule.bookings && schedule.bookings.length > 0) {
+        updatedBookings = schedule.bookings.filter(b => b.userId !== openid);
+      }
+      
+      // 检查是否有等位的人需要递补
+      const waitlistBookings = updatedBookings.filter(b => b.status === 'waitlist')
+        .sort((a, b) => new Date(a.createTime) - new Date(b.createTime)); // 按创建时间排序，最早的优先
+      
+      let newCurrentBookings = Math.max(0, (schedule.currentBookings || 0) - 1);
+      
+      if (waitlistBookings.length > 0) {
+        // 有等位的人，递补第一个
+        const firstWaitlist = waitlistBookings[0];
+        console.log('找到等位用户，准备递补:', firstWaitlist);
+        
+        // 更新等位用户状态为已预约
+        const waitlistIndex = updatedBookings.findIndex(b => b.userId === firstWaitlist.userId);
+        if (waitlistIndex !== -1) {
+          updatedBookings[waitlistIndex].status = 'booked';
+          updatedBookings[waitlistIndex].position = null;
+          updatedBookings[waitlistIndex].promotedTime = new Date();
+          
+          // 更新其他等位用户的位置
+          const remainingWaitlist = updatedBookings.filter(b => b.status === 'waitlist')
+            .sort((a, b) => new Date(a.createTime) - new Date(b.createTime));
+          remainingWaitlist.forEach((booking, index) => {
+            const bookingIndex = updatedBookings.findIndex(b => b.userId === booking.userId);
+            if (bookingIndex !== -1) {
+              updatedBookings[bookingIndex].position = index + 1;
+            }
+          });
+          
+          newCurrentBookings = schedule.currentBookings || 0; // 保持原有预约人数，因为有人递补
+          promotedUser = firstWaitlist;
+          
+          // 递补用户在等位时已经扣除了次数，这里不需要再次扣除
+          // 直接更新bookings集合中的记录
+          try {
+            const promotedBookingResult = await db.collection('bookings')
+              .where({
+                userId: firstWaitlist.userId,
+                scheduleId: booking.scheduleId,
+                status: 'waitlist'
+              })
+              .get();
+            
+            if (promotedBookingResult.data.length > 0) {
+              await db.collection('bookings').doc(promotedBookingResult.data[0]._id).update({
+                data: {
+                  status: 'booked',
+                  position: null,
+                  promotedTime: new Date()
+                }
+              });
+              console.log('更新bookings集合中的递补记录成功');
+            }
+          } catch (error) {
+            console.error('更新递补用户记录失败:', error);
+          }
         }
-      });
+      }
       
-      console.log('退还次卡:', booking.creditsUsed || 1);
-      
-      // 更新课程安排的当前预约人数
-      const newCurrentBookings = Math.max(0, (schedule.currentBookings || 0) - 1);
+      // 更新课程安排
       await db.collection('courseSchedule').doc(booking.scheduleId).update({
         data: {
+          bookings: updatedBookings,
           currentBookings: newCurrentBookings
         }
       });
       
-      console.log('更新课程当前预约人数:', newCurrentBookings);
-      
-      // 从课程安排的bookings数组中移除此预约
+      console.log('更新课程安排成功，当前预约人数:', newCurrentBookings);
+      if (promotedUser) {
+        console.log('递补成功，递补用户:', promotedUser.userId);
+      }
+    } else if (booking.status === 'waitlist') {
+      // 如果取消的是等位，需要更新其他等位用户的位置
       if (schedule.bookings && schedule.bookings.length > 0) {
         const updatedBookings = schedule.bookings.filter(b => b.userId !== openid);
+        
+        // 重新计算等位位置
+        const waitlistBookings = updatedBookings.filter(b => b.status === 'waitlist')
+          .sort((a, b) => new Date(a.createTime) - new Date(b.createTime));
+        
+        waitlistBookings.forEach((booking, index) => {
+          const bookingIndex = updatedBookings.findIndex(b => b.userId === booking.userId);
+          if (bookingIndex !== -1) {
+            updatedBookings[bookingIndex].position = index + 1;
+          }
+        });
+        
         await db.collection('courseSchedule').doc(booking.scheduleId).update({
           data: {
             bookings: updatedBookings
           }
         });
-        console.log('从课程安排中移除预约记录');
+        
+        console.log('更新等位队列位置成功');
       }
     }
     
     return {
       success: true,
       message: '取消预约成功',
-      refunded: booking.status === 'booked' // 是否退还了次卡
+      refunded: true, // 现在无论什么状态都会退还次卡
+      refundedCredits: booking.creditsUsed || 1,
+      promoted: promotedUser ? {
+        userId: promotedUser.userId,
+        message: '已自动递补等位用户'
+      } : null
     };
     
   } catch (error) {

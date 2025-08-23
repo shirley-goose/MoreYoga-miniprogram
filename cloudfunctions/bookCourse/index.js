@@ -92,19 +92,17 @@ exports.main = async (event, context) => {
       currentBookings: isWaitlist ? currentBookings : currentBookings + 1
     };
     
-    // 扣除用户次卡（只有正式预约才扣除，等位不扣除）
-    if (!isWaitlist) {
-      const newGroupCredits = user.groupCredits - requiredCredits;
-      
-      // 更新用户次卡余额
-      await db.collection('users').doc(user._id).update({
-        data: {
-          groupCredits: newGroupCredits
-        }
-      });
-      
-      console.log('扣除次卡成功，剩余:', newGroupCredits);
-    }
+    // 扣除用户次卡（预约即扣除，无论是直接成功还是等位）
+    const newGroupCredits = user.groupCredits - requiredCredits;
+    
+    // 更新用户次卡余额
+    await db.collection('users').doc(user._id).update({
+      data: {
+        groupCredits: newGroupCredits
+      }
+    });
+    
+    console.log('扣除次卡成功，剩余:', newGroupCredits, '状态:', isWaitlist ? '等位' : '已预约');
     
     // 更新课程安排
     await db.collection('courseSchedule').doc(scheduleId).update({
@@ -125,8 +123,8 @@ exports.main = async (event, context) => {
       message: isWaitlist ? '已加入等位队列' : '预约成功',
       status: bookingData.status,
       position: bookingData.position,
-      creditsUsed: isWaitlist ? 0 : requiredCredits,
-      remainingCredits: isWaitlist ? user.groupCredits : user.groupCredits - requiredCredits
+      creditsUsed: requiredCredits,
+      remainingCredits: newGroupCredits
     };
     
   } catch (error) {

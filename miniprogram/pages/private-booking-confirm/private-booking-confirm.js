@@ -66,7 +66,7 @@ Page({
   // 获取老师头像
   getTeacherAvatar(teacherId) {
     const avatarMap = {
-      'yinger': 'cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/images/teacher_yinger-6c1741.png',
+      'yinger': '../../images/teacher_yinger-6c1741.png',
       'zhouzhou': '',
       'yaqin': '',
       'qiqi': '',

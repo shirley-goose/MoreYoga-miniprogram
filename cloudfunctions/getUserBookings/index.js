@@ -51,6 +51,23 @@ exports.main = async (event, context) => {
               imageUrl: '../../images/background.png', // 默认课程图片
               description: schedule.description || ''
             };
+            
+            // 如果是等位状态，计算前面还有多少人
+            if (booking.status === 'waitlist' && schedule.bookings) {
+              // 获取所有等位的预约，按创建时间排序
+              const waitlistBookings = schedule.bookings
+                .filter(b => b.status === 'waitlist')
+                .sort((a, b) => new Date(a.createTime) - new Date(b.createTime));
+              
+              // 找到当前用户在等位队列中的位置
+              const userIndex = waitlistBookings.findIndex(b => b.userId === openid);
+              if (userIndex !== -1) {
+                // 前面的人数就是用户的索引
+                booking.waitingAhead = userIndex;
+                // 更新位置信息
+                booking.position = userIndex + 1;
+              }
+            }
           }
           
           return {

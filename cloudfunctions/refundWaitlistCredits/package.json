@@ -1,0 +1,9 @@
+{
+  "name": "refundWaitlistCredits",
+  "version": "1.0.0",
+  "description": "课程开始时自动返还等位未成功的次数云函数",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}
