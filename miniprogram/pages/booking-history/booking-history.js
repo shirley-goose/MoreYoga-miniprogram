@@ -11,6 +11,26 @@ Page({
     this.loadBookingHistory();
   },
 
+  // 更新预约状态函数
+  async updateBookingStatus() {
+    try {
+      console.log('开始更新预约状态...');
+      
+      const result = await wx.cloud.callFunction({
+        name: 'updateBookingStatus'
+      });
+      
+      console.log('状态更新结果:', result);
+      
+      if (result.result && result.result.success) {
+        console.log('状态更新成功，更新数量:', result.result.updatedCount);
+      }
+    } catch (error) {
+      console.error('更新预约状态失败:', error);
+      // 不影响主流程，继续加载历史记录
+    }
+  },
+
   // 加载预约历史记录
   async loadBookingHistory(reset = true) {
     if (this.data.loading) return;
@@ -22,10 +42,13 @@ Page({
       
       console.log('加载预约历史，skip:', skip, 'limit:', this.data.pageSize);
       
+      // 先调用状态更新函数
+      await this.updateBookingStatus();
+      
       const result = await wx.cloud.callFunction({
         name: 'getUserBookings',
         data: {
-          limit: this.data.pageSize,
+          limit: 50, // 增加查询数量以获取更多历史记录
           skip: skip
         }
       });
@@ -40,6 +63,7 @@ Page({
           const now = new Date();
           let statusText = '';
           let statusClass = '';
+          let cancelTime = null;
           
           // 根据数据库中的状态显示
           switch (booking.status) {
@@ -50,6 +74,11 @@ Page({
             case 'cancelled':
               statusText = '已取消';
               statusClass = 'cancelled';
+              // 格式化取消时间
+              if (booking.cancelTime) {
+                const cancelDate = new Date(booking.cancelTime);
+                cancelTime = `${cancelDate.getFullYear()}-${String(cancelDate.getMonth() + 1).padStart(2, '0')}-${String(cancelDate.getDate()).padStart(2, '0')} ${String(cancelDate.getHours()).padStart(2, '0')}:${String(cancelDate.getMinutes()).padStart(2, '0')}`;
+              }
               break;
             case 'fail':
               statusText = '等位失败';
@@ -60,10 +89,10 @@ Page({
               statusClass = 'refunded';
               break;
             case 'booked':
-              // 检查是否已过期但状态未更新
+              // 检查是否已过期但状态未更新 - 使用开始时间判断
               if (booking.schedule) {
-                const classEndTime = new Date(`${booking.schedule.date}T${booking.schedule.endTime}:00`);
-                if (classEndTime < now) {
+                const classStartTime = new Date(`${booking.schedule.date}T${booking.schedule.startTime}:00`);
+                if (classStartTime < now) {
                   statusText = '已完成';
                   statusClass = 'completed';
                 } else {
@@ -76,10 +105,10 @@ Page({
               }
               break;
             case 'waitlist':
-              // 检查是否已过期但状态未更新
+              // 检查是否已过期但状态未更新 - 使用开始时间判断
               if (booking.schedule) {
-                const classEndTime = new Date(`${booking.schedule.date}T${booking.schedule.endTime}:00`);
-                if (classEndTime < now) {
+                const classStartTime = new Date(`${booking.schedule.date}T${booking.schedule.startTime}:00`);
+                if (classStartTime < now) {
                   statusText = '等位失败';
                   statusClass = 'failed';
                 } else {
@@ -107,12 +136,15 @@ Page({
             statusClass: statusClass,
             creditsUsed: booking.creditsUsed || 1,
             createTime: booking.createTime,
-            courseDateTime: booking.schedule ? new Date(`${booking.schedule.date}T${booking.schedule.startTime}:00`) : new Date(booking.createTime)
+            cancelTime: cancelTime, // 添加取消时间
+            courseDateTime: booking.schedule ? new Date(`${booking.schedule.date}T${booking.schedule.startTime}:00`) : new Date(booking.createTime),
+            // 用于排序的绝对时间 - 取消的课程使用课程时间，其他使用课程时间
+            absoluteDateTime: booking.schedule ? new Date(`${booking.schedule.date}T${booking.schedule.startTime}:00`) : new Date(booking.createTime)
           };
         });
         
-        // 按课程时间排序，最近的在前
-        processedHistory.sort((a, b) => b.courseDateTime - a.courseDateTime);
+        // 按课程的绝对时间排序，最近的在前（包括取消的课程）
+        processedHistory.sort((a, b) => b.absoluteDateTime - a.absoluteDateTime);
         
         console.log('处理后的历史记录:', processedHistory);
         

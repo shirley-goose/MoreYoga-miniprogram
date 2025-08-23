@@ -131,7 +131,7 @@ Page({
       const result = await wx.cloud.callFunction({
         name: 'getUserBookings',
         data: { 
-          limit: 10 // 增加查询数量以确保有足够的未来课程
+          limit: 20 // 增加查询数量以确保有足够的未来课程
         }
       });
       
@@ -141,9 +141,11 @@ Page({
         console.log('原始预约数据:', result.result.data);
         
         const now = new Date();
+        const oneHourFromNow = new Date(now.getTime() + 1 * 60 * 60 * 1000);
+        
         const upcomingClasses = result.result.data
           .filter(booking => {
-            // 显示已预约的和等位的课程
+            // 只显示已预约的和等位的课程
             if (booking.status !== 'booked' && booking.status !== 'waitlist') return false;
             
             if (!booking.schedule) {
@@ -166,12 +168,11 @@ Page({
             return isFuture;
           })
           .map(booking => {
-            const classDateTime = new Date(`${booking.schedule.date}T${booking.schedule.startTime}:00`);
+            const classStartTime = new Date(`${booking.schedule.date}T${booking.schedule.startTime}:00`);
             const classEndTime = new Date(`${booking.schedule.date}T${booking.schedule.endTime}:00`);
-            const hoursDiff = (classDateTime - now) / (1000 * 60 * 60);
             
-            // 判断课程是否已结束
-            const isEnded = classEndTime < now;
+            // 统一取消时间检查逻辑：距开始时间1h内不可取消
+            const canCancel = classStartTime > oneHourFromNow;
             
             const courseItem = {
               id: booking._id,
@@ -179,22 +180,22 @@ Page({
               teacherName: booking.teacherName || booking.schedule.teacherName || '老师',
               date: booking.schedule.date,
               time: `${booking.schedule.startTime}-${booking.schedule.endTime}`,
-              courseImage: '../../images/background.png', // 使用默认背景图
-              canCancel: !isEnded && (booking.status === 'waitlist' || hoursDiff > 1), // 等位可以随时取消，已预约的需要距离开始时间超过1小时
-              isEnded: isEnded,
+              courseImage: '../../images/background.png',
+              canCancel: canCancel, // 统一的取消时间检查
+              isEnded: false, // 已过滤掉已结束的课程
               bookingId: booking._id,
               scheduleId: booking.scheduleId,
-              status: booking.status, // 添加预约状态
+              status: booking.status,
               position: booking.position || null, // 等位位置
               waitingAhead: booking.waitingAhead || 0, // 前面等位人数
-              isWaitlist: booking.status === 'waitlist' // 是否为等位
+              isWaitlist: booking.status === 'waitlist'
             };
             
             console.log('处理后的课程项:', courseItem);
             return courseItem;
           })
           .sort((a, b) => {
-            // 按日期和时间排序
+            // 按日期和时间排序，最近的在前
             const dateA = new Date(`${a.date}T${a.time.split('-')[0]}:00`);
             const dateB = new Date(`${b.date}T${b.time.split('-')[0]}:00`);
             return dateA - dateB;
@@ -937,8 +938,12 @@ Page({
       return;
     }
     
-    // 检查是否可以取消
-    if (!courseItem.canCancel) {
+    // 检查是否可以取消 - 统一时间检查逻辑
+    const now = new Date();
+    const oneHourFromNow = new Date(now.getTime() + 1 * 60 * 60 * 1000);
+    const classStartTime = new Date(`${courseItem.date}T${courseItem.time.split('-')[0]}:00`);
+    
+    if (classStartTime <= oneHourFromNow) {
       wx.showModal({
         title: '无法取消',
         content: '距团课开始时间1h内不可取消',

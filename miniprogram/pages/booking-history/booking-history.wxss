@@ -9,7 +9,15 @@
   font-size: 40rpx;
   font-weight: 600;
   color: #000;
-  margin-bottom: 40rpx;
+  margin-bottom: 20rpx;
+  text-align: center;
+}
+
+.page-comment {
+  font-size: 24rpx;
+  font-weight: 200;
+  color: #666;
+  margin-bottom: 20rpx;
   text-align: center;
 }
 
@@ -114,6 +122,17 @@
 .credits-info {
   font-size: 20rpx;
   color: #999;
+}
+
+/* 取消时间样式 */
+.cancel-time {
+  font-size: 22rpx;
+  color: #ff6b6b;
+  margin-top: 8rpx;
+  padding: 4rpx 8rpx;
+  background: rgba(255, 107, 107, 0.1);
+  border-radius: 8rpx;
+  display: inline-block;
 }
 
 /* 空状态 */

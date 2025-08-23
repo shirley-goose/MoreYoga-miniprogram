@@ -16,6 +16,7 @@
 <view class="container">
   <!-- 页面标题 -->
   <view class="page-title">我的预约记录</view>
+  <view class="page-comment">按时间顺序从后往前排序</view>
 
   <!-- 课程列表 -->
   <view class="history-list">
@@ -27,6 +28,10 @@
             <view class="course-name">{{item.courseName || '瑜伽课程'}}</view>
             <view class="teacher-name">{{item.teacherName || '老师'}}</view>
             <view class="course-time">{{item.date}} {{item.time}}</view>
+            <!-- 显示取消时间 -->
+            <view wx:if="{{item.cancelTime && item.statusClass === 'cancelled'}}" class="cancel-time">
+              取消时间：{{item.cancelTime}}
+            </view>
           </view>
           <view class="course-status">
             <view class="status-tag {{item.statusClass}}">{{item.statusText}}</view>
