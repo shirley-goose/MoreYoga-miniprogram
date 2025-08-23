@@ -8,22 +8,31 @@ cloud.init({
 const db = cloud.database()
 
 // 获取私教课程
-async function getPrivateCourses(teacherId, teacherName) {
+async function getPrivateCourses(teacherId, teacherName, type = 'upcoming') {
   try {
-    console.log('获取私教课程，teacherId:', teacherId, 'teacherName:', teacherName)
+    console.log('获取私教课程，teacherId:', teacherId, 'teacherName:', teacherName, 'type:', type)
     
-    // 获取status为'confirmed'且时间还未发生的私教课程
     const now = new Date()
     const currentDate = now.toISOString().split('T')[0] // YYYY-MM-DD格式
     
+    let whereCondition = {
+      teacherName: teacherName
+    }
+    
+    if (type === 'upcoming') {
+      // 获取未来的课程（已确认状态）
+      whereCondition.status = db.command.in(['confirmed', 'completed'])
+      whereCondition.date = db.command.gte(currentDate)
+    } else if (type === 'archived') {
+      // 获取已结课程（已完成或过去的已确认课程）
+      whereCondition.date = db.command.lt(currentDate)
+      whereCondition.status = db.command.in(['confirmed', 'completed'])
+    }
+    
     const result = await db.collection('privateBookings')
-      .where({
-        teacherName: teacherName,
-        status: 'confirmed',
-        date: db.command.gte(currentDate) // 大于等于今天的日期
-      })
-      .orderBy('date', 'asc')
-      .orderBy('startTime', 'asc')
+      .where(whereCondition)
+      .orderBy('date', type === 'upcoming' ? 'asc' : 'desc')
+      .orderBy('startTime', type === 'upcoming' ? 'asc' : 'desc')
       .get()
 
     console.log('私教课程数量:', result.data.length)
@@ -36,23 +45,34 @@ async function getPrivateCourses(teacherId, teacherName) {
 }
 
 // 获取团课
-async function getGroupCourses(teacherId, teacherName, teacherNameShort) {
+async function getGroupCourses(teacherId, teacherName, teacherNameShort, type = 'upcoming') {
   try {
-    console.log('获取团课，teacherId:', teacherId, 'teacherName:', teacherName, 'teacherNameShort:', teacherNameShort)
+    console.log('获取团课，teacherId:', teacherId, 'teacherName:', teacherName, 'teacherNameShort:', teacherNameShort, 'type:', type)
     
-    // 获取当前时间，只查询未发生的课程
     const now = new Date()
     const currentDate = now.toISOString().split('T')[0] // YYYY-MM-DD格式
     console.log('查询团课，当前日期:', currentDate)
+    
+    // 根据类型设置日期条件
+    let dateCondition
+    let orderDirection
+    
+    if (type === 'upcoming') {
+      dateCondition = db.command.gte(currentDate) // 大于等于今天的日期
+      orderDirection = 'asc'
+    } else if (type === 'archived') {
+      dateCondition = db.command.lt(currentDate) // 小于今天的日期
+      orderDirection = 'desc'
+    }
     
     // 先尝试用完整名称查询
     let scheduleResult = await db.collection('courseSchedule')
       .where({
         teacherName: teacherName,
-        date: db.command.gte(currentDate) // 大于等于今天的日期
+        date: dateCondition
       })
-      .orderBy('date', 'asc')
-      .orderBy('startTime', 'asc')
+      .orderBy('date', orderDirection)
+      .orderBy('startTime', orderDirection)
       .get()
     
     console.log('用完整名称查询结果:', scheduleResult.data.length)
@@ -63,10 +83,10 @@ async function getGroupCourses(teacherId, teacherName, teacherNameShort) {
       scheduleResult = await db.collection('courseSchedule')
         .where({
           teacherName: teacherNameShort,
-          date: db.command.gte(currentDate)
+          date: dateCondition
         })
-        .orderBy('date', 'asc')
-        .orderBy('startTime', 'asc')
+        .orderBy('date', orderDirection)
+        .orderBy('startTime', orderDirection)
         .get()
       
       console.log('用简称查询结果:', scheduleResult.data.length)
@@ -169,7 +189,7 @@ async function getGroupCourses(teacherId, teacherName, teacherNameShort) {
 // 云函数入口函数
 exports.main = async (event, context) => {
   try {
-    const { teacherId } = event
+    const { teacherId, type = 'upcoming' } = event
 
     if (!teacherId) {
       return {
@@ -178,7 +198,7 @@ exports.main = async (event, context) => {
       }
     }
 
-    console.log('获取老师课程，teacherId:', teacherId)
+    console.log('获取老师课程，teacherId:', teacherId, 'type:', type)
 
     // 根据teacherId获取老师姓名 - 支持多种格式
     const teacherNames = {
@@ -203,19 +223,21 @@ exports.main = async (event, context) => {
 
     // 并行获取私教课程和团课
     const [privateResult, groupResult] = await Promise.all([
-      getPrivateCourses(teacherId, teacherName),
-      getGroupCourses(teacherId, teacherName, teacherNameShort)
+      getPrivateCourses(teacherId, teacherName, type),
+      getGroupCourses(teacherId, teacherName, teacherNameShort, type)
     ])
 
     console.log('获取课程结果:', {
       private: privateResult.length,
-      group: groupResult.length
+      group: groupResult.length,
+      type: type
     })
 
     return {
       success: true,
       privateCourses: privateResult,
-      groupCourses: groupResult
+      groupCourses: groupResult,
+      type: type
     }
 
   } catch (error) {

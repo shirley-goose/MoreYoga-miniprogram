@@ -22,6 +22,7 @@
     "pages/teacher-schedule/teacher-schedule",
     "pages/teacher-requests/teacher-requests",
     "pages/teacher-classes/teacher-classes",
+    "pages/teacher-archive-classes/teacher-archive-classes",
     "pages/private-history/private-history"
   ],
   "window": {

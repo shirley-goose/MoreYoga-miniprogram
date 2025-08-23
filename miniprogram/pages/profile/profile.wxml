@@ -166,9 +166,16 @@
             </view>
             
             <!-- 操作按钮 - 右下角 -->
-            <view class="course-actions-bottom" wx:if="{{!item.isEnded && item.displayStatus !== 'cancelled' && item.displayStatus !== 'rejected' && item.displayStatus !== 'cancel-pending'}}">
+            <view class="course-actions-bottom" wx:if="{{item.displayStatus === 'pending' || item.displayStatus === 'confirmed'}}">
               <view class="action-btn cancel-btn" bindtap="cancelPrivateBooking" data-id="{{item._id}}" data-status="{{item.status}}" data-date="{{item.date}}" data-start-time="{{item.startTime}}">
                 取消预约
+              </view>
+            </view>
+            
+            <!-- 调试按钮 - 临时添加 -->
+            <view class="course-actions-bottom" style="bottom: 60rpx; z-index: 20;">
+              <view class="action-btn" style="background: red; color: white;" bindtap="testButton" data-id="{{item._id}}">
+                测试按钮
               </view>
             </view>
           </view>

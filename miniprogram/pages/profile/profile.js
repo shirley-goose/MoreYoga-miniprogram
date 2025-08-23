@@ -1116,6 +1116,15 @@ Page({
     }
   },
 
+  // 测试按钮函数
+  testButton(e) {
+    console.log('测试按钮被点击', e);
+    wx.showToast({
+      title: '测试按钮正常',
+      icon: 'success'
+    });
+  },
+
   // 查看私教往期记录
   viewPrivateHistory() {
     wx.navigateTo({

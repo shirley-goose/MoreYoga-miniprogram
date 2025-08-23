@@ -174,6 +174,24 @@
   border: 1rpx solid rgba(244, 67, 54, 0.3);
 }
 
+.pending-btn {
+  background: rgba(255, 193, 7, 0.1);
+  color: #ffc107;
+  border: 1rpx solid rgba(255, 193, 7, 0.3);
+}
+
+.cancel-pending-btn {
+  background: rgba(255, 152, 0, 0.1);
+  color: #ff9800;
+  border: 1rpx solid rgba(255, 152, 0, 0.3);
+}
+
+.confirmed-btn {
+  background: rgba(33, 150, 243, 0.1);
+  color: #2196f3;
+  border: 1rpx solid rgba(33, 150, 243, 0.3);
+}
+
 /* 空状态 */
 .empty-state {
   text-align: center;

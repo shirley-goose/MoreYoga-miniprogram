@@ -1,4 +1,4 @@
-// 老师课程页面
+// 老师已结课程页面
 Page({
   data: {
     currentTab: 'private',
@@ -11,37 +11,31 @@ Page({
   },
 
   onLoad() {
-    console.log('我的课程页面加载');
+    console.log('已结课程页面加载');
     this.loadTeacherInfo();
-    this.loadCourses();
+    this.loadArchivedCourses();
   },
 
   onShow() {
     // 每次显示时刷新数据
-    this.loadCourses();
+    this.loadArchivedCourses();
   },
 
   // 返回上一页
   goBack() {
     console.log('点击返回按钮');
-    // 获取页面栈信息
     const pages = getCurrentPages();
-    console.log('当前页面栈长度:', pages.length);
     
     if (pages.length > 1) {
-      // 有上一页，正常返回
       wx.navigateBack({
         fail: (err) => {
           console.error('返回失败:', err);
-          // 返回失败时跳转到老师工作台
           wx.redirectTo({
             url: '/pages/teacher-dashboard/teacher-dashboard'
           });
         }
       });
     } else {
-      // 没有上一页，直接跳转到老师工作台
-      console.log('没有上一页，跳转到老师工作台');
       wx.redirectTo({
         url: '/pages/teacher-dashboard/teacher-dashboard'
       });
@@ -53,7 +47,6 @@ Page({
     try {
       console.log('开始加载老师信息...');
       
-      // 检查本地存储的老师信息
       const teacherInfo = wx.getStorageSync('teacher_info');
       console.log('从本地存储获取的老师信息:', teacherInfo);
       
@@ -62,23 +55,6 @@ Page({
         console.log('加载老师信息成功:', teacherInfo);
       } else {
         console.error('未找到老师信息或信息不完整');
-        
-        // 调试：显示本地存储中的所有相关数据
-        try {
-          const allKeys = wx.getStorageInfoSync();
-          console.log('本地存储的所有key:', allKeys.keys);
-          
-          // 检查其他可能的老师信息存储key
-          const adminInfo = wx.getStorageSync('admin_info');
-          console.log('admin_info:', adminInfo);
-          
-          const adminToken = wx.getStorageSync('admin_token');
-          console.log('admin_token:', adminToken);
-          
-        } catch (e) {
-          console.error('获取存储信息失败:', e);
-        }
-        
         wx.showModal({
           title: '提示',
           content: '老师信息缺失，请重新登录',
@@ -105,13 +81,13 @@ Page({
     });
   },
 
-  // 加载课程
-  async loadCourses() {
+  // 加载已结课程
+  async loadArchivedCourses() {
     try {
       wx.showLoading({ title: '加载中...' });
       
       const { teacherInfo } = this.data;
-      console.log('开始加载课程，老师信息:', teacherInfo);
+      console.log('开始加载已结课程，老师信息:', teacherInfo);
       
       if (!teacherInfo || !teacherInfo.id) {
         console.error('缺少老师信息');
@@ -126,12 +102,12 @@ Page({
 
       console.log('调用getTeacherCourses云函数，teacherId:', teacherInfo.id);
 
-      // 调用云函数获取未来课程
+      // 调用云函数获取已结课程
       const result = await wx.cloud.callFunction({
         name: 'getTeacherCourses',
         data: {
           teacherId: teacherInfo.id,
-          type: 'upcoming' // 只获取未来的课程
+          type: 'archived' // 指定获取已结课程
         }
       });
 
@@ -164,8 +140,7 @@ Page({
           duration: 3000
         });
       } else {
-        console.error('获取课程失败:', result.result?.message);
-        console.error('完整错误信息:', result);
+        console.error('获取已结课程失败:', result.result?.message);
         wx.showModal({
           title: '加载失败',
           content: result.result?.message || '未知错误',
@@ -174,7 +149,7 @@ Page({
       }
     } catch (error) {
       wx.hideLoading();
-      console.error('加载课程失败:', error);
+      console.error('加载已结课程失败:', error);
       wx.showModal({
         title: '网络错误', 
         content: `错误详情: ${error.message}`,
@@ -188,25 +163,14 @@ Page({
     return groupCourses.map(course => {
       // 格式化日期显示
       const date = new Date(course.date);
-      const today = new Date();
-      const tomorrow = new Date();
-      tomorrow.setDate(today.getDate() + 1);
-      
-      let dateDisplay;
-      if (date.toDateString() === today.toDateString()) {
-        dateDisplay = '今天';
-      } else if (date.toDateString() === tomorrow.toDateString()) {
-        dateDisplay = '明天';
-      } else {
-        const month = date.getMonth() + 1;
-        const day = date.getDate();
-        const weekDay = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][date.getDay()];
-        dateDisplay = `${month}月${day}日 ${weekDay}`;
-      }
+      const month = date.getMonth() + 1;
+      const day = date.getDate();
+      const weekDay = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][date.getDay()];
+      const dateDisplay = `${month}月${day}日 ${weekDay}`;
 
       // 处理预约状态文本（过滤掉已取消的记录）
       const validBookings = (course.bookings || [])
-        .filter(booking => booking.status !== 'cancelled') // 过滤掉已取消的
+        .filter(booking => booking.status !== 'cancelled')
         .map(booking => ({
           ...booking,
           statusText: this.getBookingStatusText(booking.status)
@@ -216,8 +180,8 @@ Page({
         ...course,
         dateDisplay,
         bookings: validBookings,
-        bookedCount: validBookings.filter(b => b.status === 'booked' || b.status === 'confirmed').length,
-        showDetail: false // 用于控制展开/收起状态
+        bookedCount: validBookings.filter(b => b.status === 'booked' || b.status === 'confirmed' || b.status === 'completed').length,
+        showDetail: false
       };
     });
   },
@@ -238,7 +202,6 @@ Page({
     const index = e.currentTarget.dataset.index;
     const groupCourses = [...this.data.groupCourses];
     
-    // 切换当前课程的展开状态
     groupCourses[index].showDetail = !groupCourses[index].showDetail;
     
     this.setData({
@@ -250,63 +213,5 @@ Page({
       courseName: groupCourses[index].courseName,
       showDetail: groupCourses[index].showDetail
     });
-  },
-
-  // 标记私教课程为完成
-  async markAsCompleted(e) {
-    const courseId = e.currentTarget.dataset.id;
-    
-    wx.showModal({
-      title: '确认完成',
-      content: '确定要标记这节课为已完成吗？',
-      success: async (res) => {
-        if (res.confirm) {
-          await this.updateCourseStatus(courseId, 'completed');
-        }
-      }
-    });
-  },
-
-  // 更新课程状态
-  async updateCourseStatus(courseId, status) {
-    try {
-      wx.showLoading({ title: '处理中...' });
-
-      const result = await wx.cloud.callFunction({
-        name: 'updatePrivateCourseStatus',
-        data: {
-          courseId: courseId,
-          status: status
-        }
-      });
-
-      wx.hideLoading();
-
-      if (result.result && result.result.success) {
-        wx.showToast({
-          title: '更新成功',
-          icon: 'success'
-        });
-        
-        // 刷新列表
-        this.loadCourses();
-      } else {
-        wx.showModal({
-          title: '更新失败',
-          content: result.result?.message || '操作失败，请重试',
-          showCancel: false
-        });
-      }
-    } catch (error) {
-      wx.hideLoading();
-      console.error('更新课程状态失败:', error);
-      wx.showModal({
-        title: '更新失败',
-        content: '网络错误，请重试',
-        showCancel: false
-      });
-    }
-  },
-
-
+  }
 });

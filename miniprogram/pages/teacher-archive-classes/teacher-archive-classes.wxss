@@ -1,0 +1,91 @@
+/* 老师已结课程页面样式 */
+@import "../teacher-classes/teacher-classes.wxss";
+
+/* 已结课程特殊样式 */
+.course-item.archived {
+  opacity: 0.85;
+  border-left: 4px solid #28a745;
+}
+
+.group-course-item.archived {
+  opacity: 0.85;
+  border-left: 4px solid #28a745;
+}
+
+.course-status.completed {
+  background: #28a745;
+  color: white;
+}
+
+.completed-text {
+  color: #28a745;
+  font-weight: 600;
+}
+
+.completion-time {
+  margin-top: 10rpx;
+  padding: 8rpx 12rpx;
+  background: #f8f9fa;
+  border-radius: 6rpx;
+  font-size: 24rpx;
+}
+
+.completion-label {
+  color: #666;
+  margin-right: 8rpx;
+}
+
+.completion-text {
+  color: #333;
+  font-weight: 500;
+}
+
+/* 空状态样式优化 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100rpx 40rpx;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 80rpx;
+  margin-bottom: 30rpx;
+  opacity: 0.6;
+}
+
+.empty-text {
+  font-size: 32rpx;
+  color: #666;
+  margin-bottom: 15rpx;
+  font-weight: 500;
+}
+
+.empty-hint {
+  font-size: 26rpx;
+  color: #999;
+  line-height: 1.5;
+}
+
+/* 列表头部样式 */
+.list-header {
+  padding: 30rpx;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12rpx;
+  margin: 20rpx 30rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+}
+
+.header-text {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.header-desc {
+  font-size: 26rpx;
+  color: #666;
+}

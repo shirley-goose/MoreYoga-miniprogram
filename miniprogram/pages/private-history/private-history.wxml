@@ -33,13 +33,22 @@
         <!-- 状态标签 - 右上角 -->
         <view class="course-status-top">
           <view class="status-btn completed-btn" wx:if="{{item.displayStatus === 'completed'}}">
-            已完成
+            {{item.statusText || '已完成'}}
           </view>
           <view class="status-btn cancelled-btn" wx:elif="{{item.displayStatus === 'cancelled'}}">
-            已取消
+            {{item.statusText || '已取消'}}
           </view>
           <view class="status-btn rejected-btn" wx:elif="{{item.displayStatus === 'rejected'}}">
-            已拒绝
+            {{item.statusText || '已拒绝'}}
+          </view>
+          <view class="status-btn pending-btn" wx:elif="{{item.displayStatus === 'pending'}}">
+            {{item.statusText || '待确认'}}
+          </view>
+          <view class="status-btn cancel-pending-btn" wx:elif="{{item.displayStatus === 'cancel-pending'}}">
+            {{item.statusText || '申请取消中'}}
+          </view>
+          <view class="status-btn confirmed-btn" wx:elif="{{item.displayStatus === 'confirmed'}}">
+            {{item.statusText || '已确认'}}
           </view>
         </view>
       </view>

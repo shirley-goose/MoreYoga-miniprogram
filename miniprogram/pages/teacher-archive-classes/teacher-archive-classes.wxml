@@ -1,0 +1,155 @@
+<!-- 老师已结课程页面 -->
+<!-- 背景图 -->
+<image class="global-bg" src="../../images/background.png" mode="aspectFill"/>
+
+<!-- 自定义导航栏 -->
+<view class="nav-bar">
+  <view class="nav-left">
+    <view class="back-btn" bindtap="goBack">
+      <view class="back-icon">←</view>
+    </view>
+  </view>
+  <view class="nav-center">
+    <view class="nav-title">已结课程</view>
+  </view>
+  <view class="nav-right"></view>
+</view>
+
+<!-- 页面内容 -->
+<view class="container">
+  
+  <!-- 课程类型切换 -->
+  <view class="course-tabs">
+    <view class="tab-item {{currentTab === 'private' ? 'active' : ''}}" 
+          bindtap="switchTab" 
+          data-tab="private">
+      <text class="tab-text">私教课</text>
+      <view wx:if="{{privateCourses.length > 0}}" class="tab-count">{{privateCourses.length}}</view>
+    </view>
+    <view class="tab-item {{currentTab === 'group' ? 'active' : ''}}" 
+          bindtap="switchTab" 
+          data-tab="group">
+      <text class="tab-text">团课</text>
+      <view wx:if="{{groupCourses.length > 0}}" class="tab-count">{{groupCourses.length}}</view>
+    </view>
+  </view>
+
+  <!-- 私教课程列表 -->
+  <view wx:if="{{currentTab === 'private'}}">
+    <view wx:if="{{privateCourses.length > 0}}" class="courses-list">
+      <view class="list-header">
+        <view class="header-text">已完成私教课程 ({{privateCourses.length}}节)</view>
+        <view class="header-desc">按完成时间排序</view>
+      </view>
+      
+      <view class="course-item archived" 
+            wx:for="{{privateCourses}}" 
+            wx:key="_id">
+        <view class="course-header">
+          <view class="course-type-label private">私教</view>
+          <view class="course-status completed">
+            <text>已完成</text>
+          </view>
+        </view>
+        
+        <view class="course-content">
+          <view class="course-info">
+            <view class="course-title">私教课程</view>
+            <view class="course-time">{{item.date}} {{item.timeRange}}</view>
+            <view class="student-info">
+              <text class="student-name">学员：{{item.studentName}}</text>
+              <text class="student-phone">{{item.studentPhone}}</text>
+            </view>
+            <view wx:if="{{item.content}}" class="course-content-text">
+              <text class="content-label">需求：</text>
+              <text class="content-text">{{item.content}}</text>
+            </view>
+            <view wx:if="{{item.completedAt}}" class="completion-time">
+              <text class="completion-label">完成时间：</text>
+              <text class="completion-text">{{item.completedAt}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view wx:else class="empty-state">
+      <view class="empty-icon">📚</view>
+      <text class="empty-text">暂无已完成的私教课程</text>
+      <text class="empty-hint">完成的私教课程会在这里显示</text>
+    </view>
+  </view>
+
+  <!-- 团课课程列表 -->
+  <view wx:if="{{currentTab === 'group'}}">
+    <view wx:if="{{groupCourses.length > 0}}" class="group-course-list">
+      <view class="list-header">
+        <view class="header-text">已完成团课 ({{groupCourses.length}}节)</view>
+        <view class="header-desc">按完成时间排序</view>
+      </view>
+
+      <view class="group-course-item archived" 
+            wx:for="{{groupCourses}}" 
+            wx:key="_id"
+            bindtap="toggleGroupCourseDetail" 
+            data-index="{{index}}">
+        
+        <!-- 课程基本信息 -->
+        <view class="group-course-info">
+          <view class="group-course-header">
+            <view class="group-course-title">{{item.courseName}}</view>
+            <view class="booking-count">
+              <text class="count-number">{{item.bookedCount}}</text>
+              <text class="count-label">人参与</text>
+            </view>
+          </view>
+          
+          <view class="group-course-details">
+            <view class="detail-item">
+              <text class="detail-icon">📅</text>
+              <text class="detail-text">{{item.dateDisplay}}</text>
+            </view>
+            <view class="detail-item">
+              <text class="detail-icon">🕐</text>
+              <text class="detail-text">{{item.startTime}} - {{item.endTime}}</text>
+            </view>
+            <view class="detail-item">
+              <text class="detail-icon">✅</text>
+              <text class="detail-text completed-text">已完成</text>
+            </view>
+          </view>
+
+          <!-- 展开/收起图标 -->
+          <view class="expand-icon">
+            <text class="expand-text">{{item.showDetail ? '收起' : '查看学员'}}</text>
+            <text class="expand-arrow">{{item.showDetail ? '▲' : '▼'}}</text>
+          </view>
+        </view>
+
+        <!-- 参与学员列表 -->
+        <view wx:if="{{item.showDetail}}" class="group-booking-list">
+          <view wx:if="{{item.bookings.length === 0}}" class="no-bookings">
+            <text class="no-bookings-text">无参与学员</text>
+          </view>
+          
+          <view wx:else class="booking-students">
+            <view class="students-header">参与学员列表：</view>
+            <view class="student-item" wx:for="{{item.bookings}}" wx:for-item="booking" wx:key="id">
+              <view class="student-info">
+                <view class="student-phone">{{booking.userPhone}}</view>
+                <view class="booking-status-text {{booking.status}}">{{booking.statusText}}</view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view wx:else class="empty-state">
+      <view class="empty-icon">📚</view>
+      <text class="empty-text">暂无已完成的团课</text>
+      <text class="empty-hint">完成的团课会在这里显示</text>
+    </view>
+  </view>
+
+</view>
