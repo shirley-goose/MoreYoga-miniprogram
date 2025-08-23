@@ -179,7 +179,7 @@ Page({
               teacherName: booking.teacherName || booking.schedule.teacherName || '老师',
               date: booking.schedule.date,
               time: `${booking.schedule.startTime}-${booking.schedule.endTime}`,
-              courseImage: 'cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/background.png', // 使用默认背景图
+              courseImage: '../../images/background.png', // 使用默认背景图
               canCancel: !isEnded && hoursDiff > 1, // 未结束且距离开始时间超过1小时才能取消
               isEnded: isEnded,
               bookingId: booking._id,

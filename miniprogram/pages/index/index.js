@@ -2,22 +2,22 @@ Page({
   data: {
     introList: [
       {
-        icon: 'cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/images/icon_场馆介绍.png',
+        icon: '../../images/icon_场馆介绍.png',
         title: '场馆介绍',
         path: '/pages/venue-intro/venue-intro'
       },
       {
-        icon: 'cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/images/icon_师资简介.png',
+        icon: '../../images/icon_师资简介.png',
         title: '师资简介',
         path: '/pages/teacher-list/teacher-list'
       },
       {
-        icon: 'cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/images/icon_课程主题.png',
+        icon: '../../images/icon_课程主题.png',
         title: '课程主题',
         path: '/pages/course-theme/course-theme'
       },
       {
-        icon: 'cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/images/icon_瑜伽理论.png',
+        icon: '../../images/icon_瑜伽理论.png',
         title: '瑜伽理论',
         path: '/pages/yoga-theory/yoga-theory'
       }

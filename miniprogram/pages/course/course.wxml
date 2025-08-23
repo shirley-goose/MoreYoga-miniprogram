@@ -1,5 +1,5 @@
 <!-- 背景图 -->
-<image class="global-bg" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/background.png" mode="aspectFill"/>
+<image class="global-bg" src="../../images/background.png" mode="aspectFill"/>
 
 <!-- 自定义导航栏 -->
 <view class="nav-bar">
@@ -106,7 +106,7 @@
                 data-date="{{selectedPrivateDate}}">
             <view class="teacher-avatar-container">
               <image 
-                wx:if="{{item.avatar && item.avatar !== 'cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/logo.png'}}" 
+                wx:if="{{item.avatar && item.avatar !== '../../images/logo.png'}}" 
                 class="teacher-avatar-large" 
                 src="{{item.avatar}}" 
                 mode="aspectFill"

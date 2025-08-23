@@ -1,5 +1,5 @@
 <!-- 背景图 -->
-<image class="global-bg" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/background.png" mode="aspectFill"/>
+<image class="global-bg" src="../../images/background.png" mode="aspectFill"/>
 
 <!-- 自定义导航栏 -->
 <view class="nav-bar">
@@ -22,7 +22,7 @@
     <block wx:if="{{bookingHistory.length > 0}}">
       <block wx:for="{{bookingHistory}}" wx:key="id">
         <view class="history-card">
-          <image class="course-image" src="{{item.courseImage || 'cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/background.png'}}" mode="aspectFill"/>
+          <image class="course-image" src="{{item.courseImage || '../../images/background.png'}}" mode="aspectFill"/>
           <view class="course-info">
             <view class="course-name">{{item.courseName || '瑜伽课程'}}</view>
             <view class="teacher-name">{{item.teacherName || '老师'}}</view>

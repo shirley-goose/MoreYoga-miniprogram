@@ -1,5 +1,5 @@
 <!-- 背景图 -->
-<image class="global-bg" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/background.png" mode="aspectFill"/>
+<image class="global-bg" src="../../images/background.png" mode="aspectFill"/>
 
 <!-- 自定义导航栏 -->
 <view class="nav-bar">
@@ -17,7 +17,7 @@
 <view class="container">
   <!-- Logo区域 -->
   <view class="logo-section">
-    <image class="logo" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/logo.png" mode="aspectFit"/>
+    <image class="logo" src="../../images/logo.png" mode="aspectFit"/>
     <view class="app-name">墨瑜伽{{loginType === 'admin' ? '管理后台' : '老师工作台'}}</view>
     <view class="app-desc">{{loginType === 'admin' ? '馆主专用管理系统' : '老师专用工作平台'}}</view>
   </view>

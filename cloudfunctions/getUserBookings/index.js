@@ -48,7 +48,7 @@ exports.main = async (event, context) => {
             // 新的数据结构中，课程信息直接存储在 schedule 中
             course = {
               title: schedule.courseName,
-              imageUrl: 'cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/background.png', // 默认课程图片
+              imageUrl: '../../images/background.png', // 默认课程图片
               description: schedule.description || ''
             };
           }

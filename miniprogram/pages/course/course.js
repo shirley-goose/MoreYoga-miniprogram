@@ -30,28 +30,28 @@ Page({
       {
         id: 'zhouzhou',
         name: '周周老师',
-        avatar: 'cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/logo.png', // 照片待补充
+        avatar: '../../images/logo.png', // 照片待补充
         specialty: '流瑜伽 | 正位瑜伽',
         price: 280
       },
       {
         id: 'yaqin',
         name: '雅琴老师',
-        avatar: 'cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/logo.png', // 照片待补充
+        avatar: '../../images/logo.png', // 照片待补充
         specialty: '阴瑜伽 | 冥想瑜伽',
         price: 320
       },
       {
         id: 'qiqi',
         name: '岐岐老师',
-        avatar: 'cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/logo.png', // 照片待补充
+        avatar: '../../images/logo.png', // 照片待补充
         specialty: '空中瑜伽 | 力量瑜伽',
         price: 350
       },
       {
         id: 'chengmin',
         name: '程敏老师',
-        avatar: 'cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/logo.png', // 照片待补充
+        avatar: '../../images/logo.png', // 照片待补充
         specialty: '体式精进 | 后弯专项',
         price: 280
       }
@@ -65,7 +65,7 @@ Page({
         description: '从零基础到进阶，全面提升身心状态',
         duration: '4周',
         price: '1299',
-        image: 'cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/background.png'
+        image: '../../images/background.png'
       },
       {
         id: 'camp2',
@@ -73,7 +73,7 @@ Page({
         description: '你想练什么～',
         duration: '6周',
         price: '1899',
-        image: 'cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/background.png'
+        image: '../../images/background.png'
       }
     ]
   },
@@ -309,7 +309,7 @@ Page({
   // 获取老师头像
   getTeacherAvatar(teacherName) {
     const teacher = this.data.teacherList.find(t => t.name === teacherName);
-    return teacher ? teacher.avatar : 'cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/logo.png';
+    return teacher ? teacher.avatar : '../../images/logo.png';
   },
 
   // 获取课程状态

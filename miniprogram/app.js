@@ -42,8 +42,8 @@ App({
   globalData: {
     // CDN图片链接配置
     cdnImages: {
-      background: 'cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/background.png',
-      logo: 'cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/logo.png',
+      background: '../../images/background.png',
+      logo: '../../images/logo.png',
       // 其他图片...
     }
   }

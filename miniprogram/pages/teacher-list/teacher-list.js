@@ -65,7 +65,7 @@ Page({
     return {
       title: '墨瑜伽 - 师资简介',
       path: '/pages/teacher-list/teacher-list',
-      imageUrl: 'cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/logo.png'
+      imageUrl: '../../images/logo.png'
     };
   },
 
@@ -74,7 +74,7 @@ Page({
     return {
       title: '墨瑜伽 - 师资简介',
       query: '',
-      imageUrl: 'cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/logo.png'
+      imageUrl: '../../images/logo.png'
     };
   }
 });

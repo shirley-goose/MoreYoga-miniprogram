@@ -254,7 +254,7 @@ Page({
     return {
       title: '墨瑜伽 - 私教预约',
       path: '/pages/private-booking/private-booking',
-      imageUrl: 'cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/logo.png'
+      imageUrl: '../../images/logo.png'
     };
   },
 
@@ -263,7 +263,7 @@ Page({
     return {
       title: '墨瑜伽 - 私教预约',
       query: '',
-      imageUrl: 'cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/logo.png'
+      imageUrl: '../../images/logo.png'
     };
   }
 }); 

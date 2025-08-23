@@ -156,21 +156,6 @@
   margin-left: 20rpx;
 }
 
-/* 鸟图标区域 */
-.teacher-bird {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 120rpx;
-  height: 120rpx;
-}
-
-.bird-icon {
-  width: 80rpx;
-  height: 80rpx;
-  opacity: 0.6;
-}
-
 /* 响应式适配 */
 @media screen and (max-width: 375px) {
   .page-title {

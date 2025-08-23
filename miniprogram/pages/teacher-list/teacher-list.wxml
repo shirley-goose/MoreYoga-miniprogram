@@ -1,6 +1,6 @@
 <!-- 师资简介列表页面 -->
 <!-- 背景图 -->
-<image class="global-bg" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/background.png" mode="aspectFill"/>
+<image class="global-bg" src="../../images/background.png" mode="aspectFill"/>
 
 <!-- 自定义导航栏 -->
 <view class="nav-bar">
@@ -42,9 +42,6 @@
         </view>
         <view class="teacher-info">
           <view class="teacher-name">{{item.name}}</view>
-          <view class="teacher-bird">
-            <image class="bird-icon" src="../../images/bird-icon.png" mode="aspectFit"/>
-          </view>
         </view>
       </view>
     </view>

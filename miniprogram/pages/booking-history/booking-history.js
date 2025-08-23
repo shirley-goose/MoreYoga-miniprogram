@@ -64,7 +64,7 @@ Page({
             teacherName: booking.teacherName || booking.schedule?.teacherName || '老师',
             date: booking.schedule?.date || '',
             time: booking.schedule ? `${booking.schedule.startTime}-${booking.schedule.endTime}` : '',
-            courseImage: 'cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/background.png',
+            courseImage: '../../images/background.png',
             statusText: statusText,
             statusClass: statusClass,
             creditsUsed: booking.creditsUsed || 1,

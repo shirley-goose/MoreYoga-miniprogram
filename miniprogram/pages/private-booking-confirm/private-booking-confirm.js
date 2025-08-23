@@ -284,7 +284,7 @@ Page({
     return {
       title: `预约${this.data.teacherInfo.name}的私教课程 - 墨瑜伽`,
       path: '/pages/private-booking/private-booking',
-      imageUrl: this.data.teacherInfo.avatar || 'cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/logo.png'
+      imageUrl: this.data.teacherInfo.avatar || '../../images/logo.png'
     };
   },
 
@@ -293,7 +293,7 @@ Page({
     return {
       title: `预约${this.data.teacherInfo.name}的私教课程 - 墨瑜伽`,
       query: '',
-      imageUrl: this.data.teacherInfo.avatar || 'cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/logo.png'
+      imageUrl: this.data.teacherInfo.avatar || '../../images/logo.png'
     };
   },
 

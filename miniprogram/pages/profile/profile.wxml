@@ -1,6 +1,6 @@
 <!-- 我（个人中心）页面 -->
 <!-- 背景图 -->
-<image class="global-bg" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/background.png" mode="aspectFill"/>
+<image class="global-bg" src="../../images/background.png" mode="aspectFill"/>
 
 <!-- 自定义导航栏 -->
 <view class="nav-bar">
@@ -124,7 +124,7 @@
       <block wx:if="{{hasUserInfo}}">
         <block wx:for="{{privateBookings}}" wx:key="_id">
           <view class="course-card private-card">
-            <image class="course-image" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/logo.png" mode="aspectFill"/>
+            <image class="course-image" src="../../images/logo.png" mode="aspectFill"/>
             <view class="course-info">
               <view class="course-name">私教课程</view>
               <view class="teacher-name">{{item.teacherName}}</view>

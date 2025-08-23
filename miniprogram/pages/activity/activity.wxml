@@ -1,6 +1,6 @@
 <!-- 聚（活动）页面 -->
 <view class="container">
-  <image class="global-bg" src="cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/background.png" mode="aspectFill"/>
+  <image class="global-bg" src="../../images/background.png" mode="aspectFill"/>
   <!-- 自定义导航栏 -->
   <view class="nav-bar">
     <view class="nav-left"></view>
