@@ -79,7 +79,7 @@
       <view class="notes-content">
         <text class="notes-item">老师空闲时间可约。</text>
         <text class="notes-item">预约申请需老师确认。</text>
-        <text class="notes-item">取消需提前三天。</text>
+        <text class="notes-item">取消需提前至少1h。</text>
       </view>
     </view>
 

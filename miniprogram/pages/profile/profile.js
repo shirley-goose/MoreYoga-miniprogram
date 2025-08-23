@@ -237,9 +237,9 @@ Page({
           const classStartTime = new Date(`${booking.date}T${booking.startTime}:00`);
           const isEnded = classStartTime < now;
           
-          // 计算是否可以取消 (距开始时间3小时以上)
-          const threeHoursFromNow = new Date(now.getTime() + 3 * 60 * 60 * 1000);
-          const canCancel = classStartTime > threeHoursFromNow && booking.status !== 'cancelled';
+          // 计算是否可以取消 (距开始时间1小时以上)
+          const oneHourFromNow = new Date(now.getTime() + 1 * 60 * 60 * 1000);
+          const canCancel = classStartTime > oneHourFromNow && booking.status !== 'cancelled';
           
           // 处理取消申请状态显示
           let displayStatus = booking.status;
@@ -1051,13 +1051,13 @@ Page({
       // 检查时间限制
       const now = new Date();
       const classStartTime = new Date(`${date}T${startTime}:00`);
-      const threeHoursFromNow = new Date(now.getTime() + 3 * 60 * 60 * 1000);
+      const oneHourFromNow = new Date(now.getTime() + 1 * 60 * 60 * 1000);
       
-      if (classStartTime <= threeHoursFromNow) {
+      if (classStartTime <= oneHourFromNow) {
         // 不满足时间要求
         wx.showModal({
           title: '无法取消',
-          content: '距开课不足3h，无法取消。',
+          content: '距开课不足1h，无法取消。',
           showCancel: false,
           confirmText: '知道了'
         });

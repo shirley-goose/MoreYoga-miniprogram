@@ -54,5 +54,6 @@
         "text": "我"
       }
     ]
-  }
+  },
+   "lazyCodeLoading": "requiredComponents"
 } 

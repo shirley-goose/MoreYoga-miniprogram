@@ -46,7 +46,6 @@ Page({
         name: '岐岐老师',
         avatar: '../../images/logo.png', // 照片待补充
         specialty: '空中瑜伽 | 力量瑜伽',
-        price: 350
       },
       {
         id: 'chengmin',

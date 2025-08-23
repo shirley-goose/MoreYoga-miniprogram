@@ -117,7 +117,7 @@
     <view class="section-header">
       <view class="section-title">已约私教</view>
       <view class="section-actions">
-        <text wx:if="{{hasUserInfo}}" class="section-notice">距私教开始时间3h内不可取消</text>
+        <text wx:if="{{hasUserInfo}}" class="section-notice">距私教开始时间1h内不可取消</text>
       </view>
     </view>
     <view class="courses-list">

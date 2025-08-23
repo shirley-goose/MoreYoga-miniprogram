@@ -83,7 +83,7 @@
       <view class="notes-content">
         <text class="notes-item">老师空闲时间可约。</text>
         <text class="notes-item">预约成功后自动扣除相应费用。</text>
-        <text class="notes-item">取消需提前三天。</text>
+        <text class="notes-item">取消需提前至少1h。</text>
       </view>
     </view>
 
