@@ -37,10 +37,6 @@ Page({
       if (result.result && result.result.success) {
         const now = new Date();
         const allPrivateBookings = result.result.data.map(booking => {
-          // 解析课程时间
-          const classStartTime = new Date(`${booking.date}T${booking.startTime}:00`);
-          const isEnded = classStartTime < now; // 从现在的时间往前都归入往期
-          
           // 处理状态显示
           let displayStatus = booking.status;
           let statusText = '';
@@ -65,14 +61,8 @@ Page({
             displayStatus = 'completed';
             statusText = '已完成';
           } else if (booking.status === 'confirmed') {
-            // 如果课程已结束且状态为confirmed，标记为completed
-            if (isEnded) {
-              displayStatus = 'completed';
-              statusText = '已完成';
-            } else {
-              displayStatus = 'confirmed';
-              statusText = '已确认';
-            }
+            displayStatus = 'confirmed';
+            statusText = '已确认';
           } else if (booking.status === 'pending') {
             displayStatus = 'pending';
             statusText = '待确认';
@@ -81,16 +71,26 @@ Page({
             statusText = '已拒绝';
           }
           
+          // 判断是否为往期课程：根据状态而非时间
+          const isHistoryCourse = (displayStatus === 'cancelled' || displayStatus === 'completed');
+          
+          // 格式化取消时间（仅对已取消的课程）
+          let formattedCancelTime = null;
+          if (displayStatus === 'cancelled' && booking.cancelProcessTime) {
+            formattedCancelTime = this.formatDateTime(booking.cancelProcessTime);
+          }
+          
           return {
             ...booking,
-            isEnded,
             displayStatus,
-            statusText
+            statusText,
+            isHistoryCourse,
+            formattedCancelTime
           };
         });
         
-        // 只保留已结束的课程（从现在的时间往前）
-        const historyBookings = allPrivateBookings.filter(booking => booking.isEnded);
+        // 筛选往期课程：只保留 cancelled 和 completed 状态的课程
+        const historyBookings = allPrivateBookings.filter(booking => booking.isHistoryCourse);
         
         // 按时间倒序排列（最近的在前）
         historyBookings.sort((a, b) => {
@@ -117,6 +117,29 @@ Page({
         title: '加载失败',
         icon: 'none'
       });
+    }
+  },
+
+  // 格式化日期时间
+  formatDateTime(dateTimeStr) {
+    if (!dateTimeStr) return '';
+    
+    try {
+      const date = new Date(dateTimeStr);
+      if (isNaN(date.getTime())) {
+        return dateTimeStr; // 如果无法解析，返回原字符串
+      }
+
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+
+      return `${year}年${month}月${day}日 ${hours}:${minutes}`;
+    } catch (error) {
+      console.error('格式化日期时间失败:', error);
+      return dateTimeStr;
     }
   }
 });

@@ -62,9 +62,21 @@ exports.main = async (event, context) => {
 
     // 检查是否已经有取消申请
     if (booking.cancelRequestStatus) {
-      return {
-        success: false,
-        message: '已经提交过取消申请，请等待老师处理'
+      if (booking.cancelRequestStatus === 'pending') {
+        return {
+          success: false,
+          message: '已经提交过取消申请，请等待老师处理'
+        }
+      } else if (booking.cancelRequestStatus === 'rejected') {
+        return {
+          success: false,
+          message: '老师已拒绝过取消申请。如果有特殊情况，请联系客服'
+        }
+      } else if (booking.cancelRequestStatus === 'approved') {
+        return {
+          success: false,
+          message: '该课程已经被取消'
+        }
       }
     }
 

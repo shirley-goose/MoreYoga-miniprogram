@@ -27,6 +27,7 @@
           <view class="course-name">私教课程</view>
           <view class="teacher-name">{{item.teacherName}}</view>
           <view class="course-time">{{item.date}} {{item.timeRange}}</view>
+          <view wx:if="{{item.formattedCancelTime}}" class="cancel-time">取消时间：{{item.formattedCancelTime}}</view>
           <view wx:if="{{item.content}}" class="course-content">需求：{{item.content}}</view>
         </view>
         

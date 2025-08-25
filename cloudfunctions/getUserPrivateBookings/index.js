@@ -28,7 +28,7 @@ exports.main = async (event, context) => {
     const result = await db.collection('privateBookings')
       .where({
         studentOpenid: openid,
-        status: db.command.in(['pending', 'confirmed', 'completed']) // 排除已取消的
+        status: db.command.in(['pending', 'confirmed', 'completed', 'cancelled']) // 排除已取消的
       })
       .orderBy('createTime', 'desc')
       .get()

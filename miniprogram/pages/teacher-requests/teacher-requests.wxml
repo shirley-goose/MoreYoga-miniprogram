@@ -48,10 +48,13 @@
         
         <view class="request-header">
           <view class="student-info">
-            <text class="student-name">{{item.studentName || item.studentPhone}}</text>
-            <text class="student-phone">{{item.studentPhone}}</text>
+            <text class="student-name">{{item.studentName}}</text>
+            <text class="student-phone" wx:if="{{item.studentPhone}}">{{item.studentPhone}}</text>
           </view>
-          <view class="request-time">{{item.createTimeDisplay}}</view>
+          <view class="request-time">
+            <text wx:if="{{item.requestType === 'booking'}}">申请时间: {{item.timeDisplay}}</text>
+            <text wx:elif="{{item.requestType === 'cancel'}}">取消申请: {{item.timeDisplay}}</text>
+          </view>
         </view>
         
         <view class="request-details">
@@ -123,10 +126,9 @@
         
         <view class="request-header">
           <view class="student-info">
-            <text class="student-name">{{item.studentName || item.studentPhone}}</text>
-            <text class="student-phone">{{item.studentPhone}}</text>
+            <text class="student-name">{{item.studentName}}</text>
+            <text class="student-phone" wx:if="{{item.studentPhone}}">{{item.studentPhone}}</text>
           </view>
-          <view class="request-time">{{item.createTimeDisplay}}</view>
         </view>
         
         <!-- 状态标签 - 右下角 (仅在已处理列表显示) -->
@@ -150,6 +152,10 @@
           <view class="detail-row" wx:if="{{item.content}}">
             <text class="detail-label">内容需求:</text>
             <text class="detail-value">{{item.content}}</text>
+          </view>
+          <view class="detail-row">
+            <text class="detail-label">处理时间:</text>
+            <text class="detail-value">{{item.processTimeDisplay}}</text>
           </view>
         </view>
       </view>

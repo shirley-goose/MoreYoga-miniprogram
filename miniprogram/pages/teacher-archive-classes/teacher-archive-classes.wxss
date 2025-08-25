@@ -17,8 +17,29 @@
   color: white;
 }
 
+.course-status.cancelled {
+  background: #dc3545;
+  color: white;
+}
+
 .completed-text {
   color: #28a745;
+  font-weight: 600;
+}
+
+/* 取消时间样式 */
+.cancel-time {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+}
+
+.cancel-label {
+  color: #666;
+  font-weight: 500;
+}
+
+.cancel-text {
+  color: #dc3545;
   font-weight: 600;
 }
 
@@ -140,11 +161,10 @@
 
 /* 预约状态样式 */
 .booking-status {
+  padding: 6rpx 12rpx;
+  border-radius: 16rpx;
   font-size: 20rpx;
-  padding: 4rpx 8rpx;
-  border-radius: 8rpx;
-  text-align: center;
-  border: 1rpx solid transparent;
+  font-weight: 500;
 }
 
 .booking-status.done {

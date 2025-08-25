@@ -130,6 +130,14 @@
   line-height: 1.5;
 }
 
+.cancel-time {
+  font-size: 22rpx;
+  color: #ff6b6b;
+  margin-top: 6rpx;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
 .course-content {
   font-size: 22rpx;
   color: #888;

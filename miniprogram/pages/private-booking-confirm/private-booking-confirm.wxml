@@ -84,6 +84,8 @@
         <text class="notes-item">老师空闲时间可约。</text>
         <text class="notes-item">预约成功后自动扣除相应费用。</text>
         <text class="notes-item">取消需提前至少1h。</text>
+        <text class="notes-item subscribe-note">🔔 提交预约时会请求发送"预约成功通知"，帮您及时了解预约结果。</text>
+        <text class="notes-item subscribe-note">📱 由于微信政策限制，每次预约都需要重新授权通知权限。</text>
       </view>
     </view>
 

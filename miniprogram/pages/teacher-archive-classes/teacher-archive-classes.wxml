@@ -47,8 +47,8 @@
             wx:key="_id">
         <view class="course-header">
           <view class="course-type-label private">私教</view>
-          <view class="course-status completed">
-            <text>已完成</text>
+          <view class="course-status {{item.statusClass}}">
+            <text>{{item.statusText}}</text>
           </view>
         </view>
         
@@ -67,6 +67,10 @@
             <view wx:if="{{item.completedAt && item.completedAt !== '未记录'}}" class="completion-time">
               <text class="completion-label">完成时间：</text>
               <text class="completion-text">{{item.completedAtDisplay || item.completedAt}}</text>
+            </view>
+            <view wx:if="{{item.formattedCancelTime}}" class="cancel-time">
+              <text class="cancel-label">取消时间：</text>
+              <text class="cancel-text">{{item.formattedCancelTime}}</text>
             </view>
           </view>
         </view>

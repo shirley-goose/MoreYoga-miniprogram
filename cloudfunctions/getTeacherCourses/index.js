@@ -21,13 +21,12 @@ async function getPrivateCourses(teacherId, teacherName, type = 'upcoming') {
     
     if (type === 'upcoming') {
       // 获取未来的课程（已确认状态）
-      whereCondition.status = db.command.in(['confirmed', 'completed'])
+      whereCondition.status = db.command.in(['confirmed'])
       whereCondition.date = db.command.gte(currentDate)
     } else if (type === 'archived') {
-      // 获取已结课程（已完成或过去的已确认课程）
-      whereCondition.date = db.command.lt(currentDate)
-      whereCondition.status = db.command.in(['confirmed', 'completed'])
-    }
+      // 获取所有已取消或已完成的课程（时间不限）
+      whereCondition.status = db.command.in(['cancelled', 'completed'])
+    }    
     
     const result = await db.collection('privateBookings')
       .where(whereCondition)

@@ -134,8 +134,11 @@
             <view class="students-header">预约学员列表：</view>
             <view class="student-item" wx:for="{{item.bookings}}" wx:for-item="booking" wx:key="id">
               <view class="student-info">
+                <view class="student-name">{{booking.userName}}</view>
                 <view class="student-phone">{{booking.userPhone}}</view>
-                <view class="booking-status-text {{booking.status}}">{{booking.statusText}}</view>
+              </view>
+              <view class="booking-status {{booking.status}}">
+                {{booking.statusText}}
               </view>
             </view>
           </view>

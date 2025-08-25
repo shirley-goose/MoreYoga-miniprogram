@@ -75,7 +75,11 @@ Page({
           ...course,
           showDetail: false,
           dateStr: this.formatDate(course.date),
-          timeStr: this.formatTime(course.startTime, course.endTime)
+          timeStr: this.formatTime(course.startTime, course.endTime),
+          bookings: (course.bookings || []).map(booking => ({
+            ...booking,
+            cancelTime: booking.cancelTime ? this.formatDateTime(booking.cancelTime) : null
+          }))
         }));
       }
 
@@ -174,6 +178,29 @@ Page({
     const end = formatSingleTime(endTime);
     
     return end ? `${start}-${end}` : start;
+  },
+
+  // 格式化日期时间
+  formatDateTime(dateTimeStr) {
+    if (!dateTimeStr) return '';
+    
+    try {
+      const date = new Date(dateTimeStr);
+      if (isNaN(date.getTime())) {
+        return dateTimeStr; // 如果无法解析，返回原字符串
+      }
+      
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      
+      return `${year}年${month}月${day}日 ${hours}:${minutes}`;
+    } catch (error) {
+      console.error('格式化日期时间失败:', error);
+      return dateTimeStr;
+    }
   },
 
   // 返回

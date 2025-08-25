@@ -159,17 +159,10 @@ Page({
       if (result.result && result.result.success) {
         const { pendingRequests, processedRequests } = result.result;
         
-        // 格式化时间显示
-        const formatRequests = (requests) => {
-          return requests.map(request => ({
-            ...request,
-            createTimeDisplay: this.formatCreateTime(request.createTime)
-          }));
-        };
-
+        // 云函数已经处理了时间格式化，直接使用返回的数据
         this.setData({
-          pendingRequests: formatRequests(pendingRequests),
-          processedRequests: formatRequests(processedRequests),
+          pendingRequests: pendingRequests,
+          processedRequests: processedRequests,
           pendingCount: pendingRequests.length
         });
 

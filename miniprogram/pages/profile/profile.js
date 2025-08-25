@@ -285,11 +285,20 @@ Page({
             displayStatus = 'confirmed'; // 拒绝取消，恢复为已确认
           }
           
+          // 判断是否为"已约课程"：confirmed、pending、cancel-pending、rejected
+          const isUpcomingCourse = (
+            displayStatus === 'confirmed' || 
+            displayStatus === 'pending' || 
+            displayStatus === 'cancel-pending' || 
+            displayStatus === 'rejected'
+          );
+          
           return {
             ...booking,
             isEnded,
             canCancel,
-            displayStatus
+            displayStatus,
+            isUpcomingCourse
           };
         });
         
@@ -300,8 +309,8 @@ Page({
           return timeA - timeB;
         });
         
-        // 过滤掉已结束的课程，只显示未来和当天的课程
-        const upcomingPrivateBookings = privateBookings.filter(booking => !booking.isEnded);
+        // 筛选"已约课程"：confirmed、pending、cancel-pending、rejected 状态的课程
+        const upcomingPrivateBookings = privateBookings.filter(booking => booking.isUpcomingCourse);
         
         console.log('处理后的私教预约:', privateBookings);
         console.log('即将到来的私教预约:', upcomingPrivateBookings);
@@ -1063,8 +1072,8 @@ Page({
 
   // 取消私教预约
   async cancelPrivateBooking(e) {
-    const { id: bookingId, status, date, startTime } = e.currentTarget.dataset;
-    console.log('取消私教预约，预约ID:', bookingId, '状态:', status);
+    const { id: bookingId, status, date, startTime, cancelRequestStatus } = e.currentTarget.dataset;
+    console.log('取消私教预约，预约ID:', bookingId, '状态:', status, '取消申请状态:', cancelRequestStatus);
     
     // 如果是待确认状态，直接取消
     if (status === 'pending') {
@@ -1131,10 +1140,18 @@ Page({
           confirmText: '知道了'
         });
       } else {
-        // 满足时间要求，发送取消申请给老师
+        // 满足时间要求，根据取消申请状态显示不同提示
+        let modalTitle = '申请取消';
+        let modalContent = '取消预约需要老师通过，已发送申请给老师';
+        
+        if (cancelRequestStatus === 'rejected') {
+          modalTitle = '重新申请取消';
+          modalContent = '老师已拒绝过取消申请。如果有特殊情况，请联系客服';
+        }
+        
         wx.showModal({
-          title: '申请取消',
-          content: '取消预约需要老师通过，已发送申请给老师',
+          title: modalTitle,
+          content: modalContent,
           showCancel: false,
           confirmText: '知道了',
           success: async () => {

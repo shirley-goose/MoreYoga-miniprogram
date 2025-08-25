@@ -311,6 +311,17 @@
   line-height: 1.4;
 }
 
+.notes-item.subscribe-note {
+  font-size: 22rpx;
+  color: #4CAF50;
+  font-weight: 500;
+  margin-top: 8rpx;
+  padding: 8rpx 12rpx;
+  background: rgba(76, 175, 80, 0.1);
+  border-radius: 8rpx;
+  border-left: 3rpx solid #4CAF50;
+}
+
 /* 确认按钮 */
 .confirm-btn {
   display: flex;

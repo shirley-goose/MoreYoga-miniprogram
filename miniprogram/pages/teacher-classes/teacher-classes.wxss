@@ -557,33 +557,63 @@
 }
 
 .student-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   background: rgba(255, 255, 255, 0.8);
   border-radius: 12rpx;
   padding: 16rpx 20rpx;
   border: 1px solid #dee2e6;
+  margin-bottom: 8rpx;
+}
+
+.student-item:last-child {
+  margin-bottom: 0;
 }
 
 .student-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex: 1;
+}
+
+.student-name {
+  font-size: 26rpx;
+  color: #333;
+  font-weight: 500;
+  margin-bottom: 4rpx;
 }
 
 .student-phone {
-  font-size: 26rpx;
-  color: #495057;
-  font-weight: 500;
+  font-size: 22rpx;
+  color: #666;
 }
 
-.booking-status-text {
-  font-size: 20rpx;
+.booking-status {
   padding: 6rpx 12rpx;
-  border-radius: 10rpx;
+  border-radius: 16rpx;
+  font-size: 20rpx;
   font-weight: 500;
 }
 
-.booking-status-text.booked {
-  background: rgba(40, 167, 69, 0.1);
-  color: #28a745;
-  border: 1px solid rgba(40, 167, 69, 0.3);
+.booking-status.booked {
+  background: #d1ecf1;
+  color: #0c5460;
+  border: 1px solid #bee5eb;
+}
+
+.booking-status.confirmed {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.booking-status.waitlist {
+  background: rgba(23, 162, 184, 0.1);
+  color: #17a2b8;
+  border: 1px solid rgba(23, 162, 184, 0.2);
+}
+
+.booking-status.cancelled {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
 }

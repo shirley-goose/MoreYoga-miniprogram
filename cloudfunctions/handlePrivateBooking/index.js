@@ -80,6 +80,10 @@ exports.main = async (event, context) => {
         // 更新老师时间表
         await updateTeacherSchedule(request)
         console.log('更新老师时间表成功')
+        
+        // 发送私教预约成功通知
+        await sendPrivateBookingConfirmedNotification(request)
+        console.log('私教预约成功通知发送成功')
       } catch (error) {
         console.error('确认预约后续操作失败:', error)
         // 错误不影响主流程，继续执行
@@ -181,5 +185,113 @@ async function updateTeacherSchedule(request) {
   } catch (error) {
     console.error('更新老师时间表失败:', error)
     throw error
+  }
+}
+
+// 发送私教预约成功通知
+async function sendPrivateBookingConfirmedNotification(request) {
+  try {
+    console.log('开始发送私教预约成功通知:', request)
+    
+    // 获取用户的openid
+    const studentOpenid = request.openid || request.studentOpenid
+    if (!studentOpenid) {
+      throw new Error('无法获取用户openid')
+    }
+    
+    // 格式化上课时间
+    const classTime = formatClassTime(request)
+    
+    // 调用发送通知云函数
+    const notificationResult = await cloud.callFunction({
+      name: 'sendNotification',
+      data: {
+        userId: studentOpenid,
+        type: 'private_booking_confirmed',
+        title: '私教预约成功',
+        content: `您的私教课程已确认，老师：${request.teacherName}`,
+        teacherName: request.teacherName,
+        classTime: classTime,
+        scheduleId: request._id
+      }
+    })
+    
+    console.log('发送通知云函数调用结果:', notificationResult)
+    
+    if (!notificationResult.result.success) {
+      throw new Error('发送通知失败: ' + notificationResult.result.error)
+    }
+    
+  } catch (error) {
+    console.error('发送私教预约成功通知失败:', error)
+    throw error
+  }
+}
+
+// 格式化上课时间（符合微信订阅消息格式要求，转换为中国时区）
+function formatClassTime(request) {
+  try {
+    console.log('格式化上课时间，输入数据:', request)
+    
+    const date = request.date
+    const timeRange = request.timeRange
+    const startTime = request.startTime
+    const endTime = request.endTime
+    
+    // 优先使用timeRange，如果没有则使用startTime-endTime构建
+    let timeSlot = ''
+    if (timeRange) {
+      timeSlot = timeRange
+    } else if (startTime && endTime) {
+      timeSlot = `${startTime}-${endTime}`
+    } else if (startTime) {
+      // 如果只有startTime，默认+1小时
+      const [hours, minutes] = startTime.split(':')
+      const endHour = String(parseInt(hours) + 1).padStart(2, '0')
+      timeSlot = `${startTime}-${endHour}:${minutes}`
+    }
+    
+    if (!date || !timeSlot) {
+      console.log('缺少日期或时间信息，使用当前时间')
+      // 返回当前中国时区时间的标准格式
+      const now = new Date()
+      const chinaTime = new Date(now.getTime() + 8 * 60 * 60 * 1000)
+      const year = chinaTime.getFullYear()
+      const month = String(chinaTime.getMonth() + 1).padStart(2, '0')
+      const day = String(chinaTime.getDate()).padStart(2, '0')
+      const hours = String(chinaTime.getHours()).padStart(2, '0')
+      const minutes = String(chinaTime.getMinutes()).padStart(2, '0')
+      return `${year}年${month}月${day}日 ${hours}:${minutes}`
+    }
+    
+    // 将日期格式化为微信支持的格式（考虑时区）
+    const dateObj = new Date(date + 'T00:00:00.000Z') // 明确指定UTC时间
+    // 转换为中国时区（+8小时）
+    const chinaDate = new Date(dateObj.getTime() + 8 * 60 * 60 * 1000)
+    
+    const year = chinaDate.getFullYear()
+    const month = String(chinaDate.getMonth() + 1).padStart(2, '0')
+    const day = String(chinaDate.getDate()).padStart(2, '0')
+    
+    // 处理时间段格式：将 16:15-17:15 改为 16:15~17:15（微信要求）
+    let formattedTimeSlot = timeSlot
+    if (timeSlot.includes('-')) {
+      formattedTimeSlot = timeSlot.replace('-', '~')
+    }
+    
+    const result = `${year}年${month}月${day}日 ${formattedTimeSlot}`
+    console.log('格式化上课时间结果:', result)
+    return result
+  } catch (error) {
+    console.error('格式化时间失败:', error)
+    // 返回中国时区当前时间作为备用
+    const now = new Date()
+    const chinaTime = new Date(now.getTime() + 8 * 60 * 60 * 1000)
+    const year = chinaTime.getFullYear()
+    const month = String(chinaTime.getMonth() + 1).padStart(2, '0')
+    const day = String(chinaTime.getDate()).padStart(2, '0')
+    const hours = String(chinaTime.getHours()).padStart(2, '0')
+    const minutes = String(chinaTime.getMinutes()).padStart(2, '0')
+    return `${year}年${month}月${day}日 ${hours}:${minutes}`
   }
 }

@@ -176,6 +176,54 @@ Page({
       return;
     }
 
+    // 首先请求用户订阅消息（每次提交都需要订阅，因为是一次性消息）
+    try {
+      console.log('请求用户订阅私教预约成功通知...');
+      
+      // 显示订阅说明
+      const confirmResult = await new Promise((resolve) => {
+        wx.showModal({
+          title: '预约成功通知',
+          content: '为了及时通知您预约结果，请允许接收"预约成功通知"。\n\n注：由于微信政策限制，每次预约都需要重新授权。',
+          showCancel: true,
+          cancelText: '跳过',
+          confirmText: '允许通知',
+          success: (res) => {
+            resolve(res.confirm);
+          },
+          fail: () => {
+            resolve(false);
+          }
+        });
+      });
+
+      if (confirmResult) {
+        const subscribeResult = await wx.requestSubscribeMessage({
+          tmplIds: ['Gh4le1pvgOkdxcgo0rlZYgeJH15oT6N8GMN9vbnkLVg'], // 私教预约成功通知模板ID
+        });
+        
+        console.log('订阅消息请求结果:', subscribeResult);
+        
+        // 检查订阅结果
+        const templateId = 'Gh4le1pvgOkdxcgo0rlZYgeJH15oT6N8GMN9vbnkLVg';
+        if (subscribeResult[templateId] === 'accept') {
+          console.log('用户同意接收通知');
+          wx.showToast({
+            title: '通知设置成功',
+            icon: 'success',
+            duration: 1500
+          });
+        } else {
+          console.log('用户拒绝接收通知');
+        }
+      } else {
+        console.log('用户选择跳过通知订阅');
+      }
+    } catch (subscribeError) {
+      console.log('订阅请求失败:', subscribeError);
+      // 不阻止预约流程，继续执行
+    }
+
     wx.showLoading({
       title: '提交预约中...'
     });

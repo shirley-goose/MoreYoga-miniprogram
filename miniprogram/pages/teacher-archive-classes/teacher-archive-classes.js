@@ -139,11 +139,43 @@ Page({
         console.log('处理后的团课数据:', processedGroupCourses);
         
         // 处理私教课程数据
-        const processedPrivateCourses = (privateCourses || []).map(course => ({
-          ...course,
-          completedAtDisplay: this.formatCompleteTime(course.completedAt),
-          isCompleted: course.status === 'completed'
-        }));
+        const processedPrivateCourses = (privateCourses || []).map(course => {
+          // 处理状态显示
+          let displayStatus = course.status;
+          let statusText = '';
+          let statusClass = '';
+          
+          if (course.status === 'completed') {
+            displayStatus = 'completed';
+            statusText = '已完成';
+            statusClass = 'completed';
+          } else if (course.status === 'cancelled') {
+            displayStatus = 'cancelled';
+            statusText = '已取消';
+            statusClass = 'cancelled';
+          } else {
+            // 其他状态（理论上已结课程应该只有completed和cancelled）
+            displayStatus = course.status;
+            statusText = course.status;
+            statusClass = 'other';
+          }
+          
+          // 格式化取消时间（仅对已取消的课程）
+          let formattedCancelTime = null;
+          if (course.status === 'cancelled' && course.cancelProcessTime) {
+            formattedCancelTime = this.formatCompleteTime(course.cancelProcessTime);
+          }
+          
+          return {
+            ...course,
+            completedAtDisplay: this.formatCompleteTime(course.completedAt),
+            isCompleted: course.status === 'completed',
+            displayStatus,
+            statusText,
+            statusClass,
+            formattedCancelTime
+          };
+        });
 
         this.setData({
           privateCourses: processedPrivateCourses,
@@ -220,11 +252,27 @@ Page({
     return statusMap[status] || status;
   },
 
-  // 格式化取消时间
+  // 格式化取消时间（与admin页面格式一致）
   formatCancelTime(cancelTime) {
     if (!cancelTime) return null;
-    const date = new Date(cancelTime);
-    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+    
+    try {
+      const date = new Date(cancelTime);
+      if (isNaN(date.getTime())) {
+        return cancelTime; // 如果无法解析，返回原字符串
+      }
+      
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      
+      return `${year}年${month}月${day}日 ${hours}:${minutes}`;
+    } catch (error) {
+      console.error('格式化取消时间失败:', error);
+      return cancelTime;
+    }
   },
 
   // 格式化完成时间
