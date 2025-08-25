@@ -810,6 +810,21 @@
   border-radius: 8rpx;
 }
 
+.booked-status {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.waitlist-info {
+  font-size: 20rpx;
+  color: #2196f3;
+  text-align: center;
+  padding: 4rpx 8rpx;
+  background: rgba(33, 150, 243, 0.05);
+  border-radius: 8rpx;
+}
+
 /* 私教课程卡片样式 */
 .private-card {
   background: #F8FCFF; /* 与团课模块相同的背景色 */

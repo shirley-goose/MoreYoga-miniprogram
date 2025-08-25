@@ -5,11 +5,11 @@ const db = cloud.database();
 const _ = db.command;
 
 exports.main = async (event, context) => {
-  const { bookingId } = event;
+  const { bookingId, promoteWaitlist = false } = event;
   const wxContext = cloud.getWXContext();
   const openid = wxContext.OPENID;
   
-  console.log('取消预约，bookingId:', bookingId, 'openid:', openid);
+  console.log('取消预约，bookingId:', bookingId, 'openid:', openid, 'promoteWaitlist:', promoteWaitlist);
   
   try {
     let promotedUser = null; // 声明递补用户变量
@@ -42,21 +42,25 @@ exports.main = async (event, context) => {
       return { success: false, message: '课程安排不存在' };
     }
     
-    // 检查是否在开课前1小时内
-    const now = new Date();
-    const classDateTime = new Date(`${schedule.date}T${schedule.startTime}:00`);
-    const timeDiff = classDateTime.getTime() - now.getTime();
-    const oneHour = 60 * 60 * 1000;
-    
-    console.log('时间检查:', {
-      now: now.toISOString(),
-      classDateTime: classDateTime.toISOString(),
-      timeDiff: timeDiff / (1000 * 60), // 分钟
-      canCancel: timeDiff > oneHour
-    });
-    
-    if (timeDiff <= oneHour && timeDiff > 0) {
-      return { success: false, message: '开课前1小时内不能取消预约' };
+    // 检查是否在开课前1小时内（只有在不需要递补等位时才检查）
+    if (!promoteWaitlist) {
+      const now = new Date();
+      const classDateTime = new Date(`${schedule.date}T${schedule.startTime}:00`);
+      const timeDiff = classDateTime.getTime() - now.getTime();
+      const oneHour = 60 * 60 * 1000;
+      
+      console.log('时间检查:', {
+        now: now.toISOString(),
+        classDateTime: classDateTime.toISOString(),
+        timeDiff: timeDiff / (1000 * 60), // 分钟
+        canCancel: timeDiff > oneHour
+      });
+      
+      if (timeDiff <= oneHour && timeDiff > 0) {
+        return { success: false, message: '开课前1小时内不能取消预约' };
+      }
+    } else {
+      console.log('允许递补等位，跳过时间限制检查');
     }
     
     // 取消预约
@@ -187,6 +191,7 @@ exports.main = async (event, context) => {
       message: '取消预约成功',
       refunded: true, // 现在无论什么状态都会退还次卡
       refundedCredits: booking.creditsUsed || 1,
+      promotedUser: promotedUser, // 返回递补用户信息
       promoted: promotedUser ? {
         userId: promotedUser.userId,
         message: '已自动递补等位用户'

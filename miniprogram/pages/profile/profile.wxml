@@ -97,11 +97,16 @@
                   取消等位
                 </view>
               </view>
-              <view class="status-btn cancel-btn" wx:elif="{{item.canCancel}}" bindtap="cancelCourse" data-id="{{item.id}}">
-                取消预约
-              </view>
-              <view class="status-btn disabled-btn" wx:else>
-                已确认
+              <view wx:elif="{{!item.isWaitlist}}" class="booked-status">
+                <view wx:if="{{item.hasWaitlist}}" class="waitlist-info">
+                  有{{item.waitlistCount}}人等位
+                </view>
+                <view class="status-btn cancel-btn" wx:if="{{item.canCancel}}" bindtap="cancelCourse" data-id="{{item.id}}">
+                  取消预约
+                </view>
+                <view class="status-btn disabled-btn" wx:else>
+                  已确认
+                </view>
               </view>
             </view>
           </view>
@@ -117,9 +122,9 @@
         </view>
       </block>
     </view>
-    <!-- 查看往期记录按钮 - 右对齐 -->
+    <!-- 查看所有记录按钮 - 右对齐 -->
     <view wx:if="{{hasUserInfo}}" class="view-history-container">
-      <text class="view-history" bindtap="viewBookingHistory">查看往期记录 ></text>
+      <text class="view-history" bindtap="viewBookingHistory">查看所有记录 ></text>
     </view>
   </view>
 

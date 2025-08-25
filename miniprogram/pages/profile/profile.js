@@ -143,7 +143,7 @@ Page({
         const now = new Date();
         const oneHourFromNow = new Date(now.getTime() + 1 * 60 * 60 * 1000);
         
-        const upcomingClasses = result.result.data
+        const filteredBookings = result.result.data
           .filter(booking => {
             // 只显示已预约的和等位的课程
             if (booking.status !== 'booked' && booking.status !== 'waitlist') return false;
@@ -166,13 +166,37 @@ Page({
             });
             
             return isFuture;
-          })
-          .map(booking => {
+          });
+
+        // 使用Promise.all处理异步操作
+        const upcomingClasses = await Promise.all(
+          filteredBookings.map(async (booking) => {
             const classStartTime = new Date(`${booking.schedule.date}T${booking.schedule.startTime}:00`);
             const classEndTime = new Date(`${booking.schedule.date}T${booking.schedule.endTime}:00`);
             
-            // 统一取消时间检查逻辑：距开始时间1h内不可取消
-            const canCancel = classStartTime > oneHourFromNow;
+            // 查询该课程的等位信息（仅对已预约的课程查询，等位的课程不需要）
+            let hasWaitlist = false;
+            let waitlistCount = 0;
+            
+            if (booking.status === 'booked') {
+              try {
+                const waitlistResult = await wx.cloud.callFunction({
+                  name: 'getScheduleWaitlist',
+                  data: { scheduleId: booking.scheduleId }
+                });
+                
+                if (waitlistResult.result && waitlistResult.result.success) {
+                  hasWaitlist = waitlistResult.result.hasWaitlist;
+                  waitlistCount = waitlistResult.result.waitlistCount;
+                }
+              } catch (error) {
+                console.error('获取等位信息失败:', error);
+              }
+            }
+            
+            // 更新取消逻辑：距开始时间1h以上 OR (距开始时间1h内但有人等位)
+            const canCancel = classStartTime > oneHourFromNow || 
+                             (classStartTime <= oneHourFromNow && hasWaitlist);
             
             const courseItem = {
               id: booking._id,
@@ -181,25 +205,30 @@ Page({
               date: booking.schedule.date,
               time: `${booking.schedule.startTime}-${booking.schedule.endTime}`,
               courseImage: '../../images/background.png',
-              canCancel: canCancel, // 统一的取消时间检查
+              canCancel: canCancel, // 更新的取消时间检查
               isEnded: false, // 已过滤掉已结束的课程
               bookingId: booking._id,
               scheduleId: booking.scheduleId,
               status: booking.status,
               position: booking.position || null, // 等位位置
               waitingAhead: booking.waitingAhead || 0, // 前面等位人数
-              isWaitlist: booking.status === 'waitlist'
+              isWaitlist: booking.status === 'waitlist',
+              hasWaitlist: hasWaitlist, // 该课程是否有人等位
+              waitlistCount: waitlistCount // 等位人数
             };
             
             console.log('处理后的课程项:', courseItem);
             return courseItem;
           })
-          .sort((a, b) => {
-            // 按日期和时间排序，最近的在前
-            const dateA = new Date(`${a.date}T${a.time.split('-')[0]}:00`);
-            const dateB = new Date(`${b.date}T${b.time.split('-')[0]}:00`);
-            return dateA - dateB;
-          });
+        );
+
+        // 排序
+        upcomingClasses.sort((a, b) => {
+          // 按日期和时间排序，最近的在前
+          const dateA = new Date(`${a.date}T${a.time.split('-')[0]}:00`);
+          const dateB = new Date(`${b.date}T${b.time.split('-')[0]}:00`);
+          return dateA - dateB;
+        });
           
         console.log('最终的即将到来的课程:', upcomingClasses);
         this.setData({ schedule: upcomingClasses });
@@ -938,67 +967,98 @@ Page({
       return;
     }
     
-    // 检查是否可以取消 - 统一时间检查逻辑
+    // 检查是否可以取消 - 更新的时间检查逻辑
     const now = new Date();
     const oneHourFromNow = new Date(now.getTime() + 1 * 60 * 60 * 1000);
     const classStartTime = new Date(`${courseItem.date}T${courseItem.time.split('-')[0]}:00`);
     
+    // 如果距开始时间不足1h，检查是否有人等位
     if (classStartTime <= oneHourFromNow) {
-      wx.showModal({
-        title: '无法取消',
-        content: '距团课开始时间1h内不可取消',
-        showCancel: false,
-        confirmText: '知道了'
-      });
-      return;
+      if (!courseItem.hasWaitlist) {
+        wx.showModal({
+          title: '无法取消',
+          content: '距团课开始时间1h内不可取消，且无人等位',
+          showCancel: false,
+          confirmText: '知道了'
+        });
+        return;
+      } else {
+        // 有人等位，可以取消，但需要特殊提示
+        wx.showModal({
+          title: '确认取消',
+          content: `距开课不足1h，但有${courseItem.waitlistCount}人等位。取消后将自动让给等位的同学，确定要取消吗？`,
+          success: async (res) => {
+            if (res.confirm) {
+              await this.processCancelBooking(courseId, true); // true表示需要递补等位
+            }
+          }
+        });
+        return;
+      }
     }
     
+    // 正常情况下的取消（距开始时间1h以上）
     wx.showModal({
       title: '确认取消',
       content: '确定要取消这次课程预约吗？',
       success: async (res) => {
         if (res.confirm) {
-          try {
-            wx.showLoading({ title: '取消中...' });
-            
-            const result = await wx.cloud.callFunction({
-              name: 'cancelBooking',
-              data: { bookingId: courseId }
-            });
-
-            console.log('取消预约结果:', result);
-
-            if (result.result && result.result.success) {
-              // 设置全局刷新标记，通知course页面刷新
-              const app = getApp();
-              app.globalData.needRefreshCourses = true;
-              
-              wx.hideLoading();
-              wx.showToast({
-                title: '取消成功',
-                icon: 'success'
-              });
-              // 重新加载数据
-              await this.loadUpcomingSchedule();
-              await this.loadUserCredits(); // 重新加载次卡余额
-            } else {
-              wx.hideLoading();
-              wx.showToast({
-                title: result.result.message || '取消失败',
-                icon: 'none'
-              });
-            }
-          } catch (error) {
-            console.error('取消预约失败:', error);
-            wx.hideLoading();
-            wx.showToast({
-              title: '取消失败',
-              icon: 'error'
-            });
-          }
+          await this.processCancelBooking(courseId, false); // false表示不需要递补等位
         }
       }
     });
+  },
+
+  // 处理取消预约的统一函数
+  async processCancelBooking(courseId, needPromoteWaitlist) {
+    try {
+      wx.showLoading({ title: '取消中...' });
+      
+      const result = await wx.cloud.callFunction({
+        name: 'cancelBooking',
+        data: { 
+          bookingId: courseId,
+          promoteWaitlist: needPromoteWaitlist // 是否需要递补等位
+        }
+      });
+
+      console.log('取消预约结果:', result);
+
+      if (result.result && result.result.success) {
+        // 设置全局刷新标记，通知course页面刷新
+        const app = getApp();
+        app.globalData.needRefreshCourses = true;
+        
+        wx.hideLoading();
+        
+        let successMessage = '取消成功';
+        if (needPromoteWaitlist && result.result.promotedUser) {
+          successMessage = `取消成功，已自动让给等位的同学`;
+        }
+        
+        wx.showToast({
+          title: successMessage,
+          icon: 'success'
+        });
+        
+        // 重新加载数据
+        await this.loadUpcomingSchedule();
+        await this.loadUserCredits(); // 重新加载次卡余额
+      } else {
+        wx.hideLoading();
+        wx.showToast({
+          title: result.result.message || '取消失败',
+          icon: 'none'
+        });
+      }
+    } catch (error) {
+      console.error('取消预约失败:', error);
+      wx.hideLoading();
+      wx.showToast({
+        title: '取消失败',
+        icon: 'error'
+      });
+    }
   },
 
   // 取消私教预约

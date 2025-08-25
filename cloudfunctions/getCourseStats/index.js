@@ -19,51 +19,18 @@ exports.main = async (event, context) => {
     
 
     
-    // 从bookings集合开始查询已预约的课程
+    // 从bookings集合开始查询未发生课程的预约（已预约和等位）
     const bookingsResult = await db.collection('bookings')
       .where({
-        status: 'booked' // 只查询已预约的
+        status: db.command.in(['booked', 'waitlist']) // 查询已预约和等位的
       })
       .get()
     
-    console.log('status为booked的记录数量:', bookingsResult.data.length)
-    console.log('找到的预约记录数量:', bookingsResult.data.length)
-    
-    // 如果没有booked状态的，尝试其他可能的状态值
-    if (bookingsResult.data.length === 0) {
-      console.log('没有找到booked状态的记录，尝试其他状态')
-      
-      // 尝试常见的状态值
-      const possibleStatuses = ['confirmed', 'pending', 'active', 'success', 'completed']
-      
-      for (const status of possibleStatuses) {
-        const testResult = await db.collection('bookings')
-          .where({
-            status: status
-          })
-          .get()
-        console.log(`status为${status}的记录数量:`, testResult.data.length)
-        
-        if (testResult.data.length > 0) {
-          bookingsResult.data = testResult.data
-          console.log(`使用${status}状态的记录进行处理`)
-          break
-        }
-      }
-      
-      // 如果还是没有找到，查询所有记录看看实际的status值
-      if (bookingsResult.data.length === 0) {
-        console.log('尝试查询所有bookings记录')
-        const allResult = await db.collection('bookings').get()
-        console.log('bookings集合总记录数:', allResult.data.length)
-        if (allResult.data.length > 0) {
-          console.log('前5条记录的status值:', allResult.data.slice(0, 5).map(item => item.status))
-          // 临时使用所有记录进行测试
-          bookingsResult.data = allResult.data
-          console.log('使用所有记录进行处理（调试模式）')
-        }
-      }
-    }
+    console.log('找到的未发生课程预约记录数量:', bookingsResult.data.length)
+    console.log('状态分布:', bookingsResult.data.reduce((acc, booking) => {
+      acc[booking.status] = (acc[booking.status] || 0) + 1;
+      return acc;
+    }, {}))
     
     // 按courseName分组统计
     const courseMap = new Map()
@@ -92,7 +59,7 @@ exports.main = async (event, context) => {
           if (isNaN(bookingDateTime.getTime())) {
             console.log('无效的日期时间格式:', booking.date, booking.startTime)
           } else {
-            console.log('跳过已发生的课程')
+            console.log('跳过已发生的课程:', booking.courseName, booking.date, booking.startTime)
           }
           skippedByTime++
           continue

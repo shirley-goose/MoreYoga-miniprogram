@@ -1,7 +1,9 @@
 Page({
   data: {
     loading: true,
-    courseList: []
+    upcomingCourses: [], // 未发生课程
+    completedCourses: [], // 已完成课程
+    currentTab: 'upcoming' // 当前选中的tab：upcoming 或 completed
   },
 
   onLoad() {
@@ -40,47 +42,51 @@ Page({
     try {
       this.setData({ loading: true });
 
-      // 调用云函数获取未发生的课程数据
-      const result = await wx.cloud.callFunction({
-        name: 'getCourseStats'
+      // 先更新所有预约状态
+      await wx.cloud.callFunction({
+        name: 'updateAllBookingStatus'
       });
 
-      console.log('云函数完整返回结果:', result);
+      // 并行获取未发生和已完成的课程数据
+      const [upcomingResult, completedResult] = await Promise.all([
+        wx.cloud.callFunction({ name: 'getCourseStats' }),
+        wx.cloud.callFunction({ name: 'getCompletedCourses' })
+      ]);
 
-      if (result.result && result.result.success) {
-        const courseList = result.result.courses || [];
-        
-        console.log('获取到的课程列表:', courseList);
-        console.log('调试信息:', result.result.debug);
-        
-        // 处理数据格式
-        const processedList = courseList.map(course => ({
+      console.log('未发生课程结果:', upcomingResult);
+      console.log('已完成课程结果:', completedResult);
+
+      let upcomingCourses = [];
+      let completedCourses = [];
+
+      // 处理未发生课程数据
+      if (upcomingResult.result && upcomingResult.result.success) {
+        upcomingCourses = (upcomingResult.result.courses || []).map(course => ({
           ...course,
-          showDetail: false, // 默认不展开
+          showDetail: false,
           dateStr: this.formatDate(course.date),
           timeStr: this.formatTime(course.startTime, course.endTime)
         }));
-
-        console.log('处理后的课程列表:', processedList);
-
-        // 如果没有数据，显示详细的调试信息
-        if (processedList.length === 0) {
-          const debug = result.result.debug || {};
-          wx.showModal({
-            title: '调试信息',
-            content: `数据库总预约: ${debug.allBookingsCount || 0}\n符合状态预约: ${debug.totalBookings || 0}\n状态列表: ${debug.statusList?.join(',') || '无'}\n成功处理: ${debug.processedCount || 0}\n时间过滤跳过: ${debug.skippedByTime || 0}\n用户未找到: ${debug.userNotFound || 0}\n最终课程: ${debug.finalProcessed || 0}`,
-            showCancel: false
-          });
-        }
-
-        this.setData({
-          courseList: processedList,
-          loading: false
-        });
-      } else {
-        console.error('云函数返回失败:', result.result);
-        throw new Error(result.result?.error || '获取数据失败');
       }
+
+      // 处理已完成课程数据
+      if (completedResult.result && completedResult.result.success) {
+        completedCourses = (completedResult.result.courses || []).map(course => ({
+          ...course,
+          showDetail: false,
+          dateStr: this.formatDate(course.date),
+          timeStr: this.formatTime(course.startTime, course.endTime)
+        }));
+      }
+
+      console.log('处理后的未发生课程:', upcomingCourses);
+      console.log('处理后的已完成课程:', completedCourses);
+
+      this.setData({
+        upcomingCourses: upcomingCourses,
+        completedCourses: completedCourses,
+        loading: false
+      });
 
     } catch (error) {
       console.error('加载课程统计失败:', error);
@@ -94,16 +100,28 @@ Page({
     }
   },
 
-  // 切换课程详情显示
+  // 切换tab
+  switchTab(e) {
+    const tab = e.currentTarget.dataset.tab;
+    this.setData({
+      currentTab: tab
+    });
+  },
+
+  // 切换课程详情显示（统一处理）
   toggleCourseDetail(e) {
     const index = e.currentTarget.dataset.index;
-    const courseList = this.data.courseList;
+    const { currentTab } = this.data;
     
-    courseList[index].showDetail = !courseList[index].showDetail;
-    
-    this.setData({
-      courseList: courseList
-    });
+    if (currentTab === 'upcoming') {
+      const upcomingCourses = this.data.upcomingCourses;
+      upcomingCourses[index].showDetail = !upcomingCourses[index].showDetail;
+      this.setData({ upcomingCourses: upcomingCourses });
+    } else {
+      const completedCourses = this.data.completedCourses;
+      completedCourses[index].showDetail = !completedCourses[index].showDetail;
+      this.setData({ completedCourses: completedCourses });
+    }
   },
 
   // 格式化日期
