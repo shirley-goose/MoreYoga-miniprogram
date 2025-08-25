@@ -64,9 +64,9 @@
               <text class="content-label">需求：</text>
               <text class="content-text">{{item.content}}</text>
             </view>
-            <view wx:if="{{item.completedAt}}" class="completion-time">
+            <view wx:if="{{item.completedAt && item.completedAt !== '未记录'}}" class="completion-time">
               <text class="completion-label">完成时间：</text>
-              <text class="completion-text">{{item.completedAt}}</text>
+              <text class="completion-text">{{item.completedAtDisplay || item.completedAt}}</text>
             </view>
           </view>
         </view>
@@ -98,9 +98,9 @@
         <view class="group-course-info">
           <view class="group-course-header">
             <view class="group-course-title">{{item.courseName}}</view>
-            <view class="booking-count">
-              <text class="count-number">{{item.bookedCount}}</text>
-              <text class="count-label">人参与</text>
+            <view class="booking-count completed">
+              <text class="count-number">{{item.completedBookings}}</text>
+              <text class="count-label">人完成</text>
             </view>
           </view>
           
@@ -119,9 +119,17 @@
             </view>
           </view>
 
+          <!-- 统计信息 -->
+          <view class="stats-info">
+            <text class="stat-item total">总计: {{item.totalBookings}}</text>
+            <text class="stat-item completed">完成: {{item.completedBookings}}</text>
+            <text class="stat-item cancelled">取消: {{item.cancelledBookings}}</text>
+            <text class="stat-item failed">失败: {{item.failedBookings}}</text>
+          </view>
+
           <!-- 展开/收起图标 -->
           <view class="expand-icon">
-            <text class="expand-text">{{item.showDetail ? '收起' : '查看学员'}}</text>
+            <text class="expand-text">{{item.showDetail ? '收起' : '查看详情'}}</text>
             <text class="expand-arrow">{{item.showDetail ? '▲' : '▼'}}</text>
           </view>
         </view>
@@ -133,11 +141,17 @@
           </view>
           
           <view wx:else class="booking-students">
-            <view class="students-header">参与学员列表：</view>
+            <view class="students-header">约课学员列表：</view>
             <view class="student-item" wx:for="{{item.bookings}}" wx:for-item="booking" wx:key="id">
               <view class="student-info">
+                <view class="student-name">{{booking.userName}}</view>
                 <view class="student-phone">{{booking.userPhone}}</view>
-                <view class="booking-status-text {{booking.status}}">{{booking.statusText}}</view>
+                <view wx:if="{{booking.cancelTimeDisplay}}" class="cancel-time">
+                  取消时间: {{booking.cancelTimeDisplay}}
+                </view>
+              </view>
+              <view class="booking-status {{booking.status}}">
+                {{booking.statusText}}
               </view>
             </view>
           </view>

@@ -600,16 +600,16 @@ Page({
         const availableTeachers = teachersResult.result.teachers || [];
         console.log('从云端获取的可用私教老师:', availableTeachers);
         
-        // 获取用户的私教预约（包括pending和confirmed状态）
+        // 获取用户的私教预约（包括pending、confirmed和completed状态）
         let userBookings = [];
         if (userBookingsResult.result && userBookingsResult.result.success) {
           userBookings = userBookingsResult.result.data.filter(booking => 
-            (booking.status === 'confirmed' || booking.status === 'pending') && 
+            (booking.status === 'confirmed' || booking.status === 'pending' || booking.status === 'completed') && 
             booking.date === date &&
             // 排除已取消的预约
             booking.status !== 'cancelled'
           );
-          console.log('用户在该日期的私教预约（pending+confirmed）:', userBookings);
+          console.log('用户在该日期的私教预约（pending+confirmed+completed）:', userBookings);
         }
         
         // 处理每个老师的时间段状态
@@ -646,13 +646,40 @@ Page({
     const now = new Date();
     let availableCount = 0;
     
-    const processedSlots = slots.map(slot => {
+    const processedSlots = slots.map((slot, index) => {
+      // 获取时间字符串 - 处理可能是字符串或对象的情况
+      let timeStr;
+      if (typeof slot === 'string') {
+        timeStr = slot;
+      } else if (typeof slot === 'object' && slot.time) {
+        timeStr = slot.time;
+      } else {
+        console.error(`第${index + 1}个时间段格式错误:`, slot, '类型:', typeof slot);
+        return {
+          time: '无效时间',
+          status: 'invalid',
+          statusText: '格式错误',
+          disabled: true
+        };
+      }
+
+      // 验证时间格式（应该包含冒号）
+      if (!timeStr || typeof timeStr !== 'string' || !timeStr.includes(':')) {
+        console.error('时间格式错误，缺少冒号:', slot);
+        return {
+          time: timeStr || '无效时间',
+          status: 'invalid',
+          statusText: '格式错误',
+          disabled: true
+        };
+      }
+      
       // 检查是否已过期
-      const slotDateTime = new Date(`${date}T${slot}:00`);
+      const slotDateTime = new Date(`${date}T${timeStr}:00`);
       const isExpired = slotDateTime < now;
       
       // 检查是否与已预约时间冲突
-      const isBooked = this.isTimeSlotConflicted(slot, userBookings);
+      const isBooked = this.isTimeSlotConflicted(timeStr, userBookings);
       
       // 确定时间段状态
       let status = 'available';
@@ -669,7 +696,7 @@ Page({
       }
       
       return {
-        time: slot,
+        time: timeStr,
         status: status,
         statusText: statusText,
         disabled: status !== 'available'
@@ -682,11 +709,26 @@ Page({
     };
   },
 
-  // 检查时间段是否与已预约时间冲突
+  // 检查时间段是否与已预约时间冲突（包括pending、confirmed、completed状态）
   isTimeSlotConflicted(selectedTime, userBookings) {
     // 将时间转换为分钟数便于计算
     const timeToMinutes = (timeStr) => {
+      if (!timeStr || typeof timeStr !== 'string') {
+        console.error('timeToMinutes: 无效的时间字符串:', timeStr);
+        return 0;
+      }
+      
+      if (!timeStr.includes(':')) {
+        console.error('timeToMinutes: 时间格式错误，缺少冒号:', timeStr);
+        return 0;
+      }
+      
       const [hours, minutes] = timeStr.split(':').map(Number);
+      if (isNaN(hours) || isNaN(minutes)) {
+        console.error('timeToMinutes: 时间解析失败:', timeStr);
+        return 0;
+      }
+      
       return hours * 60 + minutes;
     };
     
@@ -739,16 +781,24 @@ Page({
       });
       
       if (userBookingsResult.result && userBookingsResult.result.success) {
-        // 获取用户的私教预约（包括pending和confirmed状态）
+        // 获取用户的私教预约（包括pending、confirmed和completed状态）
         const userBookings = userBookingsResult.result.data.filter(booking => 
-          (booking.status === 'confirmed' || booking.status === 'pending') && 
+          (booking.status === 'confirmed' || booking.status === 'pending' || booking.status === 'completed') && 
           booking.date === date &&
           // 排除已取消的预约
           booking.status !== 'cancelled'
         );
         
-        // 重新处理时间段状态
-        const processedSlots = this.processTimeSlots(teacher.availableSlots || [], date, userBookings);
+        // 重新处理时间段状态 - 确保使用原始的时间字符串数组
+        let originalSlots = teacher.availableSlots || [];
+        
+        // 如果availableSlots已经是处理过的对象数组，提取time字段
+        if (originalSlots.length > 0 && typeof originalSlots[0] === 'object') {
+          originalSlots = originalSlots.map(slot => slot.time).filter(time => time);
+          console.log('提取原始时间段:', originalSlots);
+        }
+        
+        const processedSlots = this.processTimeSlots(originalSlots, date, userBookings);
         
         // 更新老师的时间段状态
         this.setData({

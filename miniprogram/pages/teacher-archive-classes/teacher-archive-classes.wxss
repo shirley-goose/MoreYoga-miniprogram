@@ -89,3 +89,101 @@
   font-size: 26rpx;
   color: #666;
 }
+
+/* 统计信息样式 */
+.stats-info {
+  display: flex;
+  gap: 10rpx;
+  margin-top: 10rpx;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  font-size: 20rpx;
+  padding: 4rpx 8rpx;
+  border-radius: 8rpx;
+  background: rgba(108, 117, 125, 0.1);
+  color: #6c757d;
+}
+
+/* 统计项目不同状态的样式 */
+.stat-item.total {
+  background: rgba(23, 162, 184, 0.1);
+  color: #17a2b8;
+  font-weight: 600;
+}
+
+.stat-item.completed {
+  background: rgba(40, 167, 69, 0.1);
+  color: #28a745;
+}
+
+.stat-item.cancelled {
+  background: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
+}
+
+.stat-item.failed {
+  background: rgba(255, 193, 7, 0.1);
+  color: #ffc107;
+}
+
+/* 预约计数样式 */
+.booking-count.completed {
+  background: rgba(76, 175, 80, 0.1);
+  border-color: rgba(76, 175, 80, 0.3);
+}
+
+.booking-count.completed .count-number {
+  color: #4caf50;
+}
+
+/* 预约状态样式 */
+.booking-status {
+  font-size: 20rpx;
+  padding: 4rpx 8rpx;
+  border-radius: 8rpx;
+  text-align: center;
+  border: 1rpx solid transparent;
+}
+
+.booking-status.done {
+  background: rgba(40, 167, 69, 0.1);
+  color: #28a745;
+  border: 1px solid rgba(40, 167, 69, 0.2);
+}
+
+.booking-status.cancelled {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.booking-status.fail {
+  background: rgba(255, 193, 7, 0.1);
+  color: #ffc107;
+  border: 1px solid rgba(255, 193, 7, 0.2);
+}
+
+.booking-status.waitlist {
+  background: rgba(23, 162, 184, 0.1);
+  color: #17a2b8;
+  border: 1px solid rgba(23, 162, 184, 0.2);
+}
+
+/* 取消时间样式 */
+.cancel-time {
+  font-size: 20rpx;
+  color: #dc3545;
+  margin-top: 4rpx;
+  padding: 2rpx 6rpx;
+  background: rgba(220, 53, 69, 0.05);
+  border-radius: 6rpx;
+}
+
+/* 学员信息样式 */
+.student-name {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4rpx;
+}

@@ -120,11 +120,33 @@ Page({
         console.log('云函数返回的原始团课数据:', groupCourses);
         console.log('云函数返回的原始私教数据:', privateCourses);
         
+        // 检查私教数据的学员信息
+        if (privateCourses && privateCourses.length > 0) {
+          console.log('已结私教课程详细信息检查:', privateCourses.map(course => ({
+            _id: course._id,
+            studentName: course.studentName,
+            studentPhone: course.studentPhone,
+            date: course.date,
+            timeRange: course.timeRange,
+            completedAt: course.completedAt,
+            studentOpenid: course.studentOpenid,
+            userId: course.userId,
+            userID: course.userID
+          })));
+        }
+        
         const processedGroupCourses = this.processGroupCourses(groupCourses || []);
         console.log('处理后的团课数据:', processedGroupCourses);
         
+        // 处理私教课程数据
+        const processedPrivateCourses = (privateCourses || []).map(course => ({
+          ...course,
+          completedAtDisplay: this.formatCompleteTime(course.completedAt),
+          isCompleted: course.status === 'completed'
+        }));
+
         this.setData({
-          privateCourses: privateCourses || [],
+          privateCourses: processedPrivateCourses,
           groupCourses: processedGroupCourses
         });
 
@@ -168,20 +190,18 @@ Page({
       const weekDay = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][date.getDay()];
       const dateDisplay = `${month}月${day}日 ${weekDay}`;
 
-      // 处理预约状态文本（过滤掉已取消的记录）
-      const validBookings = (course.bookings || [])
-        .filter(booking => booking.status !== 'cancelled')
-        .map(booking => ({
-          ...booking,
-          statusText: this.getBookingStatusText(booking.status)
-        }));
+      // 处理预约状态文本
+      const processedBookings = (course.bookings || []).map(booking => ({
+        ...booking,
+        statusText: this.getBookingStatusText(booking.status),
+        cancelTimeDisplay: booking.cancelTime ? this.formatCancelTime(booking.cancelTime) : null
+      }));
 
       return {
         ...course,
         dateDisplay,
-        bookings: validBookings,
-        bookedCount: validBookings.filter(b => b.status === 'booked' || b.status === 'confirmed' || b.status === 'completed').length,
-        showDetail: false
+        bookings: processedBookings,
+        showDetail: course.showDetail || false
       };
     });
   },
@@ -192,9 +212,27 @@ Page({
       'booked': '已预约',
       'confirmed': '已确认',
       'cancelled': '已取消',
-      'completed': '已完成'
+      'completed': '已完成',
+      'done': '已完成',
+      'fail': '等位失败',
+      'waitlist': '等位中'
     };
     return statusMap[status] || status;
+  },
+
+  // 格式化取消时间
+  formatCancelTime(cancelTime) {
+    if (!cancelTime) return null;
+    const date = new Date(cancelTime);
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+  },
+
+  // 格式化完成时间
+  formatCompleteTime(completeTime) {
+    if (!completeTime || completeTime === '未记录') return '未记录';
+    const date = new Date(completeTime);
+    if (isNaN(date.getTime())) return '未记录';
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
   },
 
   // 切换团课详情展开/收起

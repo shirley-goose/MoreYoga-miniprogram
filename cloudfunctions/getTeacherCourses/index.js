@@ -36,7 +36,85 @@ async function getPrivateCourses(teacherId, teacherName, type = 'upcoming') {
       .get()
 
     console.log('私教课程数量:', result.data.length)
-    return result.data
+    
+    // 打印前几条记录的详细信息用于调试
+    if (result.data.length > 0) {
+      console.log('私教课程样本数据 (前3条):', result.data.slice(0, 3).map(booking => ({
+        _id: booking._id,
+        teacherName: booking.teacherName,
+        v: booking.studentOpenid,
+        userId: booking.userId,
+        userID: booking.userID,
+        date: booking.date,
+        startTime: booking.startTime,
+        status: booking.status
+      })));
+    }
+
+    // 为每个私教课程添加学员信息
+    const coursesWithStudentInfo = await Promise.all(
+      result.data.map(async (booking) => {
+        try {
+                      // 获取学员信息 - 私教预约中学员openid存储在studentOpenid字段
+            const studentOpenid = booking.studentOpenid || booking.userId || booking.userID;
+            console.log('查询学员信息:', {
+              bookingId: booking._id,
+              studentOpenid: booking.studentOpenid,
+              userId: booking.userId,
+              userID: booking.userID,
+              finalOpenid: studentOpenid
+            });
+
+            const userResult = await db.collection('users')
+              .where({
+                openid: studentOpenid
+              })
+              .get()
+
+          const user = userResult.data[0]
+          
+          console.log('学员信息查询结果:', {
+            bookingId: booking._id,
+            studentOpenid: studentOpenid,
+            userFound: !!user,
+            userCount: userResult.data.length,
+            userData: user ? {
+              name: user.name,
+              nickName: user.nickName,
+              phoneNumber: user.phoneNumber,
+              openid: user.openid
+            } : null
+          });
+          
+          return {
+              ...booking,
+              studentName: user ? (user.name || user.nickName || '未知学员') : '未知学员',
+              studentPhone: user ? (user.phoneNumber || '未提供') : '未知',
+              timeRange: `${booking.startTime}-${booking.endTime || '未设置'}`,
+              completedAt: booking.completeTime || booking.completedAt || booking.updateTime || '未记录',
+              completeTime: booking.completeTime || null
+            }
+        } catch (userError) {
+          console.error('获取私教学员信息失败:', {
+            error: userError,
+            bookingId: booking._id,
+            studentOpenid: booking.studentOpenid,
+            userId: booking.userId,
+            userID: booking.userID
+          });
+          return {
+            ...booking,
+            studentName: '未知学员',
+            studentPhone: '未知',
+            timeRange: `${booking.startTime}-${booking.endTime || '未设置'}`,
+            completedAt: booking.completeTime || booking.completedAt || booking.updateTime || '未记录',
+            completeTime: booking.completeTime || null
+          }
+        }
+      })
+    )
+
+    return coursesWithStudentInfo
 
   } catch (error) {
     console.error('获取私教课程失败:', error)
@@ -125,15 +203,14 @@ async function getGroupCourses(teacherId, teacherName, teacherNameShort, type = 
         try {
           console.log('为课程获取预约信息:', schedule._id, schedule.courseName)
           
-          // 获取该课程的预约记录（排除已取消的）
+          // 获取该课程的所有预约记录（包含所有状态）
           const bookingsResult = await db.collection('bookings')
             .where({
-              scheduleId: schedule._id,
-              status: db.command.neq('cancelled') // 排除已取消的预约
+              scheduleId: schedule._id
             })
             .get()
 
-          console.log(`课程 ${schedule.courseName} 的有效预约记录数量:`, bookingsResult.data.length)
+          console.log(`课程 ${schedule.courseName} 的所有预约记录数量:`, bookingsResult.data.length)
 
           // 获取用户信息
           const bookingsWithUsers = await Promise.all(
@@ -146,10 +223,24 @@ async function getGroupCourses(teacherId, teacherName, teacherNameShort, type = 
                   .get()
 
                 const user = userResult.data[0]
+                
+                // 确定最终状态（对于已开始的课程）
+                let finalStatus = booking.status;
+                if (type === 'archived') {
+                  if (booking.status === 'booked') {
+                    finalStatus = 'done'; // 已开始的booked课程应该是done
+                  } else if (booking.status === 'waitlist') {
+                    finalStatus = 'fail'; // 已开始的waitlist课程应该是fail
+                  }
+                }
+                
                 return {
                   ...booking,
-                  userPhone: user ? user.phoneNumber : '未知',
-                  userName: user ? user.userName : '未知用户'
+                  status: finalStatus,
+                  originalStatus: booking.status,
+                  userPhone: user ? (user.phoneNumber || '未提供') : '未知',
+                  userName: user ? (user.name || user.nickName || '未知用户') : '未知用户',
+                  cancelTime: booking.cancelTime
                 }
               } catch (userError) {
                 console.warn('获取用户信息失败:', userError)
@@ -162,9 +253,20 @@ async function getGroupCourses(teacherId, teacherName, teacherNameShort, type = 
             })
           )
 
+          // 计算统计信息
+          const totalBookings = bookingsWithUsers.length;
+          const completedBookings = bookingsWithUsers.filter(b => b.status === 'done').length;
+          const cancelledBookings = bookingsWithUsers.filter(b => b.status === 'cancelled').length;
+          const failedBookings = bookingsWithUsers.filter(b => b.status === 'fail').length;
+
           return {
             ...schedule,
-            bookings: bookingsWithUsers
+            bookings: bookingsWithUsers,
+            totalBookings: totalBookings,
+            completedBookings: completedBookings,
+            cancelledBookings: cancelledBookings,
+            failedBookings: failedBookings,
+            showDetail: false
           }
 
         } catch (bookingError) {

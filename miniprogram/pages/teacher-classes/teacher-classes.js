@@ -144,6 +144,20 @@ Page({
         console.log('云函数返回的原始团课数据:', groupCourses);
         console.log('云函数返回的原始私教数据:', privateCourses);
         
+        // 检查私教数据的学员信息
+        if (privateCourses && privateCourses.length > 0) {
+          console.log('私教课程详细信息检查:', privateCourses.map(course => ({
+            _id: course._id,
+            studentName: course.studentName,
+            studentPhone: course.studentPhone,
+            date: course.date,
+            timeRange: course.timeRange,
+            studentOpenid: course.studentOpenid,
+            userId: course.userId,
+            userID: course.userID
+          })));
+        }
+        
         const processedGroupCourses = this.processGroupCourses(groupCourses || []);
         console.log('处理后的团课数据:', processedGroupCourses);
         
@@ -256,12 +270,50 @@ Page({
   async markAsCompleted(e) {
     const courseId = e.currentTarget.dataset.id;
     
+    console.log('标记私教课程完成:', { courseId });
+
     wx.showModal({
-      title: '确认完成',
-      content: '确定要标记这节课为已完成吗？',
+      title: '确认操作',
+      content: '确定要标记这节私教课程为已完成吗？',
       success: async (res) => {
         if (res.confirm) {
-          await this.updateCourseStatus(courseId, 'completed');
+          try {
+            wx.showLoading({ title: '处理中...' });
+
+            const result = await wx.cloud.callFunction({
+              name: 'markPrivateCompleted',
+              data: {
+                bookingId: courseId
+              }
+            });
+
+            console.log('标记完成结果:', result);
+            wx.hideLoading();
+
+            if (result.result && result.result.success) {
+              wx.showToast({
+                title: '标记完成成功',
+                icon: 'success'
+              });
+
+              // 重新加载课程数据
+              await this.loadCourses();
+            } else {
+              wx.showModal({
+                title: '操作失败',
+                content: result.result?.message || '标记失败',
+                showCancel: false
+              });
+            }
+          } catch (error) {
+            console.error('标记私教课程完成失败:', error);
+            wx.hideLoading();
+            wx.showModal({
+              title: '网络错误',
+              content: '请检查网络连接后重试',
+              showCancel: false
+            });
+          }
         }
       }
     });
