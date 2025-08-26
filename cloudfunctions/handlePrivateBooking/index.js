@@ -201,6 +201,9 @@ async function sendPrivateBookingConfirmedNotification(request) {
     
     // 格式化上课时间
     const classTime = formatClassTime(request)
+
+    console.log('StudentOpenid:', studentOpenid)
+    console.log('scheduleId:', request._id)
     
     // 调用发送通知云函数
     const notificationResult = await cloud.callFunction({
@@ -215,8 +218,31 @@ async function sendPrivateBookingConfirmedNotification(request) {
         scheduleId: request._id
       }
     })
+    // console.log('ADADADADAD', notificationResult)
+    // console.log('notificationResult:', notificationResult)
+
+    // try {
+    //   const Result = await cloud.callFunction({
+    //     name: 'ZTest',
+    //     data: {
+    //       userId: studentOpenid,
+    //       templateId: 'Gh4le1pvgOkdxcgo0rlZYgeJH15oT6N8GMN9vbnkLVg',
+    //       pagePath: 'pages/private-history/private-history',
+    //       messageData: {
+    //         thing1: { value: '墨瑜伽私教' },
+    //         thing2: { value: '周周老师' },
+    //         time3: { value: '2025年08月28日 06:30~07:30' },
+    //         thing4: { value: '请准时到达' }
+    //       }
+    //       },
+    //   });
+    //   console.log('云函数调用返回:', Result);
+    // } catch (err) {
+    //   console.error('云函数调用失败:', err);
+    // }
+      
     
-    console.log('发送通知云函数调用结果:', notificationResult)
+    // console.log('发送通知云函数调用结果:', Result)
     
     if (!notificationResult.result.success) {
       throw new Error('发送通知失败: ' + notificationResult.result.error)

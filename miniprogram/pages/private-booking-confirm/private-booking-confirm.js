@@ -198,24 +198,51 @@ Page({
       });
 
       if (confirmResult) {
-        const subscribeResult = await wx.requestSubscribeMessage({
-          tmplIds: ['Gh4le1pvgOkdxcgo0rlZYgeJH15oT6N8GMN9vbnkLVg'], // 私教预约成功通知模板ID
-        });
+        // const subscribeResult = await wx.requestSubscribeMessage({
+        //   tmplIds: ['Gh4le1pvgOkdxcgo0rlZYgeJH15oT6N8GMN9vbnkLVg'], // 私教预约成功通知模板ID
+        // });
         
-        console.log('订阅消息请求结果:', subscribeResult);
+        // console.log('订阅消息请求结果:', subscribeResult);
         
-        // 检查订阅结果
-        const templateId = 'Gh4le1pvgOkdxcgo0rlZYgeJH15oT6N8GMN9vbnkLVg';
-        if (subscribeResult[templateId] === 'accept') {
-          console.log('用户同意接收通知');
-          wx.showToast({
-            title: '通知设置成功',
-            icon: 'success',
-            duration: 1500
-          });
-        } else {
-          console.log('用户拒绝接收通知');
-        }
+        // // 检查订阅结果
+        // const templateId = 'Gh4le1pvgOkdxcgo0rlZYgeJH15oT6N8GMN9vbnkLVg';
+        // if (subscribeResult[templateId] === 'accept') {
+        //   console.log('用户同意接收通知');
+        //   wx.showToast({
+        //     title: '通知设置成功',
+        //     icon: 'success',
+        //     duration: 1500
+        //   });
+        // } else {
+        //   console.log('用户拒绝接收通知');
+        // }
+        wx.requestSubscribeMessage({
+          tmplIds: ['Gh4le1pvgOkdxcgo0rlZYgeJH15oT6N8GMN9vbnkLVg'],
+          success(res) {
+            console.log("订阅返回结果:", res)
+            /*
+              例如：
+              {
+                "模板ID": "accept"    // 用户同意
+                "模板ID": "reject"    // 用户拒绝
+                "模板ID": "ban"       // 用户被后台封禁
+              }
+            */
+            if (res['Gh4le1pvgOkdxcgo0rlZYgeJH15oT6N8GMN9vbnkLVg'] === 'accept') {
+              console.log("✅ 用户同意订阅，可以发一次消息")
+              // 这里再去调用云函数，触发发送
+              wx.cloud.callFunction({
+                name: 'sendSubscribeMsg',
+                data: { tmplId: 'Gh4le1pvgOkdxcgo0rlZYgeJH15oT6N8GMN9vbnkLVg' }
+              })
+            } else {
+              console.log("❌ 用户没有订阅，不能发送")
+            }
+          },
+          fail(err) {
+            console.error("订阅请求失败:", err)
+          }
+        })
       } else {
         console.log('用户选择跳过通知订阅');
       }
