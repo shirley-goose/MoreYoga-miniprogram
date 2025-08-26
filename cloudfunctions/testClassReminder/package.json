@@ -1,0 +1,9 @@
+{
+  "name": "testClassReminder",
+  "version": "1.0.0",
+  "description": "测试开课前4小时提醒功能",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

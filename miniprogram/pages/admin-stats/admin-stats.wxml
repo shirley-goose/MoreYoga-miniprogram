@@ -34,7 +34,8 @@
             bindtap="switchTab" 
             data-tab="completed">
         <text class="tab-text">已完成课程</text>
-        <text class="tab-count">({{completedCourses.length}}节)</text>
+        <text class="tab-count" wx:if="{{completedLoaded}}">({{completedCourses.length}}节)</text>
+        <text class="tab-count" wx:else>(点击加载)</text>
         <text class="tab-desc">所有约课学员</text>
       </view>
     </view>
@@ -105,11 +106,27 @@
 
     <!-- 已完成课程内容 -->
     <view wx:if="{{currentTab === 'completed'}}" class="tab-content">
-      <view wx:if="{{completedCourses.length === 0}}" class="empty-state">
+      <!-- 未加载时显示加载按钮 -->
+      <view wx:if="{{!completedLoaded}}" class="load-completed-section">
+        <view class="load-tip">
+          <view class="tip-icon">💡</view>
+          <view class="tip-text">已完成课程数据较多，点击下方按钮加载</view>
+        </view>
+        <button class="load-completed-btn {{completedLoading ? 'loading' : ''}}" 
+                bindtap="loadCompletedCourses" 
+                disabled="{{completedLoading}}">
+          <text wx:if="{{completedLoading}}">加载中...</text>
+          <text wx:else>加载已完成课程</text>
+        </button>
+      </view>
+
+      <!-- 已加载但没有数据 -->
+      <view wx:elif="{{completedCourses.length === 0}}" class="empty-state">
         <view class="empty-icon">✅</view>
         <view class="empty-text">暂无已完成的课程</view>
       </view>
 
+      <!-- 课程列表 -->
       <view wx:else class="course-list">
         <view class="course-item" wx:for="{{completedCourses}}" wx:key="id" bindtap="toggleCourseDetail" data-index="{{index}}">
           <!-- 课程基本信息 -->

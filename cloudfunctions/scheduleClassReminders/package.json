@@ -1,0 +1,9 @@
+{
+  "name": "scheduleClassReminders",
+  "version": "1.0.0",
+  "description": "定时检查并发送开课前4小时提醒",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

@@ -26,7 +26,8 @@
 ### 🔔 智能通知
 - **预约成功通知**：即时预约确认
 - **成课通知**：满足最少人数时自动通知
-- **课程提醒**：开课前1小时提醒
+- **开课前提醒**：开课前4小时自动提醒，确保用户不错过课程
+- **私教预约通知**：老师确认私教预约时自动通知用户
 - **等位转正通知**：有空位时自动转为正式预约
 
 ## 项目结构
@@ -63,8 +64,11 @@ yoga/
 │   ├── bookCourse/          # 预约课程
 │   ├── cancelBooking/       # 取消预约
 │   ├── getUserBookings/     # 获取用户预约记录
-│   ├── sendNotification/    # 发送通知
-│   ├── courseReminder/      # 课程提醒（定时器）
+│   ├── sendNotification/    # 发送通知（私教预约确认）
+│   ├── sendSubscribeMessage/# 发送订阅消息通用接口
+│   ├── sendClassReminder/   # 开课前4小时提醒
+│   ├── scheduleClassReminders/ # 定时任务：检查并发送开课提醒
+│   ├── testClassReminder/   # 测试开课前提醒功能
 │   ├── adminAddCourse/      # 管理员添加课程
 │   ├── adminAddSchedule/    # 管理员添加日程
 │   ├── adminUpdateCredits/  # 管理员更新用户次卡

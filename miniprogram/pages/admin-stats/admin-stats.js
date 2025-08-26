@@ -3,7 +3,9 @@ Page({
     loading: true,
     upcomingCourses: [], // 未发生课程
     completedCourses: [], // 已完成课程
-    currentTab: 'upcoming' // 当前选中的tab：upcoming 或 completed
+    currentTab: 'upcoming', // 当前选中的tab：upcoming 或 completed
+    completedLoaded: false, // 已完成课程是否已加载
+    completedLoading: false // 已完成课程是否正在加载
   },
 
   onLoad() {
@@ -14,6 +16,10 @@ Page({
     // 每次显示时刷新数据
     if (!this.data.loading) {
       this.loadCourseStats();
+      // 如果已完成课程已加载过，也刷新一下
+      if (this.data.completedLoaded && !this.data.completedLoading) {
+        this.loadCompletedCourses();
+      }
     }
   },
 
@@ -37,7 +43,7 @@ Page({
     return true;
   },
 
-  // 加载课程统计数据
+  // 加载课程统计数据 - 只加载未发生课程
   async loadCourseStats() {
     try {
       this.setData({ loading: true });
@@ -47,17 +53,14 @@ Page({
         name: 'updateAllBookingStatus'
       });
 
-      // 并行获取未发生和已完成的课程数据
-      const [upcomingResult, completedResult] = await Promise.all([
-        wx.cloud.callFunction({ name: 'getCourseStats' }),
-        wx.cloud.callFunction({ name: 'getCompletedCourses' })
-      ]);
+      // 只获取未发生的课程数据
+      const upcomingResult = await wx.cloud.callFunction({ 
+        name: 'getCourseStats' 
+      });
 
       console.log('未发生课程结果:', upcomingResult);
-      console.log('已完成课程结果:', completedResult);
 
       let upcomingCourses = [];
-      let completedCourses = [];
 
       // 处理未发生课程数据
       if (upcomingResult.result && upcomingResult.result.success) {
@@ -68,6 +71,38 @@ Page({
           timeStr: this.formatTime(course.startTime, course.endTime)
         }));
       }
+
+      console.log('处理后的未发生课程:', upcomingCourses);
+
+      this.setData({
+        upcomingCourses: upcomingCourses,
+        loading: false
+      });
+
+    } catch (error) {
+      console.error('加载课程统计失败:', error);
+      this.setData({ loading: false });
+      
+      wx.showToast({
+        title: '加载失败: ' + error.message,
+        icon: 'none',
+        duration: 3000
+      });
+    }
+  },
+
+  // 加载已完成课程数据
+  async loadCompletedCourses() {
+    try {
+      this.setData({ completedLoading: true });
+
+      const completedResult = await wx.cloud.callFunction({ 
+        name: 'getCompletedCourses' 
+      });
+
+      console.log('已完成课程结果:', completedResult);
+
+      let completedCourses = [];
 
       // 处理已完成课程数据
       if (completedResult.result && completedResult.result.success) {
@@ -83,18 +118,17 @@ Page({
         }));
       }
 
-      console.log('处理后的未发生课程:', upcomingCourses);
       console.log('处理后的已完成课程:', completedCourses);
 
       this.setData({
-        upcomingCourses: upcomingCourses,
         completedCourses: completedCourses,
-        loading: false
+        completedLoaded: true,
+        completedLoading: false
       });
 
     } catch (error) {
-      console.error('加载课程统计失败:', error);
-      this.setData({ loading: false });
+      console.error('加载已完成课程失败:', error);
+      this.setData({ completedLoading: false });
       
       wx.showToast({
         title: '加载失败: ' + error.message,
