@@ -21,11 +21,11 @@ exports.main = async (event, context) => {
 
     // 预设的老师列表
     const teachers = [
-      { id: 'zhouzhou', name: '周周老师', specialties: '流瑜伽 | 正位瑜伽' },
-      { id: 'yinger', name: '莹儿老师', specialties: '产后修复 | 体态调整' },
-      { id: 'qiqi', name: '岐岐老师', specialties: '空中瑜伽 | 力量瑜伽' },
-      { id: 'yaqin', name: '雅琴老师', specialties: '阴瑜伽 | 冥想瑜伽' },
-      { id: 'chengmin', name: '程敏老师', specialties: '体式精进 | 后弯专项' }
+      { id: 'zhouzhou', name: '周周老师' },
+      { id: 'yinger', name: '莹儿老师' },
+      { id: 'qiqi', name: '岐岐老师' },
+      { id: 'yaqin', name: '雅琴老师'},
+      { id: 'chengmin', name: '程敏老师' }
     ]
 
     // 获取所有老师在指定日期的可用时间

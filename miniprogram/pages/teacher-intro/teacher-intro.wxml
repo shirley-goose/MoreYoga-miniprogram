@@ -19,44 +19,29 @@
     
     <!-- 老师头像和姓名 -->
     <view class="teacher-header">
-      <image class="teacher-photo" src="{{teacherInfo.photo}}" mode="aspectFill"/>
+     <div class="teacher-info">
       <view class="teacher-name">{{teacherInfo.name}}</view>
+      <div class="teacher-subtitle">{{teacherInfo.intro}}</div>
+     </div>
+      <image class="teacher-photo" src="{{teacherInfo.photo}}" mode="aspectFill"/>
     </view>
 
-    <!-- 擅长课程板块 -->
+    <!-- 她眼中的瑜伽板块 -->
+    <view class="words-section">
+      <view class="section-divider"></view>
+      <view class="section-title">她眼中的瑜伽</view>
+      <view class="teacher-words">{{teacherInfo.words}}</view>
+    </view>
+
+
+    <!-- 关于课程板块 -->
     <view class="course-section">
       <view class="section-divider"></view>
       <view class="section-title">擅长课程</view>
       <view class="course-content">
         <view wx:for="{{teacherInfo.specialties}}" wx:key="index" class="course-item">
-          <text class="course-category">【{{item.category}}】</text>
-          <text class="course-description">{{item.description}}</text>
-        </view>
-      </view>
-    </view>
-
-    <!-- 奖项与证书板块 -->
-    <view class="awards-section">
-      <view class="section-divider"></view>
-      <view class="section-title">奖项与证书</view>
-      <view class="awards-content">
-        <!-- 第一列证书 -->
-        <view class="awards-column">
-          <view wx:for="{{teacherInfo.awards.column1}}" wx:key="index" class="award-item">
-            {{item}}
-          </view>
-        </view>
-        <!-- 第二列证书 -->
-        <view class="awards-column">
-          <view wx:for="{{teacherInfo.awards.column2}}" wx:key="index" class="award-item">
-            {{item}}
-          </view>
-        </view>
-        <!-- 第三列证书 -->
-        <view class="awards-column">
-          <view wx:for="{{teacherInfo.awards.column3}}" wx:key="index" class="award-item">
-            {{item}}
-          </view>
+          <view class="course-category">【 {{item.category}} 】</view>
+          <view class="course-description">{{item.description}}</view>
         </view>
       </view>
     </view>

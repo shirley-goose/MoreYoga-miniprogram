@@ -20,7 +20,6 @@
   <!-- 老师信息 -->
   <view class="teacher-info">
     <view class="teacher-welcome">👋 欢迎回来，{{teacherInfo.name}}</view>
-    <view class="teacher-specialties">专业：{{teacherInfo.specialties}}</view>
   </view>
 
   <!-- 功能菜单 -->

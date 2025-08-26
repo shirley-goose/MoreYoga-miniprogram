@@ -2,51 +2,6 @@
 Page({
   data: {
     teacherInfo: {
-      id: 'yinger',
-      name: '莹儿老师',
-      photo: 'cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/images/teacher_yinger-6c1741.png',
-      specialties: [
-        {
-          category: '产后私教',
-          description: '产后体态、盆底内脏修复'
-        },
-        {
-          category: '孕期私教',
-          description: '孕期体态、调整'
-        },
-        {
-          category: '体态调整',
-          description: '腿型，骨盆，肩颈等'
-        },
-        {
-          category: '体式精进',
-          description: '省力倒立人轻松后弯等'
-        },
-        {
-          category: '女性调理',
-          description: '调整状态，放松身心'
-        }
-      ],
-      awards: {
-        column1: [
-          'Kyoga.PTPC多元思维私人教练认证',
-          'Kyoga倒立&后弯',
-          'Kyoga.PART A10OTTC认证',
-          'KFLY空中级别一培训师',
-          '第二届国际空中瑜伽大赛团队总冠军',
-          '第三届国际空中瑜伽大赛暨交流会授课导师'
-        ],
-        column2: [
-          'Li xin pilates孕产私教认证',
-          'Li xin pilates产后恢复团课认证',
-          'Li xin pilates大器械'
-        ],
-        column3: [
-          '毕义明功能解剖认证',
-          '内观流培训',
-          '国际瑜伽联盟2015年年度优秀瑜伽师'
-        ]
-      }
     }
   },
 
@@ -89,82 +44,44 @@ Page({
       'yinger': {
         id: 'yinger',
         name: '莹儿老师',
-        photo: '../../images/teacher_yinger-6c1741.png',
+        photo: '../../images/yinger.jpg',
+        intro: '深耕瑜伽教学十年，传统古典瑜伽，吠陀瑜伽以及孕期产后瑜伽研习者，瑜伽培训导师，两位孩子母亲，教学有爱有生命力且有方法。',
         specialties: [
           {
-            category: '产后私教',
-            description: '产后体态、盆底内脏修复'
+            category: '古典瑜伽',
+            description: '课程融合解剖学，从内脏位置功能与骨骼排列、神经系统的关系出发，遵循身体的客观规律，去感受身体本身的智慧。'
           },
           {
-            category: '孕期私教',
-            description: '孕期体态、调整'
+            category: '女性瑜伽',
+            description: '针对盆底肌群、子宫卵巢、甲状腺等女性核心宝藏，青少年、生理周期、孕产、更年期不同女性时期，建立呼吸-筋膜-能量三重唤醒。'
           },
           {
-            category: '体态调整',
-            description: '腿型，骨盆，肩颈等'
-          },
-          {
-            category: '体式精进',
-            description: '省力倒立人轻松后弯等'
-          },
-          {
-            category: '女性调理',
-            description: '调整状态，放松身心'
+            category: '五大元素流动课程—动态冥想力',
+            description: '将唱诵与传统功法相结合，用震动频率疏通气血通道。在土、水、火、风、空五种不同的意识状态中感受身体的流动。不同的动作是不同的能量流动形式。'
           }
         ],
-        awards: {
-          column1: [
-            'Kyoga.PTPC多元思维私人教练认证',
-            'Kyoga倒立&后弯',
-            'Kyoga.PART A10OTTC认证',
-            'KFLY空中级别一培训师',
-            '第二届国际空中瑜伽大赛团队总冠军',
-            '第三届国际空中瑜伽大赛暨交流会授课导师'
-          ],
-          column2: [
-            'Li xin pilates孕产私教认证',
-            'Li xin pilates产后恢复团课认证',
-            'Li xin pilates大器械'
-          ],
-          column3: [
-            '毕义明功能解剖认证',
-            '内观流培训',
-            '国际瑜伽联盟2015年年度优秀瑜伽师'
-          ]
-        }
+        words: '十年前刚接触瑜伽时，我和很多人一样，会对着镜子反复调整自己的身体，不乏“暴力”的追求身材和体式。后来成为母亲、经历身体的变化，才慢慢懂得：那些藏在骨盆深处的生命力，那些随着呼吸起伏的内脏韵律，远比外在的线条更值得倾听。现在的我，更喜欢在清晨第一缕阳光，安安静静的调息练习，  感受身体本身的智慧，致力于用最符合人体科学的方式，让瑜伽成为滋养生命的土壤。',
       },
-      'zhouzhou': {
+        'zhouzhou': {
         id: 'zhouzhou',
         name: '周周老师',
-        photo: '../../images/teacher_zhouzhou.jpg', // 照片待补充
+        photo: '../../images/zhouzhou.jpg',
+        intro: '教学七年，喜欢探索身心联结，擅长感知情绪有一定的通感力，深入学习和练习古典瑜伽，以及深入学习瑜伽哲学，中医养生，五行针灸（调理情志类的疗愈针法）以及冥想打坐等课程。',
         specialties: [
           {
-            category: '流瑜伽',
-            description: '优雅流畅的瑜伽序列'
+            category: '肩颈/腰椎疼痛/体态疗愈',
+            description: ''
           },
           {
-            category: '哈他瑜伽',
-            description: '传统瑜伽体式练习'
+            category: '情绪心身私教（情绪躯体化）',
+            description: ''
           },
           {
-            category: '正位瑜伽',
-            description: '精准体式对位指导'
+            category: '体式放松，冥想放松解压',
+            description: ''
           }
         ],
-        awards: {
-          column1: [
-            '200小时瑜伽教练认证',
-            '流瑜伽专业认证',
-            '正位瑜伽导师认证'
-          ],
-          column2: [
-            '国际瑜伽联盟RYT认证',
-            '解剖学专业培训'
-          ],
-          column3: [
-            '瑜伽理疗师认证'
-          ]
-        }
+        words:'瑜伽哲学是我行于生活的哲学，瑜伽体式是我探索身心的工具，瑜伽修习是我净化心身通道触心身的镜子，喜欢探索心身一体，也相信身心一体且具有能量。'
       },
       'yaqin': {
         id: 'yaqin',
@@ -202,68 +119,51 @@ Page({
       'qiqi': {
         id: 'qiqi',
         name: '岐岐老师',
-        photo: '../../images/teacher_qiqi.jpg', // 照片待补充
+        photo: '../../images/qiqi.jpg', 
+        intro: '喜欢瑜伽，享受瑜伽，教学三年热爱思考教学。喜欢在流动的练习里探索瑜伽。擅长课程流瑜伽.',
         specialties: [
           {
-            category: '空中瑜伽',
-            description: '悬空体式优雅练习'
+            category: '流瑜伽',
+            description: '节奏舒缓温和有力量'
           },
           {
-            category: '力量瑜伽',
-            description: '强化核心力量训练'
+            category: '正位瑜伽',
+            description: ''
           },
           {
-            category: '倒立专项',
-            description: '安全倒立技巧指导'
+            category: '塑形瑜伽',
+            description: ''
           }
         ],
-        awards: {
-          column1: [
-            '空中瑜伽专业认证',
-            '力量瑜伽导师认证',
-            '倒立专项训练认证'
-          ],
-          column2: [
-            '运动解剖学认证',
-            '功能性训练认证'
-          ],
-          column3: [
-            '国际空中瑜伽联盟认证'
-          ]
-        }
-      },
+        words:'延习以传统正位，精准为练习原则上的流动。在课程里我愿细致耐心的辅助练习者，注重的练习者感受。与练习者一起体验身心灵回归当下，与身体在一起的美好。',
+        },
       'chengmin': {
         id: 'chengmin',
         name: '程敏老师',
-        photo: '../../images/teacher_chengmin.jpg', // 照片待补充
-        specialties: [
+        photo: '../../images/chengmin.jpg', 
+        intro:'教学十余年，教学经验丰富，技术深厚。多次参加李欣普拉提，维密塑形，以及其他塑形工作坊，如：苏蕾私人订制/一字肩美背美臀等工作坊。',        specialties: [
           {
-            category: '体式精进',
-            description: '高难度体式技巧指导'
+            category: '肩颈理疗',
+            description: ''
           },
           {
-            category: '后弯专项',
-            description: '安全后弯开胸练习'
+            category: '开髋开肩',
+            description: ''
           },
           {
-            category: '平衡体式',
-            description: '身心平衡协调训练'
+            category: '臀腿/肩背线条塑造',
+            description: ''
+          },
+          {
+            category: '流瑜伽',
+            description: ''
+          },
+          {
+            category: '高难体式挑战',
+            description: ''
           }
         ],
-        awards: {
-          column1: [
-            '高级瑜伽导师认证',
-            '体式精进专项认证',
-            '后弯专业培训认证'
-          ],
-          column2: [
-            '国际瑜伽大赛获奖者',
-            '瑜伽示范导师认证'
-          ],
-          column3: [
-            '瑜伽哲学研修认证'
-          ]
-        }
+        words:'练习的过程里，时刻安放注意力在自己的身体上，让自己更好成为自己。',
       }
     };
 

@@ -5,32 +5,27 @@ Page({
       {
         id: 'yinger',
         name: '莹儿',
-        avatar: 'cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/images/teacher_yinger-6c1741.png', // 已有照片
-        specialtyTag: '产后调理专家'
+        avatar: '../../images/yinger_avatar.jpg', 
       },
       {
         id: 'zhouzhou',
         name: '周周',
-        avatar: '', // 照片待补充
-        specialtyTag: '流瑜伽导师'
+        avatar: '../../images/zhouzhou_avatar.jpg', 
       },
       {
         id: 'yaqin',
         name: '雅琴',
         avatar: '', // 照片待补充
-        specialtyTag: '阴瑜伽专家'
       },
       {
         id: 'qiqi',
         name: '岐岐',
-        avatar: '', // 照片待补充
-        specialtyTag: '空中瑜伽导师'
+        avatar: '../../images/qiqi_avatar.jpg', 
       },
       {
         id: 'chengmin',
         name: '程敏',
-        avatar: '', // 照片待补充
-        specialtyTag: '体式精进导师'
+        avatar: '../../images/chengmin_avatar.jpg', 
       }
     ]
   },

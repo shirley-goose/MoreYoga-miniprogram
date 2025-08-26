@@ -89,11 +89,6 @@
   margin-bottom: 15rpx;
 }
 
-.teacher-specialties {
-  font-size: 28rpx;
-  color: #666;
-}
-
 /* 功能菜单 */
 .function-menu {
   margin-bottom: 40rpx;
