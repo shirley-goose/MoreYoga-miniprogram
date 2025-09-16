@@ -1,36 +1,168 @@
-# 墨瑜伽微信小程序
+# 🧘‍♀️ 墨瑜伽微信小程序
 
-## 项目简介
+一个功能完整的瑜伽馆预约管理系统，基于微信小程序原生开发，使用微信云开发作为后端服务。
 
-墨瑜伽是一个专业的瑜伽馆微信小程序，提供完整的课程预约管理系统。系统包括用户约课、课时管理、课程日历发布、智能通知提醒等功能，并配备完善的管理员后台。本小程序基于微信云开发，确保数据安全可靠，用户体验流畅。
+## ✨ 项目特色
 
-## ✨ 核心功能
+- 🎯 **完整的约课系统**：支持团课、私教、训练营三种课程类型
+- 🔄 **智能等位机制**：课程满员时自动加入等位队列，有空位时自动转正
+- 💳 **次卡管理系统**：团课次卡、期限卡余额管理
+- 🔔 **智能通知提醒**：开课前自动提醒，预约成功即时通知
+- 👨‍💼 **完善的管理后台**：课程管理、用户管理、数据统计
+- 🛡️ **安全权限控制**：基于微信openid的管理员权限验证
 
-### 🧘‍♀️ 用户功能
-- **智能约课系统**：支持团课、私教、训练营三种类型
-- **等位排队机制**：课程满员时自动加入等位队列
-- **次卡管理**：团课次卡、期限卡余额管理
-- **课程提醒**：开课前1小时自动提醒
+## 🚀 快速开始
+
+### 环境要求
+
+- 微信开发者工具（最新版本）
+- 微信小程序账号（已认证）
+- 微信云开发服务
+
+### 安装部署
+
+1. **克隆项目**
+   ```bash
+   git clone <your-repo-url>
+   cd yoga
+   ```
+
+2. **配置云环境**
+   - 在微信开发者工具中创建云开发环境
+   - 修改 `miniprogram/app.js` 中的环境ID：
+   ```javascript
+   env: 'your-cloud-env-id' // 替换为你的云环境ID
+   ```
+
+3. **部署云函数**
+   - 右键 `cloudfunctions` 目录 → 同步云函数列表
+   - 逐个上传所有云函数
+
+4. **设置数据库**
+   - 按照 [数据库设置指南](#数据库设置) 创建集合和权限
+   - 配置管理员权限（见下方管理员配置）
+
+5. **配置订阅消息**
+   - 在微信公众平台申请订阅消息模板
+   - 更新相关云函数中的模板ID
+
+## 📊 数据库设置
+
+### 创建集合
+
+在微信云开发控制台创建以下集合：
+
+| 集合名 | 用途 | 权限设置 |
+|--------|------|----------|
+| `users` | 用户信息 | 用户本人读写 |
+| `courses` | 课程信息 | 所有用户可读 |
+| `courseSchedule` | 课程安排 | 所有用户可读 |
+| `bookings` | 预约记录 | 用户本人读写 |
+| `classRecords` | 课时记录 | 用户本人只读 |
+| `notifications` | 通知记录 | 用户本人只读 |
+| `admins` | 管理员信息 | 仅云函数访问 |
+| `adminLogs` | 操作日志 | 仅云函数访问 |
+
+### 权限配置示例
+
+**users集合权限规则**：
+```json
+{
+  "read": "auth.openid == doc.openid",
+  "write": "auth.openid == doc.openid"
+}
+```
+
+**courses集合权限规则**：
+```json
+{
+  "read": true,
+  "write": false
+}
+```
+
+## 👨‍💼 管理员配置
+
+### 方法一：通过数据库直接配置
+
+1. 在云开发控制台的 `admins` 集合中添加管理员记录：
+```json
+{
+  "openid": "your-wechat-openid",
+  "nickName": "管理员姓名",
+  "role": "admin",
+  "status": "active",
+  "createTime": "2024-01-01T00:00:00.000Z"
+}
+```
+
+2. 获取你的微信openid：
+   - 在小程序中调用云函数获取
+   - 或使用微信开发者工具调试
+
+### 方法二：通过云函数配置
+
+1. 修改以下云函数中的 `defaultAdminOpenids` 数组：
+   - `cloudfunctions/adminAddCourse/index.js`
+   - `cloudfunctions/adminAddSchedule/index.js`
+   - `cloudfunctions/adminUpdateCredits/index.js`
+   - `cloudfunctions/getAllUsers/index.js`
+
+2. 添加你的openid到数组中：
+```javascript
+const defaultAdminOpenids = [
+  'your-actual-openid-here', // 你的openid
+  // 可以添加多个管理员
+];
+```
+
+3. 重新部署修改过的云函数
+
+### 管理员入口
+
+- 在"我的"页面长按右上角设置图标⚙️（约2秒）
+- 系统会验证你的openid权限
+- 验证通过后直接进入管理后台
+
+## 🎯 核心功能
+
+### 用户功能
+- **智能约课**：支持团课、私教、训练营预约
+- **等位排队**：课程满员时自动加入等位队列
+- **次卡管理**：查看团课次卡、期限卡余额
 - **预约管理**：查看预约历史、即将到来的课程
 - **取消保护**：开课前1小时内禁止取消预约
 
-### 👨‍💼 管理员功能
-- **双重入口设计**：管理员入口（openid验证）+ 老师入口（密码验证）
-- **课程管理**：创建课程、设置课程属性
-- **课程导入**：批量导入常见瑜伽课程模板（哈他瑜伽、流瑜伽、阴瑜伽等）
+### 管理员功能
+- **课程管理**：创建课程、设置课程属性、批量导入课程模板
 - **日程安排**：灵活安排课程时间和教师
 - **用户管理**：查看用户信息、管理用户次卡
 - **数据统计**：课程预约统计、用户活跃度分析
-- **权限分级**：管理员和老师权限分离管理
+- **操作日志**：记录所有管理操作
 
-### 🔔 智能通知
+### 智能通知
 - **预约成功通知**：即时预约确认
 - **成课通知**：满足最少人数时自动通知
-- **开课前提醒**：开课前4小时自动提醒，确保用户不错过课程
-- **私教预约通知**：老师确认私教预约时自动通知用户
+- **开课前提醒**：开课前4小时自动提醒
+- **课程取消通知**：开课前1小时不足人数时自动取消并通知
 - **等位转正通知**：有空位时自动转为正式预约
 
-## 项目结构
+## 🛠️ 技术栈
+
+### 前端
+- **框架**：微信小程序原生开发
+- **样式**：WXSS + 全局统一设计系统
+- **脚本**：JavaScript ES6+
+- **组件**：自定义组件化开发
+
+### 后端
+- **云开发**：微信云开发
+- **数据库**：云数据库（NoSQL）
+- **云函数**：Node.js
+- **存储**：云存储
+- **消息推送**：订阅消息
+
+## 📁 项目结构
 
 ```
 yoga/
@@ -42,269 +174,73 @@ yoga/
 │   ├── custom-tab-bar/      # 自定义底部标签栏
 │   ├── images/              # 图片资源
 │   └── pages/               # 页面文件
-│       ├── index/           # 首页（知）
-│       ├── course/          # 课程页（练）- 支持在线预约
-│       ├── activity/        # 活动页（聚）
-│       ├── profile/         # 个人中心（我）- 次卡管理
+│       ├── index/           # 首页
+│       ├── course/          # 课程页
+│       ├── activity/        # 活动页
+│       ├── profile/         # 个人中心
 │       ├── booking-confirm/ # 预约确认页
 │       ├── private-booking/ # 私教预约页
 │       ├── admin/           # 管理员主页
-│       ├── admin-course/    # 课程管理页（支持添加课程、安排日程、批量导入）
+│       ├── admin-course/    # 课程管理页
 │       ├── admin-users/     # 用户管理页
-│       ├── venue-intro/     # 场馆介绍
-│       ├── teacher-intro/   # 师资简介
-│       ├── course-theme/    # 课程主题
-│       └── yoga-theory/     # 瑜伽理论
+│       └── ...              # 其他页面
 ├── cloudfunctions/            # 云函数代码
 │   ├── login/               # 用户登录
 │   ├── getUser/             # 获取用户信息
 │   ├── registerUser/        # 用户注册
-│   ├── getUserCredits/      # 获取用户次卡余额
 │   ├── getDaySchedule/      # 获取每日课程安排
 │   ├── bookCourse/          # 预约课程
 │   ├── cancelBooking/       # 取消预约
-│   ├── getUserBookings/     # 获取用户预约记录
-│   ├── sendNotification/    # 发送通知（私教预约确认）
-│   ├── sendSubscribeMessage/# 发送订阅消息通用接口
-│   ├── sendClassReminder/   # 开课前4小时提醒
-│   ├── scheduleClassReminders/ # 定时任务：检查并发送开课提醒
-│   ├── testClassReminder/   # 测试开课前提醒功能
 │   ├── adminAddCourse/      # 管理员添加课程
 │   ├── adminAddSchedule/    # 管理员添加日程
 │   ├── adminUpdateCredits/  # 管理员更新用户次卡
-│   ├── getCourses/          # 获取课程列表
-│   └── getAllUsers/         # 获取所有用户（管理员专用）
-├── CLOUD_DEPLOYMENT_GUIDE.md # 云开发部署指南
-├── DATABASE_SETUP.md        # 数据库设置指南
-├── TESTING_GUIDE.md         # 测试指南
+│   ├── sendNotification/    # 发送通知
+│   ├── sendClassReminder/   # 开课前提醒
+│   └── ...                  # 其他云函数
 └── README.md                # 项目说明
 ```
 
-## 导航栏设计规范
+## 🧪 测试指南
 
-### 统一样式特点
+### 基础功能测试
+1. **用户注册登录**：测试用户信息获取和注册流程
+2. **课程预约**：测试预约、取消、等位功能
+3. **管理员功能**：测试课程管理、用户管理功能
+4. **通知系统**：测试各种通知消息发送
 
-所有页面的顶部导航栏已统一为相同的设计风格：
+### 测试数据准备
+```javascript
+// 创建测试课程
+const testCourse = {
+  title: "流瑜伽",
+  type: "group",
+  teacherId: "teacher1",
+  teacherName: "莹儿",
+  description: "呼吸，流动，体式。适合所有级别的学员",
+  maxStudents: 8,
+  minStudents: 2,
+  price: 1,
+  duration: 60,
+  status: "active",
+  createTime: new Date(),
+  updateTime: new Date()
+};
 
-- **背景色**: `#202632` (深灰色)
-- **文字颜色**: 白色
-- **高度**: `185rpx` (包含状态栏适配)
-- **标题**: 居中显示，字体大小 `32rpx`，字重 `600`
-- **返回按钮**: 左侧显示，使用 `‹` 符号
-
-### 样式定义位置
-
-导航栏的统一样式定义在 `app.wxss` 中，包括以下类：
-
-```css
-/* 全局背景图样式 */
-.global-bg {
-  position: fixed;
-  left: 0; top: 0;
-  width: 110vw; height: 100vh;
-  z-index: -1;
-  pointer-events: none;
-}
-
-/* 统一的导航栏样式 */
-.nav-bar {
-  height: 100rpx;
-  padding-top: 60rpx;
-  padding-bottom: 25rpx;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: #202632;
-  color: #fff;
-  position: relative;
-  z-index: 100;
-}
-
-.nav-left, .nav-right {
-  flex: 1;
-}
-
-.nav-title {
-  flex: 1;
-  text-align: center;
-  font-size: 32rpx;
-  font-weight: 600;
-  align-self: flex-end;
-}
-
-.nav-back {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 60rpx;
-  height: 60rpx;
-  cursor: pointer;
-}
-
-.back-icon {
-  font-size: 40rpx;
-  color: #fff;
-  font-weight: bold;
-}
+// 创建测试日程
+const testSchedule = {
+  courseId: "your-course-id",
+  teacherId: "teacher1",
+  teacherName: "莹儿",
+  date: "2024-01-15",
+  startTime: "19:15",
+  endTime: "20:15",
+  maxStudents: 8,
+  minStudents: 2,
+  currentStudents: 0,
+  status: "published",
+  createTime: new Date()
+};
 ```
-
-## 页面配置
-
-### 导航栏配置
-
-所有页面的 `.json` 配置文件都设置了：
-
-```json
-{
-  "navigationStyle": "custom"
-}
-```
-
-这允许我们完全自定义导航栏样式。
-
-### HTML结构
-
-每个页面都使用相同的导航栏结构：
-
-```html
-<!-- 背景图 -->
-<image class="global-bg" src="../../images/background.png" mode="aspectFill"/>
-
-<!-- 自定义导航栏 -->
-<view class="nav-bar">
-  <view class="nav-left">
-    <!-- 对于需要返回按钮的页面 -->
-    <view class="nav-back" bindtap="navigateBack">
-      <text class="back-icon">‹</text>
-    </view>
-  </view>
-  <view class="nav-title">页面标题</view>
-  <view class="nav-right"></view>
-</view>
-```
-
-## 页面说明
-
-### 1. 首页 (index)
-- **功能**: 展示瑜伽馆简介、功能导航
-- **特色**: 包含logo展示、slogan展示、功能模块入口
-- **导航**: 点击功能图标可进入对应的二级页面
-
-### 2. 课程页 (course)
-- **功能**: 课程预约、课程展示
-- **类型**: 支持私教、团课、训练营三种类型
-- **特色**: 日历选择、课程卡片展示
-
-### 3. 活动页 (activity)
-- **功能**: 静修活动展示和参与
-- **特色**: 大图卡片式活动展示
-
-### 4. 个人中心 (profile)
-- **功能**: 用户信息管理、课程记录、已约日程
-- **特色**: 足迹热力图、课程次卡显示
-- **管理员入口**: 右上角的管理员设置按钮，仅对管理员可见
-
-### 5. 预约确认页 (booking-confirm)
-- **功能**: 团课预约信息确认和支付
-- **特色**: 课程详情卡片、价格明细
-
-### 6. 私教预约页 (private-booking)
-- **功能**: 私教课程预约
-- **特色**: 老师信息展示、时间选择表单
-
-### 7. 场馆介绍页 (venue-intro)
-- **功能**: 展示瑜伽馆场馆信息
-- **特色**: 场馆图片展示、联系方式、环境介绍
-
-### 8. 师资简介页 (teacher-intro)
-- **功能**: 展示瑜伽馆教师团队
-- **特色**: 教师头像、姓名展示，为后续详细介绍页面预留接口
-
-### 9. 课程主题页 (course-theme)
-- **功能**: 展示瑜伽课程主题分类
-- **特色**: 各类瑜伽课程主题卡片展示，可扩展为详细课程介绍
-
-### 10. 瑜伽理论页 (yoga-theory)
-- **功能**: 展示瑜伽理论知识分类
-- **特色**: 瑜伽理论模块化展示，可扩展为详细理论内容
-
-## 组件说明
-
-### 导航栏组件 (nav-bar)
-
-虽然创建了可复用的导航栏组件，但当前版本直接在各页面中使用HTML结构，以保持代码简洁性。组件位于 `components/nav-bar/` 目录，可在需要时引入使用。
-
-**组件属性**:
-- `title`: 导航栏标题，默认为"墨瑜伽"
-- `showBack`: 是否显示返回按钮，默认为false
-
-**使用方法**:
-```html
-<nav-bar title="页面标题" showBack="{{true}}" bind:back="onBackTap"></nav-bar>
-```
-
-## 开发注意事项
-
-1. **样式复用**: 导航栏样式已全局定义，各页面无需重复编写
-2. **背景图**: 使用全局背景图类 `.global-bg`
-3. **返回事件**: 返回按钮需绑定 `navigateBack` 事件处理函数
-4. **z-index**: 导航栏 z-index 为 100，确保在其他内容之上
-5. **响应式**: 导航栏已适配不同屏幕尺寸
-
-## 🛠️ 技术栈
-
-### 前端技术
-- **框架**: 微信小程序原生开发
-- **样式**: WXSS + 全局统一设计系统
-- **脚本**: JavaScript ES6+
-- **配置**: JSON
-- **组件**: 自定义组件化开发
-
-### 后端技术
-- **云开发**: 微信云开发
-- **数据库**: 云数据库（NoSQL）
-- **云函数**: Node.js
-- **存储**: 云存储
-- **消息推送**: 订阅消息
-
-### 开发工具
-- 微信开发者工具（必需）
-- VSCode（推荐配合微信小程序插件）
-- 云开发控制台
-
-## 🚀 快速开始
-
-### 1. 环境准备
-```bash
-# 确保你有以下环境：
-- 微信开发者工具（最新版本）
-- 已申请的微信小程序账号
-- 开通微信云开发服务
-```
-
-### 2. 项目部署
-```bash
-# 1. 下载项目代码
-git clone <your-repo-url>
-
-# 2. 导入微信开发者工具
-# 选择 miniprogram 目录作为项目根目录
-
-# 3. 配置云环境ID
-# 修改 miniprogram/app.js 中的环境ID
-
-# 4. 部署云函数
-# 右键 cloudfunctions 目录 -> 同步云函数列表
-# 逐个上传云函数
-
-# 5. 设置数据库
-# 按照 DATABASE_SETUP.md 创建集合和权限
-```
-
-### 3. 详细部署指南
-- 📖 [云开发部署指南](./CLOUD_DEPLOYMENT_GUIDE.md)
-- 🗃️ [数据库设置指南](./DATABASE_SETUP.md)
-- 🧪 [测试指南](./TESTING_GUIDE.md)
 
 ## 📋 功能清单
 
@@ -316,7 +252,6 @@ git clone <your-repo-url>
 - [x] 管理员后台
 - [x] 课程管理（添加课程、安排日程）
 - [x] 课程批量导入系统（8种常见瑜伽课程模板）
-- [x] 管理员设置入口优化（避免与小程序原生组件冲突）
 - [x] 用户管理
 - [x] 智能通知系统
 - [x] 开课前提醒
@@ -335,13 +270,45 @@ git clone <your-repo-url>
 - [ ] 积分系统
 - [ ] 第三方支付集成
 
+## ⚠️ 注意事项
+
+### 安全提醒
+1. **管理员权限**：确保管理员openid正确且保密
+2. **数据库权限**：严格按照最小权限原则设置
+3. **云函数安全**：所有管理员操作都要验证权限
+4. **用户隐私**：遵守数据保护法规
+
+### 性能建议
+1. **数据库索引**：为高频查询字段建立索引
+2. **云函数优化**：控制函数执行时间和内存使用
+3. **图片优化**：使用适当尺寸的图片资源
+4. **缓存策略**：合理使用缓存减少数据库访问
+
+## 🤝 贡献指南
+
+欢迎提交Issue和Pull Request来改进这个项目！
+
+1. Fork 本仓库
+2. 创建你的特性分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交你的修改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 打开一个 Pull Request
+
+## 📄 许可证
+
+本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情
+
+## 📞 技术支持
+
+如有问题或建议，请通过以下方式联系：
+
+- 提交 [Issue](../../issues)
+- 发送邮件至：support@example.com
+
+## 🙏 致谢
+
+感谢所有为这个项目做出贡献的开发者！
+
 ---
 
-*本项目遵循微信小程序设计规范，注重用户体验和界面一致性。*
-
-已完成：done 状态（绿色标签）
-已取消：cancelled 状态（红色标签）
-等位失败：fail 状态（橙红色标签）
-已返还：refunded 状态（灰色标签）
-已预约：booked 状态（蓝色标签）
-等位中：waitlist 状态（黄色标签）
+**🎉 如果这个项目对你有帮助，请给个Star支持一下！**

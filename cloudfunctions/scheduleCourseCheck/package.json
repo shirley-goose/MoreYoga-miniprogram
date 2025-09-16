@@ -1,7 +1,7 @@
 {
-  "name": "testClassReminder",
+  "name": "scheduleCourseCheck",
   "version": "1.0.0",
-  "description": "测试开课前4小时提醒功能",
+  "description": "定时检查并取消不满足人数的课程",
   "main": "index.js",
   "dependencies": {
     "wx-server-sdk": "~2.6.3"

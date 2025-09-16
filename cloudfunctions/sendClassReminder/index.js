@@ -17,16 +17,16 @@ exports.main = async (event, context) => {
     const chinaTime = new Date(now.getTime() + 8 * 60 * 60 * 1000)
     console.log('当前中国时间:', chinaTime.toISOString())
     
-    // 计算4小时后的时间
+    // 计算4小时后的精确时间
     const fourHoursLater = new Date(chinaTime.getTime() + 4 * 60 * 60 * 1000)
     const targetDate = fourHoursLater.toISOString().split('T')[0] // YYYY-MM-DD格式
-    const targetStartHour = fourHoursLater.getHours()
-    const targetEndHour = targetStartHour + 1 // 检查1小时时间范围
+    const targetHour = fourHoursLater.getHours()
+    const targetMinute = fourHoursLater.getMinutes()
     
     console.log('查找目标日期:', targetDate)
-    console.log('查找目标时间范围:', `${targetStartHour}:00 - ${targetEndHour}:00`)
+    console.log('查找目标时间:', `${targetHour}:${targetMinute.toString().padStart(2, '0')}`)
     
-    // 查询需要发送提醒的课程（4小时后开始的课程）
+    // 查询当天的活跃课程
     const scheduleResult = await db.collection('courseSchedule')
       .where({
         date: targetDate,
@@ -36,10 +36,24 @@ exports.main = async (event, context) => {
     
     console.log('查询到的课程安排总数:', scheduleResult.data.length)
     
-    // 筛选4小时后开始的课程
+    // 筛选需要在此时发送提醒的课程
+    // 只有当前时间恰好是课程开始前4小时时才发送（允许15分钟误差）
     const targetCourses = scheduleResult.data.filter(schedule => {
-      const [hours] = schedule.startTime.split(':').map(Number)
-      return hours >= targetStartHour && hours < targetEndHour
+      const [courseHour, courseMinute] = schedule.startTime.split(':').map(Number)
+      
+      // 计算课程开始时间（以分钟为单位）
+      const courseTimeInMinutes = courseHour * 60 + courseMinute
+      
+      // 计算当前时间4小时后的时间（以分钟为单位）
+      const targetTimeInMinutes = targetHour * 60 + targetMinute
+      
+      // 检查是否恰好是4小时前（允许15分钟误差范围）
+      const timeDiff = Math.abs(courseTimeInMinutes - targetTimeInMinutes)
+      const shouldSendReminder = timeDiff <= 15 // 15分钟误差范围
+      
+      console.log(`课程${schedule.courseName}: 开始时间${schedule.startTime}, 时间差${timeDiff}分钟, 是否发送提醒:${shouldSendReminder}`)
+      
+      return shouldSendReminder
     })
     
     console.log('需要发送提醒的课程数量:', targetCourses.length)
@@ -60,6 +74,21 @@ exports.main = async (event, context) => {
       try {
         console.log('处理课程:', course.courseName, course.date, course.startTime)
         
+        // // 检查是否已经为这个课程发送过提醒（防重复发送）
+        // const reminderKey = `${course._id}_${course.date}_${course.startTime}`
+        // const existingReminder = await db.collection('reminderLogs')
+        //   .where({
+        //     reminderKey: reminderKey,
+        //     type: 'class_reminder_4h',
+        //     success: true
+        //   })
+        //   .get()
+        
+        // if (existingReminder.data.length > 0) {
+        //   console.log('该课程已发送过提醒，跳过:', course.courseName)
+        //   continue
+        // }
+        
         // 获取该课程的所有已确认预约用户
         const confirmedBookings = (course.bookings || []).filter(booking => 
           booking.status === 'booked' // 只给已确认预约的用户发送提醒
@@ -72,6 +101,9 @@ exports.main = async (event, context) => {
           continue
         }
         
+        let courseSuccessCount = 0
+        let courseFailureCount = 0
+        
         // 为每个用户发送提醒
         for (const booking of confirmedBookings) {
           try {
@@ -80,15 +112,34 @@ exports.main = async (event, context) => {
               courseName: course.courseName,
               teacherName: course.teacherName,
               classTime: formatClassTime(course.date, course.startTime),
-              scheduleId: course._id
+              scheduleId: String(course._id)
             })
-            successCount++
+            courseSuccessCount++
             console.log('提醒发送成功:', booking.userId)
           } catch (error) {
             console.error('发送提醒失败:', booking.userId, error)
-            failureCount++
+            courseFailureCount++
           }
         }
+        
+        // 记录此课程的提醒发送日志（防重复发送）
+        await db.collection('reminderLogs').add({
+          data: {
+            reminderKey: reminderKey,
+            courseId: course._id,
+            courseName: course.courseName,
+            courseDate: course.date,
+            courseStartTime: course.startTime,
+            type: 'class_reminder_4h',
+            success: courseSuccessCount > 0,
+            successCount: courseSuccessCount,
+            failureCount: courseFailureCount,
+            timestamp: new Date()
+          }
+        })
+        
+        successCount += courseSuccessCount
+        failureCount += courseFailureCount
         
       } catch (error) {
         console.error('处理课程失败:', course._id, error)

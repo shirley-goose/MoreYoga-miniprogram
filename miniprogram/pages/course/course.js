@@ -24,15 +24,12 @@ Page({
         id: 'yinger',
         name: '莹儿老师',
         avatar: 'cloud://cloud1-9g5oms9v90aabf59.636c-cloud1-9g5oms9v90aabf59-1374796372/images/teacher_yinger-6c1741.png',
-        specialty: '产后修复 | 体态调整',
-        price: 300
+        specialty: '产后修复 | 体态调整'
       },
       {
         id: 'zhouzhou',
         name: '周周老师',
-        avatar: '../../images/logo.png', // 照片待补充
-        specialty: '流瑜伽 | 正位瑜伽',
-        price: 280
+        avatar: '../../images/zhouzhou_avatar.png', 
       },
       {
         id: 'yaqin',
@@ -401,55 +398,61 @@ Page({
   // 预约课程
   async bookCourse(course) {
     try {
-      // 首先请求用户订阅开课提醒
-      try {
-        console.log('请求用户订阅开课提醒...');
+      // // 首先请求用户订阅开课提醒
+      // try {
+      //   console.log('请求用户订阅开课提醒...');
         
-        // 显示订阅说明
-        const confirmResult = await new Promise((resolve) => {
-          wx.showModal({
-            title: '开课提醒通知',
-            content: '为了及时提醒您上课，请允许接收"开课提醒通知"。\n\n我们会在开课前4小时为您发送提醒。',
-            showCancel: true,
-            cancelText: '跳过',
-            confirmText: '允许通知',
-            success: (res) => {
-              resolve(res.confirm);
-            },
-            fail: () => {
-              resolve(false);
-            }
-          });
-        });
+      //   // 显示订阅说明
+      //   const confirmResult = await new Promise((resolve) => {
+      //     wx.showModal({
+      //       title: '课程通知订阅',
+      //       content: '为了及时通知您课程相关信息，请允许接收通知：\n\n• 开课前4小时提醒\n• 课程取消通知（如不足开课人数）',
+      //       showCancel: true,
+      //       cancelText: '跳过',
+      //       confirmText: '允许通知',
+      //       success: (res) => {
+      //         resolve(res.confirm);
+      //       },
+      //       fail: () => {
+      //         resolve(false);
+      //       }
+      //     });
+      //   });
 
-        if (confirmResult) {
-          // 请求订阅消息授权
-          wx.requestSubscribeMessage({
-            tmplIds: ['r79vVscc3dDWZA7x98g-5eDEmwaAkFTbknr5x6v_2iY'], // 开课提醒模板ID
-            success(res) {
-              console.log("开课提醒订阅结果:", res);
-              // 这里再去调用云函数，触发发送
-              wx.cloud.callFunction({
-                name: 'sendSubscribeMsg',
-                data: { tmplId: 'Gh4le1pvgOkdxcgo0rlZYgeJH15oT6N8GMN9vbnkLVg' }
-              })
-              if (res['r79vVscc3dDWZA7x98g-5eDEmwaAkFTbknr5x6v_2iY'] === 'accept') {
-                console.log("✅ 用户同意订阅开课提醒");
-              } else {
-                console.log("❌ 用户没有订阅开课提醒");
-              }
-            },
-            fail(err) {
-              console.error("开课提醒订阅请求失败:", err);
-            }
-          });
-        } else {
-          console.log('用户选择跳过开课提醒订阅');
-        }
-      } catch (subscribeError) {
-        console.log('订阅请求失败:', subscribeError);
-        // 不阻止预约流程，继续执行
-      }
+      //   const tmplId1 = 'r79vVscc3dDWZA7x98g-5eDEmwaAkFTbknr5x6v_2iY'; // 开课提醒模板ID
+      //   const tmplId2 = 'j2K0O4boiXqmfuO49SPOtyEqVa3_dh6uxM6_NW5wDz0'; // 课程取消通知模板ID
+      //   if (confirmResult) {
+      //     // 请求订阅消息授权 - 使用变量形式
+      //     wx.requestSubscribeMessage({
+      //       tmplIds: [tmplId1, tmplId2],
+      //       success(res) {
+      //         console.log("课程通知订阅结果:", res);
+              
+      //         // 检查开课提醒订阅结果
+      //         if (res[tmplId1] === 'accept') {
+      //           console.log("✅ 用户同意订阅开课提醒");
+      //         } else {
+      //           console.log("❌ 用户没有订阅开课提醒");
+      //         }
+              
+      //         // 检查课程取消通知订阅结果
+      //         if (res[tmplId2] === 'accept') {
+      //           console.log("✅ 用户同意订阅课程取消通知");
+      //         } else {
+      //           console.log("❌ 用户没有订阅课程取消通知");
+      //         }
+      //       },
+      //       fail(err) {
+      //         console.error("课程通知订阅请求失败:", err);
+      //       }
+      //     });
+      //   } else {
+      //     console.log('用户选择跳过课程通知订阅');
+      //   }
+      // } catch (subscribeError) {
+      //   console.log('订阅请求失败:', subscribeError);
+      //   // 不阻止预约流程，继续执行
+      // }
 
       wx.showLoading({
         title: '预约中...'

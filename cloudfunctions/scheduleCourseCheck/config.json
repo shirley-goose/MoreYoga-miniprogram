@@ -1,0 +1,9 @@
+{
+    "triggers": [
+      {
+        "name": "class-reminder-trigger",
+        "type": "timer",
+        "config": "0 */15 * * * * *"
+      }
+    ]
+  }

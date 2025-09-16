@@ -217,7 +217,7 @@ Page({
   showSubscribeMessageDialog(courseData) {
     wx.showModal({
       title: '预约成功',
-      content: `${courseData.courseName}预约成功！\n已消耗${courseData.creditsRequired}次团课次卡\n\n是否开启课程4小时提前提醒？`,
+      content: `${courseData.courseName}预约成功！\n已消耗${courseData.creditsRequired}次团课次卡\n\n为了及时通知您课程相关信息，请允许接收通知：\n\n• 开课前4小时提醒\n• 课程取消通知（如不足开课人数）`,
       confirmText: '开启提醒',
       cancelText: '暂不开启',
       success: async (res) => {
@@ -235,10 +235,15 @@ Page({
   // 请求订阅消息权限
   async requestSubscribeMessage(courseData) {
     try {
-      // 只请求4小时提醒模板权限
       const templateIds = [
-        'r79vVscc3dDWZA7x98g-5eDEmwaAkFTbknr5x6v_2iY'  // 4小时提醒模板ID
+        'r79vVscc3dDWZA7x98g-5eDEmwaAkFTbknr5x6v_2iY',  // 4小时提醒模板ID
+        'j2K0O4boiXqmfuO49SPOtyEqVa3_dh6uxM6_NW5wDz0'  // 课程取消通知模板ID
       ];
+
+      const templateMap = {
+        'r79vVscc3dDWZA7x98g-5eDEmwaAkFTbknr5x6v_2iY': '4小时提醒',  // 4小时提醒模板ID
+        'j2K0O4boiXqmfuO49SPOtyEqVa3_dh6uxM6_NW5wDz0': '课程取消通知'  // 课程取消通知模板ID
+      };
       
       console.log('请求订阅消息权限...');
       
@@ -254,7 +259,7 @@ Page({
       
       templateIds.forEach((templateId) => {
         const status = subscribeResult[templateId];
-        const reminderType = '4小时提醒';
+        const reminderType = templateMap[templateId] || '课程提醒';
         
         if (status === 'accept') {
           subscribedCount++;
@@ -274,7 +279,7 @@ Page({
       if (subscribedCount > 0) {
         wx.showModal({
           title: '提醒设置成功',
-          content: `已开启课程提醒：\n\n${subscribeMessages.join('\n')}\n\n我们会在课程开始前4小时提醒您！`,
+          content: `已开启课程提醒：\n\n${subscribeMessages.join('\n')}`,
           showCancel: false,
           confirmText: '知道了',
           success: () => {

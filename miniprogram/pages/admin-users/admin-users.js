@@ -144,7 +144,7 @@ Page({
     
     // 确认操作
     const operation = this.data.operationTypes[form.operationIndex];
-    const confirmText = `确定要${operation}用户 ${user.nickName} 的课时吗？\n团课: ${groupCredits}次\n期限: ${termCredits}次`;
+    const confirmText = `确定要${operation}用户 ${user.nickName} 的课时吗？\n团课: ${groupCredits}次\n私教: ${termCredits}次`;
     
     const confirmResult = await new Promise(resolve => {
       wx.showModal({

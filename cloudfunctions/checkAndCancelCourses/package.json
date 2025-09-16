@@ -1,0 +1,9 @@
+{
+  "name": "checkAndCancelCourses",
+  "version": "1.0.0",
+  "description": "检查并取消不满足最低人数的课程",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

@@ -91,7 +91,7 @@
 .teacher-header {
   display: flex;
   flex-direction: row;      /* 水平排列 */
-  align-items: center;      /* 居中对齐 */
+  align-items: top;      /* 居中对齐 */
   margin-bottom: 60rpx;
   padding-left: 10rpx;      /* 左侧内边距 */
   padding-right: 10rpx;     /* 右侧内边距 */
@@ -109,12 +109,12 @@
 }
 
 .teacher-name {
-  margin-top: 140rpx;
-  font-size: 60rpx;
+  margin-top: 100rpx;
+  font-size: 70rpx;
   font-weight: 400;
   color: #000;
   letter-spacing: 10%;
-  text-align: center;
+  text-align: top;
   line-height: 1.4;
 }
 
@@ -159,7 +159,7 @@
   font-weight: 400;
   color: #000;
   letter-spacing: 10%;
-  text-align: right;
+  text-align: left;
   line-height: 0.9;
   margin-bottom: 30rpx;
   margin-right: 15rpx;

@@ -130,9 +130,10 @@ async function checkAdminPermission(openid) {
       return true;
     }
     
-    // 预设管理员的openid列表
+    // 预设管理员的openid列表（需要手动添加实际的openid）
     const defaultAdminOpenids = [
-      'ozHc8164opfwil_GBgadEQ0dr3rs', // 请替换为实际的管理员微信openid
+      // 'your-admin-openid-here', // 请替换为实际的管理员微信openid
+      // 'another-admin-openid-here'
     ];
     
     return defaultAdminOpenids.includes(openid);

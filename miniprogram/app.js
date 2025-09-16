@@ -4,7 +4,7 @@ App({
     // 初始化云开发环境
     if (wx.cloud) {
       wx.cloud.init({
-        env: 'cloud1-9g5oms9v90aabf59', // 云环境ID - 需要在微信开发者工具中创建
+        env: 'your-cloud-env-id', // 云环境ID - 需要在微信开发者工具中创建
         traceUser: true
       });
     }
